@@ -137,9 +137,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_close_session</b> 
 <tr class="memitem:ga8f9f29703ccabe8b832ba07e2076f908" id="r_ga8f9f29703ccabe8b832ba07e2076f908"><td class="memItemLeft" align="right" valign="top"><a id="ga8f9f29703ccabe8b832ba07e2076f908" name="ga8f9f29703ccabe8b832ba07e2076f908"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_device_info</b> (struct PtpRuntime *r, struct <a class="el" href="structPtpDeviceInfo.html">PtpDeviceInfo</a> *di)</td></tr>
 <tr class="separator:ga8f9f29703ccabe8b832ba07e2076f908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga61bc40b52adf3c423d850587f0d368ba" id="r_ga61bc40b52adf3c423d850587f0d368ba"><td class="memItemLeft" align="right" valign="top"><a id="ga61bc40b52adf3c423d850587f0d368ba" name="ga61bc40b52adf3c423d850587f0d368ba"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_storage_ids</b> (struct PtpRuntime *r, struct PtpArray **a)</td></tr>
-<tr class="memdesc:ga61bc40b52adf3c423d850587f0d368ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns allocated array of storage IDs call free() afterwards. <br /></td></tr>
+<tr class="memitem:ga61bc40b52adf3c423d850587f0d368ba" id="r_ga61bc40b52adf3c423d850587f0d368ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga61bc40b52adf3c423d850587f0d368ba">ptp_get_storage_ids</a> (struct PtpRuntime *r, struct PtpArray **a)</td></tr>
+<tr class="memdesc:ga61bc40b52adf3c423d850587f0d368ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns allocated array of storage IDs.  <br /></td></tr>
 <tr class="separator:ga61bc40b52adf3c423d850587f0d368ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa81a7d45b24e770e249f03e8e991aee8" id="r_gaa81a7d45b24e770e249f03e8e991aee8"><td class="memItemLeft" align="right" valign="top"><a id="gaa81a7d45b24e770e249f03e8e991aee8" name="gaa81a7d45b24e770e249f03e8e991aee8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_init_capture</b> (struct PtpRuntime *r, int storage_id, int object_format)</td></tr>
@@ -156,6 +155,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_storage_info</
 <tr class="memitem:ga935dcfc1df1871caf21ae26f7508c62a" id="r_ga935dcfc1df1871caf21ae26f7508c62a"><td class="memItemLeft" align="right" valign="top"><a id="ga935dcfc1df1871caf21ae26f7508c62a" name="ga935dcfc1df1871caf21ae26f7508c62a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_send_object_info</b> (struct PtpRuntime *r, int storage_id, int handle, struct <a class="el" href="structPtpObjectInfo.html">PtpObjectInfo</a> *oi)</td></tr>
 <tr class="separator:ga935dcfc1df1871caf21ae26f7508c62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga597b1906873521e60f4856039df35b6b" id="r_ga597b1906873521e60f4856039df35b6b"><td class="memItemLeft" align="right" valign="top"><a id="ga597b1906873521e60f4856039df35b6b" name="ga597b1906873521e60f4856039df35b6b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_send_object</b> (struct PtpRuntime *r, const void *data, int data_length)</td></tr>
+<tr class="separator:ga597b1906873521e60f4856039df35b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac4e392052808ce00f4e463c3c35f824b" id="r_gac4e392052808ce00f4e463c3c35f824b"><td class="memItemLeft" align="right" valign="top"><a id="gac4e392052808ce00f4e463c3c35f824b" name="gac4e392052808ce00f4e463c3c35f824b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_prop_value</b> (struct PtpRuntime *r, int code)</td></tr>
 <tr class="separator:gac4e392052808ce00f4e463c3c35f824b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,9 +175,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_set_prop_value_dat
 <tr class="memitem:ga0df861658fefb547a48fd77a8c4983a9" id="r_ga0df861658fefb547a48fd77a8c4983a9"><td class="memItemLeft" align="right" valign="top"><a id="ga0df861658fefb547a48fd77a8c4983a9" name="ga0df861658fefb547a48fd77a8c4983a9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_prop_desc</b> (struct PtpRuntime *r, int code, struct <a class="el" href="structPtpPropDesc.html">PtpPropDesc</a> *pd)</td></tr>
 <tr class="separator:ga0df861658fefb547a48fd77a8c4983a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad09031095738de83df9db2c0bc358f92" id="r_gad09031095738de83df9db2c0bc358f92"><td class="memItemLeft" align="right" valign="top"><a id="gad09031095738de83df9db2c0bc358f92" name="gad09031095738de83df9db2c0bc358f92"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_object_handles</b> (struct PtpRuntime *r, int id, int format, int in, struct PtpArray **a)</td></tr>
-<tr class="memdesc:gad09031095738de83df9db2c0bc358f92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of object handles in a storage device or folder. <br /></td></tr>
+<tr class="memitem:gad09031095738de83df9db2c0bc358f92" id="r_gad09031095738de83df9db2c0bc358f92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad09031095738de83df9db2c0bc358f92">ptp_get_object_handles</a> (struct PtpRuntime *r, int id, int format, int in, struct PtpArray **a)</td></tr>
+<tr class="memdesc:gad09031095738de83df9db2c0bc358f92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of object handles in a storage device or folder.  <br /></td></tr>
 <tr class="separator:gad09031095738de83df9db2c0bc358f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga33df534a00c0d1d46c54253c675daded" id="r_ga33df534a00c0d1d46c54253c675daded"><td class="memItemLeft" align="right" valign="top"><a id="ga33df534a00c0d1d46c54253c675daded" name="ga33df534a00c0d1d46c54253c675daded"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_object_info</b> (struct PtpRuntime *r, uint32_t handle, struct <a class="el" href="structPtpObjectInfo.html">PtpObjectInfo</a> *oi)</td></tr>
@@ -360,6 +361,52 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_fa_get_build_v
 
 </div>
 </div>
+<a id="gad09031095738de83df9db2c0bc358f92" name="gad09031095738de83df9db2c0bc358f92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad09031095738de83df9db2c0bc358f92">&#9670;&#160;</a></span>ptp_get_object_handles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ptp_get_object_handles </td>
+          <td>(</td>
+          <td class="paramtype">struct PtpRuntime *</td>          <td class="paramname"><span class="paramname"><em>r</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>format</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>in</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct PtpArray **</td>          <td class="paramname"><span class="paramname"><em>a</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets a list of object handles in a storage device or folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>storage ID </td></tr>
+    <tr><td class="paramname">format</td><td>Can specify file format ID, or zero for all IDs </td></tr>
+    <tr><td class="paramname">in</td><td>Can be folder object ID, or 0 for recursive (entire filesystem) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga1730ddab297b7c9f0a7619bf4f379571" name="ga1730ddab297b7c9f0a7619bf4f379571"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1730ddab297b7c9f0a7619bf4f379571">&#9670;&#160;</a></span>ptp_get_partial_object()</h2>
 
@@ -389,6 +436,30 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_fa_get_build_v
       </table>
 </div><div class="memdoc">
 <dl class="section note"><dt>Note</dt><dd>Not thread safe. </dd></dl>
+
+</div>
+</div>
+<a id="ga61bc40b52adf3c423d850587f0d368ba" name="ga61bc40b52adf3c423d850587f0d368ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61bc40b52adf3c423d850587f0d368ba">&#9670;&#160;</a></span>ptp_get_storage_ids()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ptp_get_storage_ids </td>
+          <td>(</td>
+          <td class="paramtype">struct PtpRuntime *</td>          <td class="paramname"><span class="paramname"><em>r</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct PtpArray **</td>          <td class="paramname"><span class="paramname"><em>a</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns allocated array of storage IDs. </p>
+<dl class="section note"><dt>Note</dt><dd>call free() afterward </dd></dl>
 
 </div>
 </div>
