@@ -76,7 +76,7 @@ if(PTP_INCLUDE_CLI)
 
     add_executable(ptp
         src/cli.c
-        src/dec/main.c
+        src/dec.c
     )
     target_include_directories(ptp PUBLIC ${PROJECT_SOURCE_DIR}/src ${LIBPCAP_INCLUDE_DIRS})
     target_link_libraries(ptp libpict ${LIBUSB_LIBRARIES} ${LIBPCAP_LIBRARIES})
