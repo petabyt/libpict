@@ -12,11 +12,17 @@ struct Options {
 
 static int usage(void) {
 	printf(
-		"pict\n"
-		"  --dec <input_file> <output_file> Decode any PTP/USB packet dump into a readable text file\n"
+		"  --dec <input_file> <output_file> <mode>\n"
+		"    Decode any PTP/USB packet dump into a readable text file\n"
+		"    Valid values for <mode>:\n"
+		"      usb     Decode pcap USB/ethernet packets\n"
+		"      wifi    Decode pcap TCP packets\n"
 		"  --help\n"
 		"  --run <operation> <args>\n"
-		"  --dont-open-session (A session is opened/closed by default)\n"
+		"    Invoke the binding API\n"
+		"  --dont-open-session\n"
+		"    (A session is opened/closed by default)\n"
+		"Examples:\n"
 		"  --run ptp_hello_world 1 2 3 \"Hello, World\"\n"
 	);
 	printf("Compile date: " __DATE__ "\n");

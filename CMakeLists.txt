@@ -74,12 +74,16 @@ if(PTP_INCLUDE_CLI)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LIBPCAP REQUIRED libpcap)
 
-    add_executable(pict
+    add_executable(ptp
         src/cli.c
         src/dec/main.c
     )
-    target_include_directories(pict PUBLIC ${PROJECT_SOURCE_DIR}/src ${LIBPCAP_INCLUDE_DIRS})
-    target_link_libraries(pict libpict ${LIBUSB_LIBRARIES} ${LIBPCAP_LIBRARIES})
+    target_include_directories(ptp PUBLIC ${PROJECT_SOURCE_DIR}/src ${LIBPCAP_INCLUDE_DIRS})
+    target_link_libraries(ptp libpict ${LIBUSB_LIBRARIES} ${LIBPCAP_LIBRARIES})
+
+    install(
+        TARGETS ptp
+    )
 endif()
 
 macro(add_example exe_name source)
