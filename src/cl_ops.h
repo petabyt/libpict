@@ -48,7 +48,7 @@ int ptp_close_session(struct PtpRuntime *r);
 int ptp_get_device_info(struct PtpRuntime *r, struct PtpDeviceInfo *di);
 
 /// @brief Returns allocated array of storage IDs
-/// call free() afterwards
+/// @note call free() afterward
 int ptp_get_storage_ids(struct PtpRuntime *r, struct PtpArray **a);
 
 int ptp_init_capture(struct PtpRuntime *r, int storage_id, int object_format);
@@ -60,6 +60,8 @@ int ptp_terminate_open_capture(struct PtpRuntime *r, int trans);
 int ptp_get_storage_info(struct PtpRuntime *r, int id, struct PtpStorageInfo *si);
 
 int ptp_send_object_info(struct PtpRuntime *r, int storage_id, int handle, struct PtpObjectInfo *oi);
+
+int ptp_send_object(struct PtpRuntime *r, const void *data, int data_length);
 
 int ptp_get_prop_value(struct PtpRuntime *r, int code);
 
@@ -73,10 +75,9 @@ int ptp_set_prop_value_data(struct PtpRuntime *r, int code, void *data, int leng
 int ptp_get_prop_desc(struct PtpRuntime *r, int code, struct PtpPropDesc *pd);
 
 /// @brief Gets a list of object handles in a storage device or folder.
-// @param id storage ID
-// @param format Can specify file format ID, or zero for all IDs
-// @param in Can be folder object ID, or 0 for recursive (entire filesystem)
-// @param[out] a Output array is a pointer to data packet, and will be overwritten by new operations
+/// @param id storage ID
+/// @param format Can specify file format ID, or zero for all IDs
+/// @param in Can be folder object ID, or 0 for recursive (entire filesystem)
 int ptp_get_object_handles(struct PtpRuntime *r, int id, int format, int in, struct PtpArray **a);
 
 int ptp_get_object_info(struct PtpRuntime *r, uint32_t handle, struct PtpObjectInfo *oi);

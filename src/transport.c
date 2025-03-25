@@ -192,7 +192,8 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 
 		if (type == PTP_PACKET_TYPE_RESPONSE) {
 			break;
-		} else if (type == PTP_PACKET_TYPE_DATA) {
+		}
+		if (type == PTP_PACKET_TYPE_DATA) {
 			// Min data packet is at least read
 			if (length + 12 > read) continue;
 
@@ -206,7 +207,11 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 			}
 			if (read == data_length + length) {
 				break;
-			} else if (read > data_length + length) {
+			}
+			if (read > data_length + length) {
+				// TODO: This is a valid scenario when receiving >4GB objects in PtpGetObject
+				// In that case, the data packet length will be 0xffffffff and the size of the payload returned
+				// will be the CompressedSize field in PtpObjectInfo for that file.
 				ptp_error_log("Read too much data %d\n", read);
 				return PTP_IO_ERR;
 			}

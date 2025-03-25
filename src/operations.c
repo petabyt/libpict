@@ -224,6 +224,13 @@ int ptp_send_object_info(struct PtpRuntime *r, int storage_id, int handle, struc
 	return ptp_send_data(r, &cmd, temp, length);
 }
 
+int ptp_send_object(struct PtpRuntime *r, const void *data, int data_length) {
+	struct PtpCommand cmd;
+	cmd.code = PTP_OC_SendObject;
+	cmd.param_length = 0;
+	return ptp_send_data(r, &cmd, data, data_length);
+}
+
 int ptp_get_object_handles(struct PtpRuntime *r, int id, int format, int in, struct PtpArray **a) {
 	struct PtpCommand cmd;
 	cmd.code = PTP_OC_GetObjectHandles;
