@@ -43,7 +43,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install dependencies
-      run: brew install libusb --force
+      run: brew install cmake ninja libusb --force
 
     - name: Build
       run: cmake -B build -G Ninja && cmake --build build

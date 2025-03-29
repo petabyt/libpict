@@ -1,7 +1,5 @@
 // Bunch of handy util functions for CLI
 #include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
 #include <stdlib.h>
 #include <libpict.h>
 
@@ -11,7 +9,7 @@ int ptp_list_devices(void) {
 	struct PtpDeviceEntry *list = ptpusb_device_list(r);
 
 	if (list == NULL) {
-		printf("No devices found\n");
+		printf("No PTP/USB devices found.\n");
 		return 0;
 	}
 
@@ -38,7 +36,7 @@ struct PtpRuntime *ptp_connect_from_id(int id) {
 	struct PtpDeviceEntry *list = ptpusb_device_list(r);
 
 	if (list == NULL) {
-		printf("No devices found\n");
+		printf("No PTP/USB devices found.\n");
 		return 0;
 	}
 
