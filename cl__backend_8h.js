@@ -2,6 +2,8 @@ var cl__backend_8h =
 [
     [ "ptp_cmd_read", "group__Backend.html#ga391f2980545c9895f66aa2f86053be47", null ],
     [ "ptp_cmd_write", "group__Backend.html#ga016cfe5f7ee11a212052a12f4caac457", null ],
+    [ "ptp_comm_deinit", "group__Backend.html#ga5057725a9fb659eb9de22ae127c4d3d6", null ],
+    [ "ptp_comm_init", "group__Backend.html#gadae92a05d0a5cd35436746f036a5e62d", null ],
     [ "ptp_device_close", "group__Backend.html#ga86c1bf4db87d280aceb033920aaca69b", null ],
     [ "ptp_device_init", "group__Backend.html#ga68c97eb394db2c962ec2a9c9006deeec", null ],
     [ "ptp_device_open", "group__Backend.html#ga3d2ffef827171fd251881a6aefc9ae43", null ],
