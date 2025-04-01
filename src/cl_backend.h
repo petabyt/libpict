@@ -28,6 +28,12 @@ struct PtpDeviceEntry {
 	struct PtpDeviceEntry *next;
 };
 
+/// @brief Initializes backend
+int ptp_comm_init(struct PtpRuntime *r);
+
+/// @brief Deinitializes backend and frees all memory
+void ptp_comm_deinit(struct PtpRuntime *r);
+
 /// @brief Get a linked list of USB or PTP Devices
 /// @returns linked list of devices or NULL if no devices are connected (or OS error)
 struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r);

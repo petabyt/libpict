@@ -20,7 +20,12 @@ int ptp_comm_init(struct PtpRuntime *r) {
 
 	r->comm_backend = wpd_new();
 
-	return 0;	
+	return 0;
+}
+
+void ptp_comm_deinit(struct PtpRuntime *r) {
+	if (r->comm_backend != NULL)
+		wpd_close(r->comm_backend);
 }
 
 int ptp_device_init(struct PtpRuntime *r) {
@@ -118,14 +123,15 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 	}
 
 	int type = wpd_get_device_type(wpd);
-	if (type == WPD_DEVICE_TYPE_CAMERA) {
+	// WPD_DEVICE_TYPE_GENERIC could be an unrecognized camera
+	if (type == WPD_DEVICE_TYPE_CAMERA || type == WPD_DEVICE_TYPE_GENERIC) {
 		r->io_kill_switch = 0;
 		r->operation_kill_switch = 0;
 		ptp_mutex_unlock(r);
 		return 0;
 	}
 
-	ptp_verbose_log("Device is not a camera!\n");
+	ptp_verbose_log("Device is not a camera! (%d)\n", type);
 
 	ptp_mutex_unlock(r);
 	return PTP_OPEN_FAIL;

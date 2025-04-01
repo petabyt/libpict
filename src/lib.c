@@ -142,6 +142,7 @@ void ptp_mutex_unlock(struct PtpRuntime *r) {
 }
 
 void ptp_close(struct PtpRuntime *r) {
+	ptp_comm_deinit(r);
 	free(r->data);
     free(r);
 }

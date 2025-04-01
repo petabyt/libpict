@@ -47,6 +47,13 @@ int ptp_comm_init(struct PtpRuntime *r) {
 	return 0;
 }
 
+void ptp_comm_deinit(struct PtpRuntime *r) {
+	if (r->comm_backend != NULL) {
+		struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
+		libusb_exit(backend->ctx);
+	}
+}
+
 struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 	ptp_comm_init(r);
 
