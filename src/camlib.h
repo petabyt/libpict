@@ -1,1 +1,1 @@
-#include "libpict.h"
+#error "Header file moved to libpict.h"

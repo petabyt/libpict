@@ -38,6 +38,8 @@ PUB void ptp_verbose_log(char *fmt, ...);
 PUB void ptp_error_log(char *fmt, ...);
 /// @brief Client has no way out, crash the application
 PUB __attribute__ ((noreturn)) void ptp_panic(char *fmt, ...);
+/// @brief Update UI progress on download progress
+void ptp_report_read_progress(unsigned int size);
 
 /// @brief Library errors, not PTP return codes
 enum PtpGeneralError {
