@@ -30,7 +30,7 @@ set(PICT_CORE
     src/transport.c
 )
 if(NOT PTP_NO_TCP)
-    list(APPEND PICT_CORE src/ip2.c)
+    list(APPEND PICT_CORE src/ip.c)
 else()
     list(APPEND PICT_CORE src/no_ip.c)
 endif()

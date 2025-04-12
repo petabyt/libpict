@@ -1,6 +1,5 @@
-// POSIX PTP/IP implementation
-// Copyright 2023 by Daniel C (https://github.com/petabyt/libpict)
-
+// Windows and POSIX compatible PTP/IP backend
+// Copyright 2024 by Daniel C (https://github.com/petabyt/libpict)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,60 +19,39 @@
 #endif
 #include <libpict.h>
 
-#define DEBUG_BYTES() for (int i = 0; i < result; i++) { printf("%02X ", ((uint8_t *)data)[i]); } puts("");
+/// @brief Report progress to the client so it can move a progress bar
+__attribute__((weak))
+void ptp_report_read_progress(unsigned int size) {}
+
+/// @brief Optional function to assign additional properties to a socket after it's created
+/// such as binding to a network, etc
+__attribute__((weak))
+int ptpip_set_extra_socket_settings(struct PtpRuntime *r, int sockfd) {return 0;}
+
+// Dump all communication to a file
+//#define DUMP_COMM
 
 struct PtpIpBackend {
 	int fd;
 	int evfd;
+	int vidfd; // Some cameras have a mjpeg stream
+	FILE *dump;
 };
-
-#ifdef WIN32
-static int set_nonblocking_io(int fd, int enable) {
-	// ...
-	return 0;
-}
-
-static void set_receive_timeout(int fd, int sec) {
-	DWORD x = sec * 1000;
-	int rc = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (void *)&x, sizeof(x));
-	if (rc < 0) {
-		ptp_verbose_log("Failed to set rcvtimeo: %d", errno);
-	}
-}
-
-static int get_sock_error(int fd) {
-	int so_error = 0;
-	socklen_t len = sizeof(so_error);
-	if (getsockopt(fd, SOL_SOCKET, SO_ERROR, (void *)&so_error, &len) < 0) {
-		close(fd);
-		ptp_verbose_log("Failed to get socket options\n");
-		return -1;
-	}
-	return so_error;
-}
-#else
-static int get_sock_error(int fd) {
-	int so_error = 0;
-	socklen_t len = sizeof(so_error);
-	if (getsockopt(fd, SOL_SOCKET, SO_ERROR, &so_error, &len) < 0) {
-		close(fd);
-		ptp_verbose_log("Failed to get socket options\n");
-		return -1;
-	}
-	return so_error;
-}
 
 static void set_receive_timeout(int fd, int sec) {
 	struct timeval tv_rcv;
-	tv_rcv.tv_sec = 5;
+	tv_rcv.tv_sec = sec;
 	tv_rcv.tv_usec = 0;
-	int rc = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv_rcv, sizeof(tv_rcv));
+	int rc = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (const void *)&tv_rcv, sizeof(tv_rcv));
 	if (rc < 0) {
 		ptp_verbose_log("Failed to set rcvtimeo: %d", errno);
 	}
 }
 
 static int set_nonblocking_io(int fd, int enable) {
+#ifdef WIN32
+	return 0;
+#else
 	int flags = fcntl(fd, F_GETFL, 0);
 	if (flags == -1)
 		return -1;
@@ -85,31 +63,32 @@ static int set_nonblocking_io(int fd, int enable) {
 	}
 
 	return fcntl(fd, F_SETFL, flags);
-}
 #endif
+}
 
-int ptpip_new_timeout_socket(const char *addr, int port) {
+static int create_socket(struct PtpRuntime *r, const char *addr, int port, long timeout_sec) {
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd <= 0) {
+		ptp_verbose_log("Bad socket fd: %d %d\n", sockfd, errno);
+		return -1;
+	}
+
+	int rc = ptpip_set_extra_socket_settings(r, sockfd);
+	if (rc) {
+		ptp_verbose_log("Error binding to wifi network: %d\n", errno);
+		return rc;
+	}
 
 	int yes = 1;
-	setsockopt(
-		sockfd,
-		IPPROTO_TCP,
-		TCP_NODELAY,
-		(char *)&yes,
-		sizeof(int)
-	);
-	setsockopt(
-		sockfd,
-		IPPROTO_TCP,
-		SO_KEEPALIVE,
-		(char *)&yes,
-		sizeof(int)
-	);
+	// PTP/IP says that TCP_NODELAY must be set to true
+	rc = setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, (const void *)&yes, sizeof(int));
+	if (rc < 0) {
+		ptp_verbose_log("Failed to set nodelay: %d\n", errno);
+	}
 
-	if (sockfd < 0) {
-		ptp_verbose_log("Failed to create socket\n");
-		return -1;
+	rc = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *)&yes, sizeof(int));
+	if (rc < 0) {
+		ptp_verbose_log("Failed to set reuseaddr: %d\n", errno);
 	}
 
 	if (set_nonblocking_io(sockfd, 1) < 0) {
@@ -117,6 +96,8 @@ int ptpip_new_timeout_socket(const char *addr, int port) {
 		ptp_verbose_log("Failed to set non-blocking IO\n");
 		return -1;
 	}
+
+	ptp_verbose_log("Connecting to %s:%d", addr, port);
 
 	struct sockaddr_in sa;
 	memset(&sa, 0, sizeof(sa));
@@ -136,42 +117,70 @@ int ptpip_new_timeout_socket(const char *addr, int port) {
 		}
 	}
 
-	// timeout handling
 	fd_set fdset;
 	FD_ZERO(&fdset);
 	FD_SET(sockfd, &fdset);
 	struct timeval tv;
-	tv.tv_sec = 1;
+	tv.tv_sec = timeout_sec;
 	tv.tv_usec = 0;
 
-	if (select(sockfd + 1, NULL, &fdset, NULL, &tv) == 1) {
-		int so_error = get_sock_error(sockfd);
+	set_receive_timeout(sockfd, 5);
 
-		if (so_error == 0) {
-			ptp_verbose_log("Connection established %s:%d (%d)\n", addr, port, sockfd);
-			set_nonblocking_io(sockfd, 0); // ????
-			return sockfd;
+	// Wait for socket event
+	if (errno == EINPROGRESS) {
+		rc = select(sockfd + 1, NULL, &fdset, NULL, &tv);
+		if (rc != 1) {
+			ptp_verbose_log("select() returned 0 fds: %d\n", errno);
+			return -1;
 		}
 	}
 
+	int so_error = 0;
+	socklen_t len = sizeof(so_error);
+	if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, (void *)&so_error, &len) < 0) {
+		close(sockfd);
+		ptp_verbose_log("Failed to get socket options\n");
+		return -1;
+	}
+
+	if (so_error == 0) {
+		ptp_verbose_log("Connection established %s:%d (%d)\n", addr, port, sockfd);
+		set_nonblocking_io(sockfd, 0);
+		return sockfd;
+	}
+	if (so_error == 111) {
+		ptp_verbose_log("Connection refused - probably invalid IP\n");
+	} else {
+		ptp_verbose_log("Failed to connect: %d\n", so_error);
+	}
+
 	close(sockfd);
-	ptp_verbose_log("Failed to connect\n");
 	return -1;
 }
 
 static struct PtpIpBackend *init_comm(struct PtpRuntime *r) {
 	if (r->comm_backend == NULL) {
-		r->comm_backend = calloc(1, sizeof(struct PtpIpBackend)); 
+		r->comm_backend = calloc(1, sizeof(struct PtpIpBackend));
+
+#ifdef DUMP_COMM
+#warning "Dumping all comms"
+		char filepath[256];
+		app_get_file_path(filepath, "dump3.jpeg");
+		((struct PtpIpBackend *)r->comm_backend)->dump = fopen(filepath, "wb");
+		if (((struct PtpIpBackend *)r->comm_backend)->dump == NULL) abort();
+#endif
 	}
 
 	// Max packet size for TCP
-	r->max_packet_size = 65535;
+	r->max_packet_size = 0xffff;
 
 	return (struct PtpIpBackend *)r->comm_backend;
 }
 
 int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tmout) {
-	int fd = ptpip_new_timeout_socket(addr, port);
+	ptp_verbose_log("Extra tmout: %d\n", extra_tmout);
+
+	int fd = create_socket(r, addr, port, 2 + extra_tmout);
 
 	struct PtpIpBackend *b = init_comm(r);
 
@@ -187,10 +196,8 @@ int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tm
 }
 
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
-	int fd = ptpip_new_timeout_socket(addr, port);
-
+	int fd = create_socket(r, addr, port, 3);
 	struct PtpIpBackend *b = init_comm(r);
-
 	if (fd > 0) {
 		b->evfd = fd;
 		return 0;
@@ -200,17 +207,41 @@ int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
 	}
 }
 
+int ptpip_connect_video(struct PtpRuntime *r, const char *addr, int port) {
+	int fd = create_socket(r, addr, port, 3);
+	struct PtpIpBackend *b = init_comm(r);
+	if (fd > 0) {
+		b->vidfd = fd;
+		return 0;
+	} else {
+		b->vidfd = 0;
+		return fd;
+	}
+}
+
 int ptpip_close(struct PtpRuntime *r) {
 	struct PtpIpBackend *b = init_comm(r);
 	if (b->fd) close(b->fd);
+	b->fd = 0;
 	if (b->evfd) close(b->evfd);
+	b->evfd = 0;
+	if (b->vidfd) close(b->vidfd);
+	b->vidfd = 0;
 	return 0;
 }
 
 int ptpip_cmd_write(struct PtpRuntime *r, void *data, int size) {
-	if (r->io_kill_switch) return -1;
-	struct PtpIpBackend *b = init_comm(r); // calling this seems slow?
-	int result = write(b->fd, data, size);
+	if (r->io_kill_switch) {
+		ptp_verbose_log("WARN: kill switch on\n");
+		return -1;
+	}
+	struct PtpIpBackend *b = init_comm(r);
+
+#ifdef DUMP_COMM
+	fwrite(data, 1, size, b->dump);
+#endif
+
+	int result = (int)send(b->fd, data, size, 0);
 	if (result < 0) {
 		return -1;
 	} else {
@@ -220,11 +251,23 @@ int ptpip_cmd_write(struct PtpRuntime *r, void *data, int size) {
 
 int ptpip_cmd_read(struct PtpRuntime *r, void *data, int size) {
 	if (r->io_kill_switch) return -1;
-	struct PtpIpBackend *b = init_comm(r);
-	int result = read(b->fd, data, size);
+	struct PtpIpBackend *b = init_comm(r); // slow
+	int result = (int)read(b->fd, data, size);
+
+#ifdef DUMP_COMM
+	fwrite(data, 1, result, b->dump);
+#endif
+
 	if (result < 0) {
+		// To match behavior of USB backends, return 0 bytes when there are no bytes available
+		if (errno == 11) {
+			ptp_verbose_log("resource temp unavailable");
+			return 0;
+		}
+		ptp_verbose_log("read(): %d %d\n", result, errno);
 		return -1;
 	} else {
+		ptp_report_read_progress(result);
 		return result;
 	}
 }
@@ -232,7 +275,7 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, int size) {
 int ptpip_event_send(struct PtpRuntime *r, void *data, int size) {
 	if (r->io_kill_switch) return -1;
 	struct PtpIpBackend *b = init_comm(r);
-	int result = write(b->evfd, data, size);
+	int result = (int)write(b->evfd, data, size);
 	if (result < 0) {
 		return -1;
 	} else {
@@ -243,7 +286,7 @@ int ptpip_event_send(struct PtpRuntime *r, void *data, int size) {
 int ptpip_event_read(struct PtpRuntime *r, void *data, int size) {
 	if (r->io_kill_switch) return -1;
 	struct PtpIpBackend *b = init_comm(r);
-	int result = read(b->evfd, data, size);
+	int result = (int)read(b->evfd, data, size);
 	if (result < 0) {
 		return -1;
 	} else {
