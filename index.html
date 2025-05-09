@@ -108,49 +108,23 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
 <p>This is a Picture Transfer Protocol (PTP) library written in C. <br  />
- <sub>Formerly 'camlib', renamed to prevent confusion between <a href="http://www.gphoto.org/doc/manual/api-camlib.html">gPhoto's camlib API</a></sub></p>
+</p>
 <p><a href="https://danielc.dev/libpict/structPtpRuntime.html">Documentation</a></p>
 <p><em>(This library doesn't have a stable release yet, use at your own risk)</em></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-Roadmap</h1>
-<ul class="check">
-<li class="checked">Complete working implemention of PTP as per ISO 15740</li>
-</ul>
-<ul class="check">
-<li class="checked">Implement PTP/IP</li>
-</ul>
-<ul class="check">
-<li class="checked">Tested and working on Linux, MacOS, Windows, Android, and iOS</li>
-</ul>
-<ul class="check">
-<li class="checked">Work natively on Windows witout libusb (<a href="https://github.com/petabyt/libwpd">libwpd</a>)</li>
-</ul>
-<ul class="check">
-<li class="checked">Fcuntions to convert most data structures to JSON</li>
-</ul>
-<ul class="check">
-<li class="checked">Implement most EOS/Canon features</li>
-</ul>
-<ul class="check">
-<li class="checked">Optional lua bindings</li>
-</ul>
-<ul class="check">
-<li class="checked">Thread safety</li>
-</ul>
-<ul class="check">
-<li class="checked">CI/Regression testing (vcam)</li>
-</ul>
-<ul class="check">
-<li class="checked">Fujifilm support: Available <a href="https://github.com/petabyt/fudge">here as libfudge</a></li>
+Features</h1>
+<ul>
+<li>Complete working implemention of PTP as per ISO 15740</li>
+<li>Working PTP/IP implementation (tested on Windows/Linux/Mac/Android/iOS)</li>
+<li>LibUSB and <a href="https://github.com/petabyt/libwpd">libwpd</a> USB backends</li>
+<li>APIs to convert most PTP data structures to JSON</li>
+<li>Implements basic EOS/Canon vendor functionality</li>
+<li>Lua bindings</li>
+<li>Thread safe</li>
+<li>Uses a single in/out buffer (no memory allocations between operations)</li>
+<li>Fujifilm support: Available <a href="https://github.com/petabyt/fudge">here as libfudge</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md2"></a>
-Design</h1>
-<ul>
-<li>Thread-safe</li>
-<li>No macros</li>
-<li>Uses a single in/out buffer (no memory allocations between operations)</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
 Sample</h1>
 <p>Get device info: </p><div class="fragment"><div class="line">#include &lt;libpict.h&gt;</div>
 <div class="line"> </div>
@@ -202,7 +176,7 @@ Sample</h1>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">free(arr);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md3"></a>
 License</h1>
 <p>Licensed under the Apache License 2.0. <br  />
  lua-cjson: <a href="http://tools.ietf.org/html/rfc4627">http://tools.ietf.org/html/rfc4627</a> (MIT License) </p>

@@ -28,14 +28,14 @@ var NAVTREE =
     [ "libpict", "index.html", "index" ],
     [ "API", "topics.html", "topics" ],
     [ "Magic Lantern PTP Ext", "md_docs_2ml.html", [
-      [ "First Parameter", "md_docs_2ml.html#autotoc_md6", null ],
-      [ "ML_GetExtVersion", "md_docs_2ml.html#autotoc_md7", null ],
-      [ "ML_GetCamInfo", "md_docs_2ml.html#autotoc_md8", null ],
-      [ "ML_SendFileInfo", "md_docs_2ml.html#autotoc_md9", null ],
-      [ "ML_UploadFile", "md_docs_2ml.html#autotoc_md10", null ],
-      [ "ML_GetLiveviewData", "md_docs_2ml.html#autotoc_md11", null ],
-      [ "ML_GetMenuBmpData", "md_docs_2ml.html#autotoc_md12", null ],
-      [ "ML_GetBmpSpecs", "md_docs_2ml.html#autotoc_md13", null ]
+      [ "First Parameter", "md_docs_2ml.html#autotoc_md5", null ],
+      [ "ML_GetExtVersion", "md_docs_2ml.html#autotoc_md6", null ],
+      [ "ML_GetCamInfo", "md_docs_2ml.html#autotoc_md7", null ],
+      [ "ML_SendFileInfo", "md_docs_2ml.html#autotoc_md8", null ],
+      [ "ML_UploadFile", "md_docs_2ml.html#autotoc_md9", null ],
+      [ "ML_GetLiveviewData", "md_docs_2ml.html#autotoc_md10", null ],
+      [ "ML_GetMenuBmpData", "md_docs_2ml.html#autotoc_md11", null ],
+      [ "ML_GetBmpSpecs", "md_docs_2ml.html#autotoc_md12", null ]
     ] ],
     [ "Licence", "md_docs_2ml.html", null ],
     [ "File List", "files.html", "files" ]
