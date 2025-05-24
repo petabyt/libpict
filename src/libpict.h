@@ -131,7 +131,10 @@ struct PtpRuntime {
 	/// @brief Global buffer for data reading and writing
 	/// @note This buffer is reallocated during runtime to grow as needed
     uint8_t *data;
+	/// @brief Size of data in bytes
     unsigned int data_length;
+	/// @brief Size of valid PTP data in data in bytes
+	unsigned int data_filled_length;
 
 	/// @note Max size of a USB bulk transfer or max TCP packet size
 	/// @todo need to have a max packet size for both IN and OUT

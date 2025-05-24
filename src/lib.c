@@ -28,6 +28,7 @@ void ptp_init(struct PtpRuntime *r) {
 
 	r->data = malloc(PTP_DEFAULT_SIZE);
 	r->data_length = PTP_DEFAULT_SIZE;
+	r->data_filled_length = 0;
 
 	r->avail = calloc(1, sizeof(struct PtpPropAvail));
 

@@ -25,6 +25,7 @@ int ptp_send_packet(struct PtpRuntime *r, unsigned int length) {
 
 		if (rc < 0) {
 			ptp_verbose_log("%s: %d\n", __func__, rc);
+			r->data_filled_length = 0;
 			return PTP_IO_ERR;
 		}
 
@@ -34,6 +35,7 @@ int ptp_send_packet(struct PtpRuntime *r, unsigned int length) {
 			ptp_panic("BUG: Sent too many bytes (?)");
 		} else if (sent == length) {
 			ptp_verbose_log("%s: Sent %d/%d bytes\n", __func__, sent, length);
+			r->data_filled_length = sent;
 			return (int)sent;
 		}
 	}
@@ -101,6 +103,7 @@ int ptpip_read_packet(struct PtpRuntime *r, int of) {
 }
 
 int ptpip_receive_bulk_packets(struct PtpRuntime *r) {
+	r->data_filled_length = 0;
 	int rc = ptpip_read_packet(r, 0);
 	if (rc < 0) {
 		return rc;
@@ -113,6 +116,7 @@ int ptpip_receive_bulk_packets(struct PtpRuntime *r) {
 	if (h->type == PTPIP_DATA_PACKET_START) {
 		rc = ptpip_read_packet(r, pk1_of);
 		if (rc < 0) return rc;
+		r->data_filled_length += rc;
 		h = (struct PtpIpHeader *)(r->data + pk1_of);
 		if (h->type != PTPIP_DATA_PACKET_END) {
 			ptp_error_log("Didn't receive an END DATA packet (%d)\n", h->type);
@@ -123,6 +127,7 @@ int ptpip_receive_bulk_packets(struct PtpRuntime *r) {
 
 		rc = ptpip_read_packet(r, pk2_of);
 		if (rc < 0) return rc;
+		r->data_filled_length += rc;
 		h = (struct PtpIpHeader *)(r->data + pk2_of);
 		if (h->type != PTPIP_COMMAND_RESPONSE) {
 			ptp_error_log("Non response packet after data end packet (%d)\n", h->type);
@@ -148,6 +153,7 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 	while (1) {
 		if (r->data_length < (read + r->max_packet_size)) {
 			rc = ptp_buffer_resize(r, read + r->max_packet_size);
+			r->data_filled_length = read;
 			if (rc) return rc;
 		}
 
@@ -172,12 +178,14 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 			continue;
 		}
 		if (rc < 0) {
+			r->data_filled_length = read;
 			return PTP_IO_ERR;
 		}
 		read += rc;
 
 		if (r->wait_for_response == 0 && read_attempts) {
 			ptp_error_log("Too many attempts, didn't get enough bytes\n");
+			r->data_filled_length = read;
 			return PTP_COMMAND_IGNORED;
 		}
 
@@ -206,6 +214,7 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 			ptp_read_u16(&c->type, &type);
 			if (type != PTP_PACKET_TYPE_RESPONSE) {
 				ptp_error_log("Expected response packet but got %d\n", type);
+				r->data_filled_length = read;
 				return PTP_IO_ERR;
 			}
 			if (read == data_length + length) {
@@ -216,11 +225,12 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 				// In that case, the data packet length will be 0xffffffff and the size of the payload returned
 				// will be the CompressedSize field in PtpObjectInfo for that file.
 				ptp_error_log("Read too much data %d\n", read);
+				r->data_filled_length = read;
 				return PTP_IO_ERR;
 			}
 		}
 	}
-
+	r->data_filled_length = read;
 	return 0;
 }
 
@@ -235,7 +245,7 @@ int ptp_receive_all_packets(struct PtpRuntime *r) {
 	}
 
 	if (r->comm_dump != NULL) {
-		//fwrite(r->data, 1, r->data_length, r->comm_dump);
+		fwrite(r->data, 1, r->data_filled_length, r->comm_dump);
 	}
 
 	return rc;
