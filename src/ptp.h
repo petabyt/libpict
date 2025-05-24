@@ -665,6 +665,14 @@ struct PtpIpInitPacket {
 #define PTP_RangeForm	0x1
 #define PTP_EnumerationForm	0x2
 
+#define PTP_WB_Undefined 0x0
+#define PTP_WB_Manual 0x1
+#define PTP_WB_Automatic 0x2
+#define PTP_WB_Daylight 0x4
+#define PTP_WB_Florescent 0x5
+#define PTP_WB_Tungsten 0x5
+#define PTP_WB_Flash 0x7
+
 // Used for socket initialization
 #define PTPIP_INIT_COMMAND_REQ	0x1
 #define PTPIP_INIT_COMMAND_ACK	0x2

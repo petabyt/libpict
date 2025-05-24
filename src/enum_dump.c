@@ -533,6 +533,13 @@ struct PtpEnum ptp_enums[] = {
 {PTP_ENUM, 0, "PTP_TC_STRING", 0xFFFF},
 {PTP_ENUM, 0, "PTP_RangeForm", 0x1},
 {PTP_ENUM, 0, "PTP_EnumerationForm", 0x2},
+{PTP_ENUM, 0, "PTP_WB_Undefined", 0x0},
+{PTP_ENUM, 0, "PTP_WB_Manual", 0x1},
+{PTP_ENUM, 0, "PTP_WB_Automatic", 0x2},
+{PTP_ENUM, 0, "PTP_WB_Daylight", 0x4},
+{PTP_ENUM, 0, "PTP_WB_Florescent", 0x5},
+{PTP_ENUM, 0, "PTP_WB_Tungsten", 0x5},
+{PTP_ENUM, 0, "PTP_WB_Flash", 0x7},
 {PTP_ENUM, 0, "PTPIP_INIT_COMMAND_REQ", 0x1},
 {PTP_ENUM, 0, "PTPIP_INIT_COMMAND_ACK", 0x2},
 {PTP_ENUM, 0, "PTPIP_INIT_EVENT_REQ", 0x3},
@@ -562,4 +569,4 @@ struct PtpEnum ptp_enums[] = {
 {PTP_ENUM, 0, "USB_RECIP_ENDPOINT", 0x02},
 {PTP_ENUM, 0, "USB_TYPE_CLASS", 0x20},
 
-};int ptp_enums_length = 560;
+};int ptp_enums_length = 567;
