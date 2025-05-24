@@ -80,7 +80,7 @@ endif()
 
 add_library(libpict STATIC ${PICT_CORE} ${PLATFORM_LIB_FILES})
 target_compile_options(libpict
-    PRIVATE -Wall -Wshadow -Wcast-qual -Wpedantic -Werror=incompatible-pointer-types -Werror=deprecated-declarations -Wstrict-aliasing=3 -Wno-narrowing -DVERBOSE
+    PRIVATE -Wall -Wshadow -Wcast-qual -Wpedantic -Werror=incompatible-pointer-types -Werror=deprecated-declarations -Wstrict-aliasing=3 -Werror=narrowing -DVERBOSE
 )
 target_include_directories(libpict PUBLIC ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(libpict PUBLIC ${PICT_LIBS})

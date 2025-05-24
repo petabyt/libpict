@@ -1,5 +1,5 @@
 // Advanced developer opcodes for Canon EOS cameras - this is not meant to be compiled into
-// the library in most cases - but this file is available as an extension if you need it
+// the library in most cases - but this file is available as an extension if you need it.
 // These commands can easily brick your camera (you can literally delete the firmware). Be careful please.
 // Copyright 2023 by Daniel C (https://github.com/petabyt/libpict)
 
@@ -183,7 +183,7 @@ static struct Tokens *lex_evproc_command(char string[]) {
 	return toks;
 }
 
-char *canon_evproc_pack(int *out_length, char *string) {
+void *canon_evproc_pack(int *out_length, char *string) {
 	int length = 0;
 	// Allocate some memory for the footer, we will use this later
 	char *footer = malloc(500);
@@ -202,7 +202,7 @@ char *canon_evproc_pack(int *out_length, char *string) {
 		return NULL;
 	}
 
-	// Add in initial parameter
+	// Add in initial parameter as a token
 	if (toks->t[0].type == TOK_TEXT) {
 		int len = strlen(toks->t[0].string);
 		memcpy(data, toks->t[0].string, len);
@@ -320,7 +320,7 @@ static int ptp_eos_evproc_run_payload(struct PtpRuntime *r, void **buf, char *fm
 	return rc;
 }
 
-int ptp_eos_fa_get_build_version(struct PtpRuntime *r, char *buffer, int max) {
+int ptp_eos_fa_get_build_version(struct PtpRuntime *r, char *buffer, unsigned int max) {
 	void *payload = NULL;
 
 	int rc = ptp_eos_evproc_run_payload(r, &payload, "FA_GetProperty %d %d", 0x2000005, 0);

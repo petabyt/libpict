@@ -27,15 +27,15 @@ static int yuv2rgb_gu[256];
 static int yuv2rgb_gv[256];
 static int yuv2rgb_bu[256];
 
-static void precompute_yuv2rgb() {
+static void precompute_yuv2rgb(void) {
     for (int u = 0; u < 256; u++) {
-        int8_t U = u;
+        int8_t U = (int8_t)u;
         yuv2rgb_gu[u] = (-352 * U) / 1024;
         yuv2rgb_bu[u] = (1812 * U) / 1024;
     }
 
     for (int v = 0; v < 256; v++) {
-        int8_t V = v;
+        int8_t V = (int8_t)v;
         yuv2rgb_rv[v] = (1437 * V) / 1024;
         yuv2rgb_gv[v] = (-731 * V) / 1024;
     }
@@ -165,7 +165,7 @@ int ptp_chdk_upload_file(struct PtpRuntime *r, char *input, char *dest) {
 	cmd.param_length = 1;
 	cmd.params[0] = PTP_CHDK_UploadFile;
 
-	int size_all = 0;
+	unsigned int size_all = 0;
 	char *data = ptp_pack_chdk_upload_file(r, input, dest, &size_all);
 	if (data == NULL) {
 		return PTP_RUNTIME_ERR;

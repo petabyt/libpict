@@ -310,7 +310,7 @@ int ptp_device_reset(struct PtpRuntime *r) {
 	return 0;
 }
 
-int ptp_cmd_write(struct PtpRuntime *r, void *to, int length) {
+int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length) {
 	const struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
 
 	if (backend == NULL || r->io_kill_switch) {
@@ -321,7 +321,7 @@ int ptp_cmd_write(struct PtpRuntime *r, void *to, int length) {
 	int rc = libusb_bulk_transfer(
 		backend->handle,
 		backend->endpoint_out,
-		(unsigned char *)to, length, &transferred, PTP_TIMEOUT);
+		(unsigned char *)to, (int)length, &transferred, PTP_TIMEOUT);
 	if (rc) {
 		perror("libusb_bulk_transfer write");
 		return -1;
@@ -330,7 +330,7 @@ int ptp_cmd_write(struct PtpRuntime *r, void *to, int length) {
 	return transferred;
 }
 
-int ptp_cmd_read(struct PtpRuntime *r, void *to, int length) {
+int ptp_cmd_read(struct PtpRuntime *r, void *to, unsigned int length) {
 	const struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
 
 	if (backend == NULL || r->io_kill_switch) return -1;
@@ -338,7 +338,7 @@ int ptp_cmd_read(struct PtpRuntime *r, void *to, int length) {
 	int rc = libusb_bulk_transfer(
 		backend->handle,
 		backend->endpoint_in,
-		(unsigned char *)to, length, &transferred, PTP_TIMEOUT);
+		(unsigned char *)to, (int)length, &transferred, PTP_TIMEOUT);
 	if (rc) {
 		perror("libusb_bulk_transfer read");
 		return -1;
@@ -347,14 +347,14 @@ int ptp_cmd_read(struct PtpRuntime *r, void *to, int length) {
 	return transferred;
 }
 
-int ptp_read_int(struct PtpRuntime *r, void *to, int length) {
+int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length) {
 	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
 	if (backend == NULL || r->io_kill_switch) return -1;
 	int transferred = 0;
 	int rc = libusb_bulk_transfer(
 		backend->handle,
 		backend->endpoint_int,
-		(unsigned char *)to, length, &transferred, 1000);
+		(unsigned char *)to, (int)length, &transferred, 1000);
 	if (rc == LIBUSB_ERROR_NO_DEVICE) {
 		return PTP_IO_ERR;
 	} else if (rc == LIBUSB_ERROR_TIMEOUT) {

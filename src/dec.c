@@ -75,7 +75,7 @@ int ptp_dump_packet(struct Context *ctx, unsigned long int file_of, const uint8_
 	}
 
 	int type = PTP_OC;
-	struct PtpBulkContainer *c = (struct PtpBulkContainer *)bytes;
+	const struct PtpBulkContainer *c = (const struct PtpBulkContainer *)bytes;
 
 	char *newline = "\n";
 	if (ctx->transaction == -1) newline = "";

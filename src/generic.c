@@ -113,7 +113,7 @@ int ptp_events_json(struct PtpRuntime *r, char *buffer, int max) {
 	return 0;
 }
 
-int ptp_get_all_known(struct PtpRuntime *r, struct PtpGenericEvent **s, int *length) {
+int ptp_get_all_known(struct PtpRuntime *r, struct PtpGenericEvent **s, unsigned int *length) {
 	uint16_t *props = r->di->props_supported;
 	int plength = r->di->props_supported_length;
 	(*length) = plength;

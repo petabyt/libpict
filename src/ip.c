@@ -230,7 +230,7 @@ int ptpip_close(struct PtpRuntime *r) {
 	return 0;
 }
 
-int ptpip_cmd_write(struct PtpRuntime *r, void *data, int size) {
+int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) {
 		ptp_verbose_log("WARN: kill switch on\n");
 		return -1;
@@ -249,7 +249,7 @@ int ptpip_cmd_write(struct PtpRuntime *r, void *data, int size) {
 	}
 }
 
-int ptpip_cmd_read(struct PtpRuntime *r, void *data, int size) {
+int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
 	struct PtpIpBackend *b = init_comm(r); // slow
 	int result = (int)read(b->fd, data, size);
@@ -272,7 +272,7 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, int size) {
 	}
 }
 
-int ptpip_event_send(struct PtpRuntime *r, void *data, int size) {
+int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
 	struct PtpIpBackend *b = init_comm(r);
 	int result = (int)write(b->evfd, data, size);
@@ -283,7 +283,7 @@ int ptpip_event_send(struct PtpRuntime *r, void *data, int size) {
 	}
 }
 
-int ptpip_event_read(struct PtpRuntime *r, void *data, int size) {
+int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
 	struct PtpIpBackend *b = init_comm(r);
 	int result = (int)read(b->evfd, data, size);

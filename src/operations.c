@@ -186,7 +186,7 @@ int ptp_get_storage_info(struct PtpRuntime *r, int id, struct PtpStorageInfo *si
 	return rc;
 }
 
-int ptp_get_partial_object(struct PtpRuntime *r, uint32_t handle, int offset, int max) {
+int ptp_get_partial_object(struct PtpRuntime *r, uint32_t handle, unsigned int offset, unsigned int max) {
 	struct PtpCommand cmd;
 	cmd.code = PTP_OC_GetPartialObject;
 	cmd.param_length = 3;
@@ -224,7 +224,7 @@ int ptp_send_object_info(struct PtpRuntime *r, int storage_id, int handle, struc
 	return ptp_send_data(r, &cmd, temp, length);
 }
 
-int ptp_send_object(struct PtpRuntime *r, const void *data, int data_length) {
+int ptp_send_object(struct PtpRuntime *r, const void *data, unsigned int data_length) {
 	struct PtpCommand cmd;
 	cmd.code = PTP_OC_SendObject;
 	cmd.param_length = 0;
@@ -330,7 +330,7 @@ int ptp_set_prop_value16(struct PtpRuntime *r, int code, uint16_t value) {
 	return ptp_send_data(r, &cmd, &value, 2);
 }
 
-int ptp_set_prop_value_data(struct PtpRuntime *r, int code, void *data, int length) {
+int ptp_set_prop_value_data(struct PtpRuntime *r, int code, void *data, unsigned int length) {
 	struct PtpCommand cmd;
 	cmd.code = PTP_OC_SetDevicePropValue;
 	cmd.param_length = 1;
@@ -360,7 +360,7 @@ int ptp_get_object(struct PtpRuntime *r, int handle) {
 }
 
 int ptp_download_object(struct PtpRuntime *r, int handle, FILE *f, size_t max) {
-	int read = 0;
+	unsigned int read = 0;
 	while (1) {
 		ptp_mutex_lock(r);
 		int x = ptp_get_partial_object(r, handle, read, max);

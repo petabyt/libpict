@@ -8,10 +8,9 @@
 #include <libpict.h>
 
 // Custom snprint with offset
-static int osnprintf(char *str, int cur, int size, const char *format, ...) {
+static int osnprintf(char *str, int cur, unsigned int size, const char *format, ...) {
 	if (size - cur < 0) {
 		ptp_panic("osnprintf overflow %d/%d", cur, size);
-		return 0;
 	}
 
 	int r;
@@ -339,7 +338,7 @@ int ptp_parse_prop_desc(struct PtpRuntime *r, struct PtpPropDesc *oi) {
 	return 0;
 }
 
-int ptp_prop_desc_json(const struct PtpPropDesc *pd, char *buffer, int max) {
+int ptp_prop_desc_json(const struct PtpPropDesc *pd, char *buffer, unsigned int max) {
 	int curr = osnprintf(buffer, 0, max, "{\n");
 	curr += osnprintf(buffer, curr, max, "\"code\": %d,\n", pd->code);
 	curr += osnprintf(buffer, curr, max, "\"type\": %d,\n", pd->data_type);
@@ -441,7 +440,7 @@ int ptp_parse_storage_info(struct PtpRuntime *r, struct PtpStorageInfo *si) {
 	return 0;
 }
 
-int ptp_pack_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi, uint8_t *buf, int max) {
+int ptp_pack_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi, uint8_t *buf, unsigned int max) {
 	if (1024 > max) {
 		return 0;
 	}
@@ -469,7 +468,7 @@ int ptp_pack_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi, uint8_t
 	return of;
 }
 
-void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, int *length) {
+void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, unsigned int *length) {
 	FILE *f = fopen(in, "rb");
 	if (f == NULL) {
 		ptp_verbose_log("Unable to open %s\n", in);
@@ -480,7 +479,7 @@ void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, int *
     long file_size = ftell(f);
     fseek(f, 0, SEEK_SET);
 
-	int size_all = 4 + strlen(out) + 1 + file_size;
+	unsigned int size_all = 4 + strlen(out) + 1 + file_size;
 	*length = size_all;
 	uint8_t *data = malloc(size_all);
 	if (data == NULL) return NULL;
@@ -522,7 +521,7 @@ int ptp_parse_device_info(struct PtpRuntime *r, struct PtpDeviceInfo *di) {
 	return 0;
 }
 
-int ptp_device_info_json(const struct PtpDeviceInfo *di, char *buffer, int max) {
+int ptp_device_info_json(const struct PtpDeviceInfo *di, char *buffer, unsigned int max) {
 	int curr = osnprintf(buffer, 0, max, "{\n    \"opsSupported\": [");
 	for (int i = 0; i < di->ops_supported_length; i++) {
 		char *end = ", ";
@@ -582,7 +581,7 @@ static const char *eval_protection(int code) {
 	}
 }
 
-int ptp_object_info_json(const struct PtpObjectInfo *so, char *buffer, int max) {
+int ptp_object_info_json(const struct PtpObjectInfo *so, char *buffer, unsigned int max) {
 	int curr = sprintf(buffer, "{");
 	curr += osnprintf(buffer, curr, max, "\"storage_id\": %u,", so->storage_id);
 	curr += osnprintf(buffer, curr, max, "\"compressedSize\": %u,", so->compressed_size);
@@ -617,7 +616,7 @@ static const char *eval_storage_type(int id) {
 	}
 }
 
-int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, int max) {
+int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, unsigned int max) {
 	int len = osnprintf(buffer, 0, max, "{");
 	len += osnprintf(buffer, len, max, "\"storageType\": \"%s\",", eval_storage_type(so->storage_type));
 	len += osnprintf(buffer, len, max, "\"fsType\": %u,", so->fs_type);
@@ -628,13 +627,15 @@ int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, int max
 }
 
 int ptp_eos_prop_next(uint8_t *d, struct PtpGenericEvent *p) {
-	uint32_t code, value, tmp;
+	uint32_t code, value_u32, tmp;
+	int value;
 
 	int of = 0;
 	of += ptp_read_u32(d + of, &code);
-	of += ptp_read_u32(d + of, &value);
+	of += ptp_read_u32(d + of, &value_u32);
+	value = (int)value_u32;
 
-	const char *name = ptp_get_enum_all(code);
+	const char *name = ptp_get_enum_all((int)code);
 	const char *str_value = NULL;
 	switch (code) {
 	case PTP_DPC_EOS_Aperture:
@@ -773,7 +774,7 @@ int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
 			break;
 		case PTP_EC_EOS_InfoCheckComplete:
 		case PTP_DPC_EOS_FocusInfoEx:
-			cur->name = ptp_get_enum_all(type);
+			cur->name = ptp_get_enum_all((int)type);
 			break;
 		case PTP_EC_EOS_RequestObjectTransfer: {
 			uint32_t a, b;
@@ -781,12 +782,12 @@ int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
 			d += ptp_read_u32(d, &b);
 			cur->name = "request object transfer";
 			cur->code = a;
-			cur->value = b;
+			cur->value = (int)b;
 			} break;
 		case PTP_EC_EOS_ObjectAddedEx: {
 			struct PtpEOSObject *obj = (struct PtpEOSObject *)d;
 			cur->name = "new object";
-			cur->value = obj->a;
+			cur->value = (int)obj->a;
 			} break;
 		case PTP_EC_EOS_AvailListChanged: {
 			uint32_t code, dat_type, count;
@@ -794,12 +795,12 @@ int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
 			d += ptp_read_u32(d, &dat_type);
 			d += ptp_read_u32(d, &count);
 
-			int payload_size = (size - 20);
+			unsigned int payload_size = (size - 20);
 
 			// Make sure to not divide by zero :)
 			if (payload_size != 0 && count != 0) {
-				int memb_size = payload_size / count;
-				ptp_set_prop_avail_info(r, code, memb_size, count, d);
+				unsigned int memb_size = payload_size / count;
+				ptp_set_prop_avail_info(r, (int)code, memb_size, count, d);
 			}
 			} break;
 		}
@@ -811,7 +812,7 @@ int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
 	return length;
 }
 
-int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, int max) {
+int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max) {
 	struct PtpGenericEvent *events = NULL;
 
 	int length = ptp_eos_events(r, &events);

@@ -141,21 +141,21 @@ void ptpusb_free_device_list_entry(void *handle) {
 	
 }
 
-int ptp_cmd_write(struct PtpRuntime *r, void *to, int length) {
+int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length) {
 	if (r->io_kill_switch) return PTP_IO_ERR;
 	struct WpdStruct *wpd = (struct WpdStruct *)(r->comm_backend);
 	if (wpd == NULL) return PTP_IO_ERR;
 	return wpd_ptp_cmd_write(wpd, to, length);
 }
 
-int ptp_cmd_read(struct PtpRuntime *r, void *to, int length) {
+int ptp_cmd_read(struct PtpRuntime *r, void *to, unsigned int length) {
 	if (r->io_kill_switch) return PTP_IO_ERR;
 	struct WpdStruct *wpd = (struct WpdStruct *)(r->comm_backend);
 	if (wpd == NULL) return PTP_IO_ERR;
 	return wpd_ptp_cmd_read(wpd, to, length);
 }
 
-int ptp_read_int(struct PtpRuntime *r, void *to, int length) {
+int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length) {
 	return 0;
 }
 

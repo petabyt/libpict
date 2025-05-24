@@ -104,8 +104,8 @@ struct PtpPropAvail {
 	void *next;
 	void *prev;
 	int code;
-	int memb_size;
-	int memb_cnt;
+	unsigned int memb_size;
+	unsigned int memb_cnt;
 	void *data;
 };
 
@@ -122,27 +122,28 @@ struct PtpRuntime {
 	/// @note Is set to USB by default
 	uint8_t connection_type;
 
+	/// @brief Current transaction ID
 	/// @note The transaction ID and session ID is managed by the packet generator functions
 	int transaction;
+	/// @brief Current session ID
 	int session;
 
 	/// @brief Global buffer for data reading and writing
-	/// @note This is volatile - it will grow in size (pointer will change) when needed.
+	/// @note This buffer is reallocated during runtime to grow as needed
     uint8_t *data;
-    int data_length;
+    unsigned int data_length;
 
 	/// @note Max size of a USB bulk transfer or max TCP packet size
 	/// @todo need to have a max packet size for both IN and OUT
-	int max_packet_size;
+	unsigned int max_packet_size;
 
 	/// @brief Info about current connection, used to detect camera type, supported opodes, etc
 	/// @note Set by ptp_parse_device_info. This should be NULL when this struct is created.
 	struct PtpDeviceInfo *di;
-	//int device_type;
 
 	/// @brief For Windows compatibility, this is set to indicate lenth for a data packet
 	/// that will be sent after a command packet. Will be set to zero when ptp_send_packet is called.
-	int data_phase_length;
+	unsigned int data_phase_length;
 
 	/// @brief For session comm/io structures (holds backend instance pointers)
 	void *comm_backend;
@@ -165,6 +166,9 @@ struct PtpRuntime {
 	/// @note: Optional
 	struct PtpPropAvail *avail;
 
+	/// @brief If non-NULL, all reads/writes will be logged to this file
+	FILE *comm_dump;
+
 	// TODO: Fudge uses this, should be moved to userdata struct
 	void *oc;
 };
@@ -181,7 +185,7 @@ struct PtpGenericEvent {
 struct PtpCommand {
 	uint16_t code;
 	uint32_t params[5];
-	int param_length;
+	unsigned int param_length;
 };
 
 /// @brief Generic Struct for arrays
@@ -196,7 +200,7 @@ PUB int ptp_get_return_code(struct PtpRuntime *r);
 
 /// @brief Get number of parameters in packet in data buffer
 /// @note Not thread safe.
-PUB int ptp_get_param_length(struct PtpRuntime *r);
+PUB unsigned int ptp_get_param_length(struct PtpRuntime *r);
 
 /// @brief Get parameter at index i
 /// @note Not thread safe.
@@ -212,7 +216,7 @@ PUB uint8_t *ptp_get_payload(struct PtpRuntime *r);
 
 /// @brief Get length of payload returned by ptp_get_payload
 /// @note Not thread safe.
-PUB int ptp_get_payload_length(struct PtpRuntime *r);
+PUB unsigned int ptp_get_payload_length(struct PtpRuntime *r);
 
 /// @brief Allocate new PtpRuntime based on bitfield options - see PtpConnType
 PUB struct PtpRuntime *ptp_new(int options);
@@ -231,7 +235,7 @@ PUB void ptp_close(struct PtpRuntime *r);
 PUB int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd);
 
 /// @brief Send a command request to the device with a data phase (thread safe)
-PUB int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, int length);
+PUB int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, unsigned int length);
 
 /// @brief Try and get an event from the camera over int endpoint (USB-only)
 PUB int ptp_get_event(struct PtpRuntime *r, struct PtpEventContainer *ec);
@@ -313,21 +317,21 @@ inline static int ptp_read_u64(const void *buf, uint64_t *out) {
 }
 
 // Build a new PTP/IP or PTP/USB command packet in r->data
-int ptp_new_cmd_packet(struct PtpRuntime *r, const struct PtpCommand *cmd);
+unsigned int ptp_new_cmd_packet(struct PtpRuntime *r, const struct PtpCommand *cmd);
 
 // Only for PTP_USB or PTP_USB_IP use
-int ptpusb_new_data_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, int data_length);
+int ptpusb_new_data_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, unsigned int data_length);
 
 // Only use for PTP_IP
-int ptpip_data_start_packet(struct PtpRuntime *r, int data_length);
-int ptpip_data_end_packet(struct PtpRuntime *r, const void *data, int data_length);
+unsigned int ptpip_data_start_packet(struct PtpRuntime *r, unsigned int data_length);
+unsigned int ptpip_data_end_packet(struct PtpRuntime *r, const void *data, unsigned int data_length);
 
 // Used only by ptp_open_session
 __attribute__((deprecated))
 void ptp_update_transaction(struct PtpRuntime *r, int t);
 
 // Set avail info for prop
-void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, int memb_size, int cnt, void *data);
+void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_size, unsigned int cnt, void *data);
 
 __attribute__((deprecated))
 void *ptp_dup_payload(struct PtpRuntime *r);

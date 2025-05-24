@@ -94,7 +94,7 @@ int ptp_eos_get_prop_value(struct PtpRuntime *r, int code) {
 	return ptp_send(r, &cmd);
 }
 
-int ptp_eos_set_prop_value(struct PtpRuntime *r, int code, int value) {
+int ptp_eos_set_prop_value(struct PtpRuntime *r, int code, uint32_t value) {
 	struct PtpCommand cmd;
 	cmd.code = PTP_OC_EOS_SetDevicePropValueEx;
 	cmd.param_length = 0;
@@ -187,7 +187,7 @@ int ptp_eos_update_firmware(struct PtpRuntime *r, FILE *f, char *name) {
 
 	char *payload = malloc(EOS_FIRM_MAX);
 
-	int sent = 0;
+	unsigned int sent = 0;
 	while (1) {
 		struct PtpCommand cmd;
 		cmd.code = PTP_OC_EOS_UpdateFirmware;
@@ -195,7 +195,7 @@ int ptp_eos_update_firmware(struct PtpRuntime *r, FILE *f, char *name) {
 		cmd.params[0] = s.st_size;
 		cmd.params[1] = sent;
 
-		int size = EOS_FIRM_MAX;
+		unsigned int size = EOS_FIRM_MAX;
 
 		memset(payload, 0, EOS_NAME_LEN);
 		strcpy(payload, name);
@@ -237,5 +237,5 @@ int ptp_eos_get_liveview(struct PtpRuntime *r) {
 		return 0;
 	}
 
-	return length;
+	return (int)length;
 }

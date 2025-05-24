@@ -19,18 +19,18 @@ int ptpip_close(struct PtpRuntime *r) {
 	return -1;
 }
 
-int ptpip_cmd_write(struct PtpRuntime *r, void *data, int size) {
+int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 	return -1;
 }
 
-int ptpip_cmd_read(struct PtpRuntime *r, void *data, int size) {
+int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	return -1;
 }
 
-int ptpip_event_send(struct PtpRuntime *r, void *data, int size) {
+int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size) {
 	return -1;
 }
 
-int ptpip_event_read(struct PtpRuntime *r, void *data, int size) {
+int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	return -1;
 }

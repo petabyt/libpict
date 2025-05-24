@@ -148,7 +148,7 @@ struct CanonWhiteBalance {
 };
 
 int ptp_eos_get_white_balance(int data, int dir) {
-	for (int i = 0; i < (int)(sizeof(struct CanonWhiteBalance) / sizeof(struct CanonWhiteBalance)); i++) {
+	for (int i = 0; i < (int)(sizeof(canon_white_balance) / sizeof(canon_white_balance[0])); i++) {
 		if (dir) {
 			if (canon_white_balance[i].value == data) {
 				return canon_white_balance[i].data;

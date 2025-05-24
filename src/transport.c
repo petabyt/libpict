@@ -6,10 +6,13 @@
 #include <stdint.h>
 #include <libpict.h>
 
-int ptp_send_packet(struct PtpRuntime *r, int length) {
-	int sent = 0;
+int ptp_send_packet(struct PtpRuntime *r, unsigned int length) {
+	if (r->comm_dump != NULL) {
+		fwrite(r->data, 1, length, r->comm_dump);
+	}
+	unsigned int sent = 0;
 	while (1) {
-		int max = length - sent;
+		unsigned max = length - sent;
 		if (max > r->max_packet_size) max = r->max_packet_size;
 		int rc;
 		if (r->connection_type == PTP_USB) {
@@ -31,7 +34,7 @@ int ptp_send_packet(struct PtpRuntime *r, int length) {
 			ptp_panic("BUG: Sent too many bytes (?)");
 		} else if (sent == length) {
 			ptp_verbose_log("%s: Sent %d/%d bytes\n", __func__, sent, length);
-			return sent;
+			return (int)sent;
 		}
 	}
 }
@@ -222,11 +225,18 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 }
 
 int ptp_receive_all_packets(struct PtpRuntime *r) {
+	int rc = 0;
 	if (r->connection_type == PTP_IP) {
-		return ptpip_receive_bulk_packets(r);
+		rc = ptpip_receive_bulk_packets(r);
 	} else if (r->connection_type == PTP_USB || r->connection_type == PTP_IP_USB) {
-		return ptpusb_read_all_packets(r);
+		rc = ptpusb_read_all_packets(r);
 	} else {
 		ptp_panic("Unknown connection type %d", r->connection_type);
 	}
+
+	if (r->comm_dump != NULL) {
+		//fwrite(r->data, 1, r->data_length, r->comm_dump);
+	}
+
+	return rc;
 }

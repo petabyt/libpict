@@ -61,7 +61,7 @@ int ptp_get_storage_info(struct PtpRuntime *r, int id, struct PtpStorageInfo *si
 
 int ptp_send_object_info(struct PtpRuntime *r, int storage_id, int handle, struct PtpObjectInfo *oi);
 
-int ptp_send_object(struct PtpRuntime *r, const void *data, int data_length);
+int ptp_send_object(struct PtpRuntime *r, const void *data, unsigned int data_length);
 
 int ptp_get_prop_value(struct PtpRuntime *r, int code);
 
@@ -70,7 +70,7 @@ int ptp_set_prop_value(struct PtpRuntime *r, int code, int value);
 /// @brief Sets 16 bit value of a property
 int ptp_set_prop_value16(struct PtpRuntime *r, int code, uint16_t value);
 
-int ptp_set_prop_value_data(struct PtpRuntime *r, int code, void *data, int length);
+int ptp_set_prop_value_data(struct PtpRuntime *r, int code, void *data, unsigned int length);
 
 int ptp_get_prop_desc(struct PtpRuntime *r, int code, struct PtpPropDesc *pd);
 
@@ -91,7 +91,7 @@ int ptp_delete_object(struct PtpRuntime *r, int handle);
 int ptp_get_thumbnail(struct PtpRuntime *r, int handle);
 
 /// @note Not thread safe.
-int ptp_get_partial_object(struct PtpRuntime *r, uint32_t handle, int offset, int max);
+int ptp_get_partial_object(struct PtpRuntime *r, uint32_t handle, unsigned int offset, unsigned int max);
 
 /// @brief Download an object
 int ptp_get_object(struct PtpRuntime *r, int handle);
@@ -103,7 +103,7 @@ int ptp_download_object(struct PtpRuntime *r, int handle, FILE *stream, size_t m
 /// This is similar to getting all events, but for first startup when you know nothing.
 /// Some vendors do this, but this gets all the properties manually.
 /// @param[out] s Output structure, caller must free
-int ptp_get_all_known(struct PtpRuntime *r, struct PtpGenericEvent **s, int *length);
+int ptp_get_all_known(struct PtpRuntime *r, struct PtpGenericEvent **s, unsigned int *length);
 
 /// @note PTP/IP only
 int ptpip_init_events(struct PtpRuntime *r);
@@ -114,7 +114,7 @@ int ptpip_init_command_request(struct PtpRuntime *r, const char *device_name);
 // EOS Only functions - not for Canon point and shoot
 int ptp_eos_get_viewfinder_data(struct PtpRuntime *r);
 int ptp_eos_set_remote_mode(struct PtpRuntime *r, int mode);
-int ptp_eos_set_prop_value(struct PtpRuntime *r, int code, int value);
+int ptp_eos_set_prop_value(struct PtpRuntime *r, int code, uint32_t value);
 int ptp_eos_set_event_mode(struct PtpRuntime *r, int mode);
 int ptp_eos_remote_release_off(struct PtpRuntime *r, int mode);
 int ptp_eos_remote_release_on(struct PtpRuntime *r, int mode);
@@ -153,7 +153,7 @@ int ptp_eos_activate_command(struct PtpRuntime *r);
 int ptp_eos_exec_evproc(struct PtpRuntime *r, void *data, int length, int expect_return);
 int ptp_eos_evproc_run(struct PtpRuntime *r, char *fmt, ...);
 int ptp_eos_evproc_return_data(struct PtpRuntime *r);
-int ptp_eos_fa_get_build_version(struct PtpRuntime *r, char *buffer, int max);
+int ptp_eos_fa_get_build_version(struct PtpRuntime *r, char *buffer, unsigned int max);
 
 /// @returns enum PtpGeneralError, 0 for 'camera is busy', or the size of the image in the payload
 int ptp_eos_get_liveview(struct PtpRuntime *r);

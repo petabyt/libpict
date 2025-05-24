@@ -18,6 +18,7 @@ void ptp_reset(struct PtpRuntime *r) {
 	r->response_wait_default = 1;
 	r->wait_for_response = 1;
 	r->comm_backend = NULL; // leak
+	r->comm_dump = NULL;
 }
 
 void ptp_init(struct PtpRuntime *r) {
@@ -61,7 +62,7 @@ struct PtpRuntime *ptp_new(int options) {
 	return r;
 }
 
-void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, int memb_size, int cnt, void *data) {
+void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_size, unsigned int cnt, void *data) {
 	if (r->avail == NULL) abort();
 	// Traverse backwards to first item
 	struct PtpPropAvail *n;
@@ -171,7 +172,7 @@ static int ptp_check_rc(struct PtpRuntime *r) {
 }
 
 static int ptp_send_try(struct PtpRuntime *r, struct PtpCommand *cmd) {
-	int length = ptp_new_cmd_packet(r, cmd);
+	unsigned int length = ptp_new_cmd_packet(r, cmd);
 	if (ptp_send_packet(r, length) != length) {
 		ptp_verbose_log("Didn't send all packets\n");
 		return PTP_IO_ERR;
@@ -222,9 +223,9 @@ int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd) {
 	return rc;
 }
 
-static int ptp_send_data_try(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, int length) {
+static int ptp_send_data_try(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, unsigned int length) {
 	// Send operation request (data packet later on)
-	int plength = ptp_new_cmd_packet(r, cmd);
+	unsigned int plength = ptp_new_cmd_packet(r, cmd);
 	if (ptp_send_packet(r, plength) != plength) {
 		return PTP_IO_ERR;
 	}
@@ -256,7 +257,7 @@ static int ptp_send_data_try(struct PtpRuntime *r, const struct PtpCommand *cmd,
 }
 
 // Perform a command request with a data phase to the camera
-int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, int length) {
+int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, unsigned int length) {
 	if (r->operation_kill_switch) return PTP_IO_ERR;
 	ptp_mutex_lock(r);
 	if (r->operation_kill_switch) {

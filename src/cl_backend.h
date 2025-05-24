@@ -48,21 +48,21 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry);
 int ptp_device_init(struct PtpRuntime *r);
 
 /// @brief Send data over the raw command endpoint
-int ptp_cmd_write(struct PtpRuntime *r, void *to, int length);
+int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length);
 /// @brief Receive raw data over the command endpoint
-int ptp_cmd_read(struct PtpRuntime *r, void *to, int length);
+int ptp_cmd_read(struct PtpRuntime *r, void *to, unsigned int length);
 
 /// @brief Reset the USB endpoints if possible
 int ptp_device_reset(struct PtpRuntime *r);
 
 /// @brief Send packets in r->data
-int ptp_send_packet(struct PtpRuntime *r, int length);
+int ptp_send_packet(struct PtpRuntime *r, unsigned int length);
 
 /// @brief Receive all packets into r->data
 int ptp_receive_all_packets(struct PtpRuntime *r);
 
 /// @brief Poll the interrupt endpoint
-int ptp_read_int(struct PtpRuntime *r, void *to, int length);
+int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length);
 
 /// @brief Disconnect from the current device
 int ptp_device_close(struct PtpRuntime *r);
@@ -70,12 +70,12 @@ int ptp_device_close(struct PtpRuntime *r);
 /// @brief Connect to a TCP port on the default network adapter
 /// @note Sets kill switch to 0
 int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tmout);
-int ptpip_cmd_write(struct PtpRuntime *r, void *data, int size);
-int ptpip_cmd_read(struct PtpRuntime *r, void *data, int size);
+int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size);
+int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size);
 
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port);
-int ptpip_event_send(struct PtpRuntime *r, void *data, int size);
-int ptpip_event_read(struct PtpRuntime *r, void *data, int size);
+int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size);
+int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size);
 
 int ptpip_close(struct PtpRuntime *r);
 

@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include <libpict.h>
@@ -26,6 +28,13 @@ int test_data(void) {
 		int rc = ptp_write_string(buffer, "");
 		assert(rc == 1);
 		assert(!memcmp(buffer, ref, sizeof(ref)));	
+	}
+
+	{
+		int out_len = 0;
+		void *data = canon_evproc_pack(&out_len, "EnableBootDisk");
+		// TODO
+		free(data);
 	}
 
 	return 0;

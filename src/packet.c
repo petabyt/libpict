@@ -8,9 +8,9 @@
 #include <libpict.h>
 
 // PTP/IP-specific packet
-int ptpip_bulk_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, int type, int data_length) {
-	struct PtpIpBulkContainer bulk;
-	int size = 18 + (sizeof(uint32_t) * cmd->param_length);
+unsigned int ptpip_bulk_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, int type, unsigned int data_length) {
+	struct PtpIpRequestContainer bulk;
+	unsigned int size = 18 + (sizeof(uint32_t) * cmd->param_length);
 	bulk.length = size;
 	bulk.type = type;
 	bulk.length += data_length;
@@ -32,7 +32,7 @@ int ptpip_bulk_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, int ty
 	return size;
 }
 
-int ptpip_data_start_packet(struct PtpRuntime *r, int data_length) {
+unsigned int ptpip_data_start_packet(struct PtpRuntime *r, unsigned int data_length) {
 	struct PtpIpStartDataPacket *pkt = (struct PtpIpStartDataPacket *)(r->data);
 	pkt->length = 20; // fixme: This was 0x20, changed it (?????)
 	pkt->type = PTPIP_DATA_PACKET_START;
@@ -42,7 +42,7 @@ int ptpip_data_start_packet(struct PtpRuntime *r, int data_length) {
 	return pkt->length;
 }
 
-int ptpip_data_end_packet(struct PtpRuntime *r, const void *data, int data_length) {
+unsigned int ptpip_data_end_packet(struct PtpRuntime *r, const void *data, unsigned int data_length) {
 	struct PtpIpEndDataPacket *pkt = (struct PtpIpEndDataPacket *)(r->data);
 	pkt->length = 12 + data_length;
 	pkt->type = PTPIP_DATA_PACKET_END;
@@ -53,7 +53,7 @@ int ptpip_data_end_packet(struct PtpRuntime *r, const void *data, int data_lengt
 	return pkt->length;
 }
 
-int ptpusb_new_data_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, int data_length) {
+int ptpusb_new_data_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, const void *data, unsigned int data_length) {
 	uint32_t size = 12 + data_length;
 	struct PtpBulkContainer bulk;
 	ptp_write_u32(&bulk.length, size);
@@ -80,7 +80,7 @@ int ptpusb_new_cmd_packet(struct PtpRuntime *r, const struct PtpCommand *cmd) {
 }
 
 // Generate a IP or USB style command packet (both are pretty similar)
-int ptp_new_cmd_packet(struct PtpRuntime *r, const struct PtpCommand *cmd) {
+unsigned int ptp_new_cmd_packet(struct PtpRuntime *r, const struct PtpCommand *cmd) {
 	if (r->connection_type == PTP_IP) {
 		return ptpip_bulk_packet(r, cmd, PTPIP_COMMAND_REQUEST, 0);
 	} else {
@@ -116,7 +116,7 @@ static struct PtpIpResponseContainer *ptpip_get_response_packet(struct PtpRuntim
 // Update transid for current request packet
 void ptp_update_transaction(struct PtpRuntime *r, int t) {
 	if (r->connection_type == PTP_IP) {
-		struct PtpIpBulkContainer *bulk = (struct PtpIpBulkContainer *)(r->data);
+		struct PtpIpRequestContainer *bulk = (struct PtpIpRequestContainer *)(r->data);
 		bulk->transaction = t;
 	} else {
 		struct PtpBulkContainer *bulk = (struct PtpBulkContainer *)(r->data);
@@ -167,7 +167,7 @@ uint8_t *ptp_get_payload(struct PtpRuntime *r) {
 	}
 }
 
-int ptp_get_payload_length(struct PtpRuntime *r) {
+unsigned int ptp_get_payload_length(struct PtpRuntime *r) {
 	if (r->connection_type == PTP_IP) {
 		struct PtpIpStartDataPacket *ds = (struct PtpIpStartDataPacket*)(r->data);
 		if (ds->type != PTPIP_DATA_PACKET_START) {
@@ -181,7 +181,7 @@ int ptp_get_payload_length(struct PtpRuntime *r) {
 	}
 }
 
-int ptp_get_param_length(struct PtpRuntime *r) {
+unsigned int ptp_get_param_length(struct PtpRuntime *r) {
 	if (r->connection_type == PTP_IP) {
 		struct PtpIpResponseContainer *resp = ptpip_get_response_packet(r);	
 		return (resp->length - 14) / 4;	
@@ -217,14 +217,14 @@ uint32_t ptp_get_param(struct PtpRuntime *r, int index) {
 int ptp_get_last_transaction_id(struct PtpRuntime *r) {
 	if (r->connection_type == PTP_IP) {
 		struct PtpIpResponseContainer *resp = ptpip_get_response_packet(r);	
-		return resp->transaction;		
+		return (int)resp->transaction;
 	} else {
 		struct PtpBulkContainer *bulk = (struct PtpBulkContainer*)(r->data);
 		if (bulk->type == PTP_PACKET_TYPE_DATA) {
 			bulk = (struct PtpBulkContainer*)(r->data + bulk->length);
-			return bulk->transaction;
+			return (int)bulk->transaction;
 		} else {
-			return bulk->transaction;
+			return (int)bulk->transaction;
 		}
 	}
 }

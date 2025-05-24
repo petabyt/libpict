@@ -157,22 +157,22 @@ enum PtpCHDKCommands {
 	PTP_CHDK_UploadFile = 5,
 };
 
-int ptp_pack_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi, uint8_t *buf, int max);
+int ptp_pack_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi, uint8_t *buf, unsigned int max);
 
 int ptp_parse_prop_value(struct PtpRuntime *r);
 int ptp_parse_device_info(struct PtpRuntime *r, struct PtpDeviceInfo *di);
-int ptp_device_info_json(const struct PtpDeviceInfo *di, char *buffer, int max);
+int ptp_device_info_json(const struct PtpDeviceInfo *di, char *buffer, unsigned int max);
 int ptp_parse_prop_desc(struct PtpRuntime *r, struct PtpPropDesc *oi);
-int ptp_prop_desc_json(const struct PtpPropDesc *pd, char *buffer, int max);
+int ptp_prop_desc_json(const struct PtpPropDesc *pd, char *buffer, unsigned int max);
 int ptp_parse_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi);
-int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, int max);
-int ptp_object_info_json(const struct PtpObjectInfo *so, char *buffer, int max);
+int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, unsigned int max);
+int ptp_object_info_json(const struct PtpObjectInfo *so, char *buffer, unsigned int max);
 int ptp_parse_storage_info(struct PtpRuntime *r, struct PtpStorageInfo *si);
 int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p);
 void *ptp_open_eos_events(struct PtpRuntime *r);
 void *ptp_get_eos_event(struct PtpRuntime *r, void *e, struct PtpCanonEvent *ce);
 
-int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, int max);
+int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max);
 
 // Standard property value converters (conv.c)
 int ptp_eos_get_shutter(int data, int dir);
@@ -181,6 +181,8 @@ int ptp_eos_get_aperture(int data, int dir);
 int ptp_eos_get_white_balance(int data, int dir);
 int ptp_eos_get_imgformat_value(uint32_t data[5]);
 
-void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, int *length);
+void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, unsigned int *length);
+
+void *canon_evproc_pack(int *out_length, char *string);
 
 #endif
