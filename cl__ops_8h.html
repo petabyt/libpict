@@ -177,9 +177,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_storage_info</
 <tr class="memitem:ga935dcfc1df1871caf21ae26f7508c62a" id="r_ga935dcfc1df1871caf21ae26f7508c62a"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_send_object_info</b> (struct PtpRuntime *r, int storage_id, int handle, struct <a class="el" href="structPtpObjectInfo.html">PtpObjectInfo</a> *oi)</td></tr>
 <tr class="separator:ga935dcfc1df1871caf21ae26f7508c62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga597b1906873521e60f4856039df35b6b" id="r_ga597b1906873521e60f4856039df35b6b"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_send_object</b> (struct PtpRuntime *r, const void *data, int data_length)</td></tr>
-<tr class="separator:ga597b1906873521e60f4856039df35b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad9bda61c5c72c6cc4a1374347d82c483" id="r_gad9bda61c5c72c6cc4a1374347d82c483"><td class="memItemLeft" align="right" valign="top">
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_send_object</b> (struct PtpRuntime *r, const void *data, unsigned int data_length)</td></tr>
+<tr class="separator:gad9bda61c5c72c6cc4a1374347d82c483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac4e392052808ce00f4e463c3c35f824b" id="r_gac4e392052808ce00f4e463c3c35f824b"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_prop_value</b> (struct PtpRuntime *r, int code)</td></tr>
 <tr class="separator:gac4e392052808ce00f4e463c3c35f824b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,9 +191,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_set_prop_value</b>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_set_prop_value16</b> (struct PtpRuntime *r, int code, uint16_t value)</td></tr>
 <tr class="memdesc:ga90bcadb6a7d4367934b65c6eaadb6536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 16 bit value of a property. <br /></td></tr>
 <tr class="separator:ga90bcadb6a7d4367934b65c6eaadb6536"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9665bd77daba7e3bcba02e9876e174be" id="r_ga9665bd77daba7e3bcba02e9876e174be"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_set_prop_value_data</b> (struct PtpRuntime *r, int code, void *data, int length)</td></tr>
-<tr class="separator:ga9665bd77daba7e3bcba02e9876e174be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga203ea1ef750aa1452143af928ae7799d" id="r_ga203ea1ef750aa1452143af928ae7799d"><td class="memItemLeft" align="right" valign="top">
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_set_prop_value_data</b> (struct PtpRuntime *r, int code, void *data, unsigned int length)</td></tr>
+<tr class="separator:ga203ea1ef750aa1452143af928ae7799d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0df861658fefb547a48fd77a8c4983a9" id="r_ga0df861658fefb547a48fd77a8c4983a9"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_prop_desc</b> (struct PtpRuntime *r, int code, struct <a class="el" href="structPtpPropDesc.html">PtpPropDesc</a> *pd)</td></tr>
 <tr class="separator:ga0df861658fefb547a48fd77a8c4983a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,8 +212,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_delete_object</b> 
 <tr class="memitem:ga1349640be24b23301f82338a4e89202e" id="r_ga1349640be24b23301f82338a4e89202e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#ga1349640be24b23301f82338a4e89202e">ptp_get_thumbnail</a> (struct PtpRuntime *r, int handle)</td></tr>
 <tr class="memdesc:ga1349640be24b23301f82338a4e89202e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw JPEG data is accessible from ptp_get_payload()  <br /></td></tr>
 <tr class="separator:ga1349640be24b23301f82338a4e89202e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1730ddab297b7c9f0a7619bf4f379571" id="r_ga1730ddab297b7c9f0a7619bf4f379571"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#ga1730ddab297b7c9f0a7619bf4f379571">ptp_get_partial_object</a> (struct PtpRuntime *r, uint32_t handle, int offset, int max)</td></tr>
-<tr class="separator:ga1730ddab297b7c9f0a7619bf4f379571"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1564e0c85da7f1525fba3e042b07ba74" id="r_ga1564e0c85da7f1525fba3e042b07ba74"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#ga1564e0c85da7f1525fba3e042b07ba74">ptp_get_partial_object</a> (struct PtpRuntime *r, uint32_t handle, unsigned int offset, unsigned int max)</td></tr>
+<tr class="separator:ga1564e0c85da7f1525fba3e042b07ba74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab2a74dc474f1a9f03242a1ac689875ca" id="r_gab2a74dc474f1a9f03242a1ac689875ca"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_object</b> (struct PtpRuntime *r, int handle)</td></tr>
 <tr class="memdesc:gab2a74dc474f1a9f03242a1ac689875ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Download an object. <br /></td></tr>
@@ -222,9 +222,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_get_object</b> (st
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_download_object</b> (struct PtpRuntime *r, int handle, FILE *stream, size_t max)</td></tr>
 <tr class="memdesc:ga39a3a5f00b93263321de0080a9bfb639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Download an object from handle, to a local file (uses GetPartialObject) <br /></td></tr>
 <tr class="separator:ga39a3a5f00b93263321de0080a9bfb639"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae0d253bf202fa9823e1d49fb016f541f" id="r_gae0d253bf202fa9823e1d49fb016f541f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#gae0d253bf202fa9823e1d49fb016f541f">ptp_get_all_known</a> (struct PtpRuntime *r, struct PtpGenericEvent **s, int *length)</td></tr>
-<tr class="memdesc:gae0d253bf202fa9823e1d49fb016f541f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recieve a generic list of all properties received in DeviceInfo This is similar to getting all events, but for first startup when you know nothing. Some vendors do this, but this gets all the properties manually.  <br /></td></tr>
-<tr class="separator:gae0d253bf202fa9823e1d49fb016f541f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d911d76540aafe51bab744a6603dd3e" id="r_ga5d911d76540aafe51bab744a6603dd3e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#ga5d911d76540aafe51bab744a6603dd3e">ptp_get_all_known</a> (struct PtpRuntime *r, struct PtpGenericEvent **s, unsigned int *length)</td></tr>
+<tr class="memdesc:ga5d911d76540aafe51bab744a6603dd3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recieve a generic list of all properties received in DeviceInfo This is similar to getting all events, but for first startup when you know nothing. Some vendors do this, but this gets all the properties manually.  <br /></td></tr>
+<tr class="separator:ga5d911d76540aafe51bab744a6603dd3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaab71c60e32fb92e3c5458431006c57da" id="r_gaab71c60e32fb92e3c5458431006c57da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#gaab71c60e32fb92e3c5458431006c57da">ptpip_init_events</a> (struct PtpRuntime *r)</td></tr>
 <tr class="separator:gaab71c60e32fb92e3c5458431006c57da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga35ecd085b423e6312a5214b1d0573e4c" id="r_ga35ecd085b423e6312a5214b1d0573e4c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#ga35ecd085b423e6312a5214b1d0573e4c">ptpip_init_command_request</a> (struct PtpRuntime *r, const char *device_name)</td></tr>
@@ -235,9 +235,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_viewfinder
 <tr class="memitem:ga96bfe4491a351abdaaa9fdaf9410aee7" id="r_ga96bfe4491a351abdaaa9fdaf9410aee7"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_set_remote_mode</b> (struct PtpRuntime *r, int mode)</td></tr>
 <tr class="separator:ga96bfe4491a351abdaaa9fdaf9410aee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga756ad698f02c2bb37ea5a390b650e5ee" id="r_ga756ad698f02c2bb37ea5a390b650e5ee"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_set_prop_value</b> (struct PtpRuntime *r, int code, int value)</td></tr>
-<tr class="separator:ga756ad698f02c2bb37ea5a390b650e5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8b60c63de08bfe07f2ba0b3901641980" id="r_ga8b60c63de08bfe07f2ba0b3901641980"><td class="memItemLeft" align="right" valign="top">
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_set_prop_value</b> (struct PtpRuntime *r, int code, uint32_t value)</td></tr>
+<tr class="separator:ga8b60c63de08bfe07f2ba0b3901641980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga62e89a28a1c45b9da9afed3316dc86f3" id="r_ga62e89a28a1c45b9da9afed3316dc86f3"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_set_event_mode</b> (struct PtpRuntime *r, int mode)</td></tr>
 <tr class="separator:ga62e89a28a1c45b9da9afed3316dc86f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -322,9 +322,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_evproc_run</b>
 <tr class="memitem:gadc641760e1294cf4c1a0256cc4be66b7" id="r_gadc641760e1294cf4c1a0256cc4be66b7"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_evproc_return_data</b> (struct PtpRuntime *r)</td></tr>
 <tr class="separator:gadc641760e1294cf4c1a0256cc4be66b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabfc13eba1eb9d83ac23b6bb3d5aa2099" id="r_gabfc13eba1eb9d83ac23b6bb3d5aa2099"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_fa_get_build_version</b> (struct PtpRuntime *r, char *buffer, int max)</td></tr>
-<tr class="separator:gabfc13eba1eb9d83ac23b6bb3d5aa2099"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa77d455b1e661c433ee085d9fb12cc8e" id="r_gaa77d455b1e661c433ee085d9fb12cc8e"><td class="memItemLeft" align="right" valign="top">
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_fa_get_build_version</b> (struct PtpRuntime *r, char *buffer, unsigned int max)</td></tr>
+<tr class="separator:gaa77d455b1e661c433ee085d9fb12cc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae6f3342f1fc2eb22f237bc3391864906" id="r_gae6f3342f1fc2eb22f237bc3391864906"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Operations.html#gae6f3342f1fc2eb22f237bc3391864906">ptp_eos_get_liveview</a> (struct PtpRuntime *r)</td></tr>
 <tr class="separator:gae6f3342f1fc2eb22f237bc3391864906"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
