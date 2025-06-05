@@ -744,9 +744,10 @@ int ptp_eos_events_open(struct PtpRuntime *r, struct PtpEventReader *reader) {
 
 int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, struct PtpGenericEvent *event) {
 	if (reader->index >= reader->n_entries) return -1;
+	if (reader->data_of >= r->data_length) ptp_panic("overflow");
 	memset(event, 0, sizeof(struct PtpGenericEvent));
 
-	uint8_t *d = r->data;
+	uint8_t *d = ptp_get_payload(r);
 	unsigned int of = reader->data_of;
 
 	uint32_t size, type;
@@ -757,7 +758,7 @@ int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, str
 
 	switch (type) {
 	case PTP_EC_EOS_PropValueChanged:
-		d += ptp_eos_prop_next(d + of, event);
+		ptp_eos_prop_next(d + of, event);
 		break;
 	case PTP_EC_EOS_InfoCheckComplete:
 	case PTP_DPC_EOS_FocusInfoEx:
@@ -765,34 +766,37 @@ int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, str
 		break;
 	case PTP_EC_EOS_RequestObjectTransfer: {
 		uint32_t a, b;
-		d += ptp_read_u32(d, &a);
-		d += ptp_read_u32(d, &b);
+		of += ptp_read_u32(d + of, &a);
+		of += ptp_read_u32(d + of, &b);
 		event->name = "request object transfer";
 		event->code = a;
 		event->value = (int)b;
 		} break;
 	case PTP_EC_EOS_ObjectAddedEx: {
-		struct PtpEOSObject *obj = (struct PtpEOSObject *)d;
+		uint32_t handle;
+		of += ptp_read_u32(d + of, &handle);
 		event->name = "new object";
-		event->value = (int)obj->a;
+		event->value = (int)handle;
 		} break;
 	case PTP_EC_EOS_AvailListChanged: {
 		uint32_t code, dat_type, count;
-		d += ptp_read_u32(d, &code);
-		d += ptp_read_u32(d, &dat_type);
-		d += ptp_read_u32(d, &count);
+		of += ptp_read_u32(d + of, &code);
+		of += ptp_read_u32(d + of, &dat_type);
+		of += ptp_read_u32(d + of, &count);
 
 		unsigned int payload_size = (size - 20);
 
 		// Make sure to not divide by zero :)
 		if (payload_size != 0 && count != 0) {
 			unsigned int memb_size = payload_size / count;
-			ptp_set_prop_avail_info(r, (int)code, memb_size, count, d);
+			ptp_set_prop_avail_info(r, (int)code, memb_size, count, d + of);
 		}
 		} break;
+	default:
+		ptp_verbose_log("Unknown PTP event code %02x, event will be zeroed\n", type);
 	}
 
-	reader->data_of = of;
+	reader->data_of += size;
 	reader->index++;
 
 	return 0;
@@ -804,7 +808,6 @@ int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
 
 	(*p) = malloc(sizeof(struct PtpGenericEvent) * reader.n_entries); // Leaks memory
 
-	struct PtpGenericEvent event;
 	int i = 0;
 	while (ptp_eos_events_next(r, &reader, &((*p)[i])) == 0) {
 		i++;
@@ -814,33 +817,28 @@ int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
 }
 
 int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max) {
-	struct PtpGenericEvent *events = NULL;
+	struct PtpEventReader reader;
+	ptp_eos_events_open(r, &reader);
 
-	int length = ptp_eos_events(r, &events);
-	if (length == 0) {
-		strncpy(buffer, "[]", max);
-		return 2;
-	}
+	struct PtpGenericEvent event;
+	int i = 0;
+	unsigned int curr = osnprintf(buffer, 0, max, "[");
+	while (ptp_eos_events_next(r, &reader, &event) == 0) {
+		char *end = ",\n";
+		if (i >= reader.n_entries - 1) end = "";
 
-	int curr = osnprintf(buffer, 0, max, "[");
-	for (int i = 0; i < length; i++) {
-		char *end = ",";
-		if (i - 1 == length) end = "";
-
-		struct PtpGenericEvent *p = &(events[i]);
-		
-		if (p->name == NULL) {
-			if (p->code == 0) continue;
-			curr += osnprintf(buffer, curr, max, "[%u, %u]", p->code, p->value);
+		if (event.name == NULL) {
+			curr += osnprintf(buffer, curr, max, "[%u, %u]", event.code, event.value);
 		} else {
-			if (p->str_value == NULL) {
-				curr += osnprintf(buffer, curr, max, "[\"%s\", %u]", p->name, p->value);
+			if (event.str_value == NULL) {
+				curr += osnprintf(buffer, curr, max, "[\"%s\", %u]", event.name, event.value);
 			} else {
-				curr += osnprintf(buffer, curr, max, "[\"%s\", \"%s\"]", p->name, p->str_value);
+				curr += osnprintf(buffer, curr, max, "[\"%s\", \"%s\"]", event.name, event.str_value);
 			}
 		}
 
-		curr += osnprintf(buffer, curr, max, "%s\n", end);
+		curr += osnprintf(buffer, curr, max, "%s", end);
+		i++;
 	}
 
 	curr += osnprintf(buffer, curr, max, "]");
