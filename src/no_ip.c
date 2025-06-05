@@ -15,7 +15,7 @@ int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
 	return -1;
 }
 
-int ptpip_close(struct PtpRuntime *r) {
+int ptpip_device_close(struct PtpRuntime *r) {
 	return -1;
 }
 

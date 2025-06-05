@@ -77,7 +77,7 @@ int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port);
 int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size);
 int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size);
 
-int ptpip_close(struct PtpRuntime *r);
+int ptpip_device_close(struct PtpRuntime *r);
 
 void ptpusb_free_device_list_entry(void *);
 

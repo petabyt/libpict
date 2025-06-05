@@ -219,7 +219,7 @@ int ptpip_connect_video(struct PtpRuntime *r, const char *addr, int port) {
 	}
 }
 
-int ptpip_close(struct PtpRuntime *r) {
+int ptpip_device_close(struct PtpRuntime *r) {
 	struct PtpIpBackend *b = init_comm(r);
 	if (b->fd) close(b->fd);
 	b->fd = 0;

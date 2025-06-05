@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <libpict.h>
 
-int main() {
+int main(void) {
 	struct PtpRuntime *r = ptp_new(PTP_USB);
 	struct PtpDeviceEntry *list = ptpusb_device_list(r);
 

@@ -17,7 +17,7 @@ void print_bytes(uint8_t *bytes, int n) {
 	puts("");
 }
 
-int main() {
+int main(void) {
 	struct PtpRuntime r;
 	ptp_init(&r);
 

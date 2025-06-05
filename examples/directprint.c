@@ -4,7 +4,7 @@
 #include <string.h>
 #include <libpict.h>
 
-int main() {
+int main(void) {
 	struct PtpRuntime r;
 	ptp_init(&r);
 

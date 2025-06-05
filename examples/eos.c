@@ -14,7 +14,7 @@ Write to RAM (or ROM, if you're not careful):
 ptp_eos_evproc_run(&r, "writeaddr %d %d", 0x3780, 0x12345678);
 */
 
-int main() {
+int main(void) {
 	struct PtpRuntime r;
 	ptp_init(&r);
 

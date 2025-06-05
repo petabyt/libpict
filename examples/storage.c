@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <libpict.h>
 
-int main() {
-	struct PtpRuntime *r = ptp_new(0);
+int main(void) {
+	struct PtpRuntime *r = ptp_new(PTP_USB);
 
 	struct PtpDeviceInfo di;
 
