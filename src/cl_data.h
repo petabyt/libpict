@@ -122,14 +122,6 @@ struct PtpEOSViewFinderData {
 	// standard JPG follows
 };
 
-struct PtpEOSObject {
-	uint32_t a;
-	uint32_t b;
-	uint32_t c;
-	uint32_t d;
-	uint32_t e;
-};
-
 struct PtpMlLvInfo {
 	uint32_t lv_pitch;
 	uint32_t lv_width;

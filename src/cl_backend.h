@@ -28,16 +28,18 @@ struct PtpDeviceEntry {
 	struct PtpDeviceEntry *next;
 };
 
-/// @brief Initializes backend
+/// @brief Initializes backend context
+/// @note On Windows this may run CoInitialize on the current thread
 int ptp_comm_init(struct PtpRuntime *r);
 
-/// @brief Deinitializes backend and frees all memory
+/// @brief Deinits backend and frees all memory
 void ptp_comm_deinit(struct PtpRuntime *r);
 
 /// @brief Get a linked list of USB or PTP Devices
 /// @returns linked list of devices or NULL if no devices are connected (or OS error)
 struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r);
 
+/// @brief Frees the device entry linked list
 void ptpusb_free_device_list(struct PtpDeviceEntry *e);
 
 /// @brief Open and connect to a device from the PtpDeviceEntry structure
@@ -47,9 +49,9 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry);
 /// @brief Connects to the first PTP device it finds
 int ptp_device_init(struct PtpRuntime *r);
 
-/// @brief Send data over the raw command endpoint
+/// @brief Send data over the raw command endpoint for USB backend
 int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length);
-/// @brief Receive raw data over the command endpoint
+/// @brief Receive raw data over the command endpoint for USB backend
 int ptp_cmd_read(struct PtpRuntime *r, void *to, unsigned int length);
 
 /// @brief Reset the USB endpoints if possible
@@ -70,18 +72,23 @@ int ptp_device_close(struct PtpRuntime *r);
 /// @brief Connect to a TCP port on the default network adapter
 /// @note Sets kill switch to 0
 int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tmout);
+/// @brief Send data over the raw command endpoint for USB backend
 int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size);
+/// @brief Receive raw data over the command endpoint for USB backend
 int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size);
-
+/// @brief Connect PTP/IP event socket. Port depends on implementation.
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port);
 int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size);
 int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size);
-
+/// @brief Disconnect from a PTP/IP device
 int ptpip_device_close(struct PtpRuntime *r);
 
+/// @brief Backend must implement this to free the device_handle_ptr field in each device entry
 void ptpusb_free_device_list_entry(void *);
 
-/// @brief Get status of connected device
+/// @brief Get status of currently connected device
+/// This is a quick and cheap way to check if the connection is still established, which
+/// can be used if there isn't a vendor event polling mechanism
 int ptpusb_get_status(struct PtpRuntime *r);
 
 /// @}

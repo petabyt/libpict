@@ -1,4 +1,5 @@
 /** \file */ 
+// Bindings for usage in IPC, etc. Niche and not very well supported or implemented.
 #ifndef CL_BIND_H
 #define CL_BIND_H
 
