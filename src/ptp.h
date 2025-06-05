@@ -44,7 +44,6 @@ struct PtpIpHeader {
 	uint32_t params[3];
 };
 
-// TODO: Rename to ptp request container
 struct PtpIpRequestContainer {
 	uint32_t length;
 	uint32_t type;

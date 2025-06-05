@@ -714,27 +714,20 @@ int ptp_eos_prop_next(uint8_t *d, struct PtpGenericEvent *p) {
 	return 0;
 }
 
-// TODO: Stream reader for events
-struct PtpEventReader {
-	int entries;
-	int index;
-	void *ptr;
-};
-
-int ptp_eos_events_length(struct PtpRuntime *r) {
+static int ptp_eos_events_length(struct PtpRuntime *r) {
 	uint8_t *dp = ptp_get_payload(r);
+	unsigned int of = 0;
 
 	int length = 0;
 	while (dp != NULL) {
-		if (dp >= (uint8_t *)ptp_get_payload(r) + ptp_get_payload_length(r)) break;
-		uint8_t *d = dp;
+		if (of >= ptp_get_payload_length(r)) break;
 		uint32_t size, type;
-		d += ptp_read_u32(d, &size);
-		d += ptp_read_u32(d, &type);
+		ptp_read_u32(dp + of, &size);
+		ptp_read_u32(dp + of + 4, &type);
 
-		dp += size;
+		of += size;
 
-		// TODO: length is 1 when props list is invalid/empty
+		// type 0 is termination (or it seems to be so far)
 		if (type == 0) break;
 
 		length++;
@@ -743,73 +736,81 @@ int ptp_eos_events_length(struct PtpRuntime *r) {
 	return length;
 }
 
-// TODO: misnomer: ptp_eos_unpack_events
-// TODO: we should have a way to read next entry without allocating/freeing memory
-int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
-	int length = ptp_eos_events_length(r);
+int ptp_eos_events_open(struct PtpRuntime *r, struct PtpEventReader *reader) {
+	memset(reader, 0, sizeof(struct PtpEventReader));
+	reader->n_entries = ptp_eos_events_length(r);
+	return 0;
+}
 
-	if (length == 0) return 0;
-	if (length < 0) return length;
+int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, struct PtpGenericEvent *event) {
+	if (reader->index >= reader->n_entries) return -1;
+	memset(event, 0, sizeof(struct PtpGenericEvent));
 
-	(*p) = malloc(sizeof(struct PtpGenericEvent) * length);
-	struct PtpGenericEvent *p_base = (*p);
+	uint8_t *d = r->data;
+	unsigned int of = reader->data_of;
 
-	uint8_t *dp = ptp_get_payload(r);
-	for (int i = 0; i < length; i++) {
-		struct PtpGenericEvent *cur = &p_base[i];
-		memset(cur, 0, sizeof(struct PtpGenericEvent));
+	uint32_t size, type;
+	of += ptp_read_u32(d + of, &size);
+	of += ptp_read_u32(d + of, &type);
 
-		uint8_t *d = dp;
+	if (type == 0) return -1;
 
-		uint32_t size, type;
-		d += ptp_read_u32(d, &size);
-		d += ptp_read_u32(d, &type);
+	switch (type) {
+	case PTP_EC_EOS_PropValueChanged:
+		d += ptp_eos_prop_next(d + of, event);
+		break;
+	case PTP_EC_EOS_InfoCheckComplete:
+	case PTP_DPC_EOS_FocusInfoEx:
+		event->name = ptp_get_enum_all((int)type);
+		break;
+	case PTP_EC_EOS_RequestObjectTransfer: {
+		uint32_t a, b;
+		d += ptp_read_u32(d, &a);
+		d += ptp_read_u32(d, &b);
+		event->name = "request object transfer";
+		event->code = a;
+		event->value = (int)b;
+		} break;
+	case PTP_EC_EOS_ObjectAddedEx: {
+		struct PtpEOSObject *obj = (struct PtpEOSObject *)d;
+		event->name = "new object";
+		event->value = (int)obj->a;
+		} break;
+	case PTP_EC_EOS_AvailListChanged: {
+		uint32_t code, dat_type, count;
+		d += ptp_read_u32(d, &code);
+		d += ptp_read_u32(d, &dat_type);
+		d += ptp_read_u32(d, &count);
 
-		// Detect termination or overflow
-		if (type == 0) break;
+		unsigned int payload_size = (size - 20);
 
-		switch (type) {
-		case PTP_EC_EOS_PropValueChanged:
-			d += ptp_eos_prop_next(d, cur);
-			break;
-		case PTP_EC_EOS_InfoCheckComplete:
-		case PTP_DPC_EOS_FocusInfoEx:
-			cur->name = ptp_get_enum_all((int)type);
-			break;
-		case PTP_EC_EOS_RequestObjectTransfer: {
-			uint32_t a, b;
-			d += ptp_read_u32(d, &a);
-			d += ptp_read_u32(d, &b);
-			cur->name = "request object transfer";
-			cur->code = a;
-			cur->value = (int)b;
-			} break;
-		case PTP_EC_EOS_ObjectAddedEx: {
-			struct PtpEOSObject *obj = (struct PtpEOSObject *)d;
-			cur->name = "new object";
-			cur->value = (int)obj->a;
-			} break;
-		case PTP_EC_EOS_AvailListChanged: {
-			uint32_t code, dat_type, count;
-			d += ptp_read_u32(d, &code);
-			d += ptp_read_u32(d, &dat_type);
-			d += ptp_read_u32(d, &count);
-
-			unsigned int payload_size = (size - 20);
-
-			// Make sure to not divide by zero :)
-			if (payload_size != 0 && count != 0) {
-				unsigned int memb_size = payload_size / count;
-				ptp_set_prop_avail_info(r, (int)code, memb_size, count, d);
-			}
-			} break;
+		// Make sure to not divide by zero :)
+		if (payload_size != 0 && count != 0) {
+			unsigned int memb_size = payload_size / count;
+			ptp_set_prop_avail_info(r, (int)code, memb_size, count, d);
 		}
-
-		// Move dp over for the next entry
-		dp += size;
+		} break;
 	}
 
-	return length;
+	reader->data_of = of;
+	reader->index++;
+
+	return 0;
+}
+
+int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p) {
+	struct PtpEventReader reader;
+	ptp_eos_events_open(r, &reader);
+
+	(*p) = malloc(sizeof(struct PtpGenericEvent) * reader.n_entries); // Leaks memory
+
+	struct PtpGenericEvent event;
+	int i = 0;
+	while (ptp_eos_events_next(r, &reader, &((*p)[i])) == 0) {
+		i++;
+	}
+
+	return i;
 }
 
 int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max) {

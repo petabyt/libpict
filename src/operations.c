@@ -145,7 +145,6 @@ int ptp_terminate_open_capture(struct PtpRuntime *r, int trans) {
 	return ptp_send(r, &cmd);
 }
 
-// TODO: Return PtpStorageIds
 int ptp_get_storage_ids(struct PtpRuntime *r, struct PtpArray **a) {
 	struct PtpCommand cmd;
 	cmd.code = PTP_OC_GetStorageIDs;

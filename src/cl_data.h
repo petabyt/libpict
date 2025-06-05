@@ -1,5 +1,6 @@
 /** \file */ 
-// PTP data structures - some very similar to the exact MTP/PTP spec.
+// PTP data structures. Byte-wise, most of them are very similar to the spec, but
+// aren't actually compatible (they aren't packed). Don't try and memcpy into them.
 #ifndef CL_DATA_H
 #define CL_DATA_H
 
@@ -7,11 +8,6 @@
 /// @brief Functions to pack/unpack PTP data structures
 /// @addtogroup Data
 /// @{
-
-struct PtpStorageIds {
-	uint32_t length;
-	uint32_t data[4];
-};
 
 // To store unpacked device info data, after parsing
 struct PtpDeviceInfo {

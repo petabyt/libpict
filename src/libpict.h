@@ -183,6 +183,13 @@ struct PtpGenericEvent {
 	int value;
 	const char *str_value;
 };
+/// @brief Stream reader state struct for struct PtpGenericEvent
+struct PtpEventReader {
+	unsigned int data_of;
+	unsigned int n_entries;
+	unsigned int index;
+	void *ptr;
+};
 
 /// @brief Generic PTP command structure - accepted by operation API
 struct PtpCommand {

@@ -113,7 +113,7 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 			continue;
 		}
 
-		// TODO: check altsetting length (garunteed to be >=1?)
+		// TODO: check altsetting length (guaranteed to be >=1?)
 
 		interf_desc = &interf->altsetting[0];
 

@@ -1,6 +1,5 @@
 // Generic device-independent interface for cameras
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <libpict.h>
 
