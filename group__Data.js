@@ -9,7 +9,6 @@ var group__Data =
     [ "PtpObjPropDesc", "structPtpObjPropDesc.html", null ],
     [ "PtpCanonEvent", "structPtpCanonEvent.html", null ],
     [ "PtpEOSViewFinderData", "structPtpEOSViewFinderData.html", null ],
-    [ "PtpEOSObject", "structPtpEOSObject.html", null ],
     [ "PtpMlLvInfo", "structPtpMlLvInfo.html", null ],
     [ "PtpMlLvHeader", "structPtpMlLvHeader.html", null ],
     [ "ptp_eos_events_json", "group__Data.html#gaf464eba46ed3dd3118bfb4dd3853acf5", null ],

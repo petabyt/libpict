@@ -127,19 +127,19 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gadae92a05d0a5cd35436746f036a5e62d" id="r_gadae92a05d0a5cd35436746f036a5e62d"><td class="memItemLeft" align="right" valign="top"><a id="gadae92a05d0a5cd35436746f036a5e62d" name="gadae92a05d0a5cd35436746f036a5e62d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_comm_init</b> (struct PtpRuntime *r)</td></tr>
-<tr class="memdesc:gadae92a05d0a5cd35436746f036a5e62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes backend. <br /></td></tr>
+<tr class="memitem:gadae92a05d0a5cd35436746f036a5e62d" id="r_gadae92a05d0a5cd35436746f036a5e62d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gadae92a05d0a5cd35436746f036a5e62d">ptp_comm_init</a> (struct PtpRuntime *r)</td></tr>
+<tr class="memdesc:gadae92a05d0a5cd35436746f036a5e62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes backend context.  <br /></td></tr>
 <tr class="separator:gadae92a05d0a5cd35436746f036a5e62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5057725a9fb659eb9de22ae127c4d3d6" id="r_ga5057725a9fb659eb9de22ae127c4d3d6"><td class="memItemLeft" align="right" valign="top"><a id="ga5057725a9fb659eb9de22ae127c4d3d6" name="ga5057725a9fb659eb9de22ae127c4d3d6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_comm_deinit</b> (struct PtpRuntime *r)</td></tr>
-<tr class="memdesc:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitializes backend and frees all memory. <br /></td></tr>
+<tr class="memdesc:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinits backend and frees all memory. <br /></td></tr>
 <tr class="separator:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga596013ea8ed4fcd564cb86ee4f1c7748" id="r_ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga596013ea8ed4fcd564cb86ee4f1c7748">ptpusb_device_list</a> (struct PtpRuntime *r)</td></tr>
 <tr class="memdesc:ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a linked list of USB or PTP Devices.  <br /></td></tr>
 <tr class="separator:ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac5e60abecb830370a1981c4137ed2571" id="r_gac5e60abecb830370a1981c4137ed2571"><td class="memItemLeft" align="right" valign="top"><a id="gac5e60abecb830370a1981c4137ed2571" name="gac5e60abecb830370a1981c4137ed2571"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_free_device_list</b> (struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *e)</td></tr>
+<tr class="memdesc:gac5e60abecb830370a1981c4137ed2571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the device entry linked list. <br /></td></tr>
 <tr class="separator:gac5e60abecb830370a1981c4137ed2571"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3d2ffef827171fd251881a6aefc9ae43" id="r_ga3d2ffef827171fd251881a6aefc9ae43"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga3d2ffef827171fd251881a6aefc9ae43">ptp_device_open</a> (struct PtpRuntime *r, struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *entry)</td></tr>
 <tr class="memdesc:ga3d2ffef827171fd251881a6aefc9ae43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open and connect to a device from the <a class="el" href="structPtpDeviceEntry.html" title="Linked-list entry for a single USB device.">PtpDeviceEntry</a> structure.  <br /></td></tr>
@@ -150,11 +150,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_device_init</b> (s
 <tr class="separator:ga68c97eb394db2c962ec2a9c9006deeec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac72f4c26d526549e07068cb6860456ff" id="r_gac72f4c26d526549e07068cb6860456ff"><td class="memItemLeft" align="right" valign="top"><a id="gac72f4c26d526549e07068cb6860456ff" name="gac72f4c26d526549e07068cb6860456ff"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_cmd_write</b> (struct PtpRuntime *r, void *to, unsigned int length)</td></tr>
-<tr class="memdesc:gac72f4c26d526549e07068cb6860456ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data over the raw command endpoint. <br /></td></tr>
+<tr class="memdesc:gac72f4c26d526549e07068cb6860456ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data over the raw command endpoint for USB backend. <br /></td></tr>
 <tr class="separator:gac72f4c26d526549e07068cb6860456ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac657c94a2e58f07e6f2bd54a7af81717" id="r_gac657c94a2e58f07e6f2bd54a7af81717"><td class="memItemLeft" align="right" valign="top"><a id="gac657c94a2e58f07e6f2bd54a7af81717" name="gac657c94a2e58f07e6f2bd54a7af81717"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_cmd_read</b> (struct PtpRuntime *r, void *to, unsigned int length)</td></tr>
-<tr class="memdesc:gac657c94a2e58f07e6f2bd54a7af81717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive raw data over the command endpoint. <br /></td></tr>
+<tr class="memdesc:gac657c94a2e58f07e6f2bd54a7af81717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive raw data over the command endpoint for USB backend. <br /></td></tr>
 <tr class="separator:gac657c94a2e58f07e6f2bd54a7af81717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2b30e11f9b8cad3955a9c726b37e0051" id="r_ga2b30e11f9b8cad3955a9c726b37e0051"><td class="memItemLeft" align="right" valign="top"><a id="ga2b30e11f9b8cad3955a9c726b37e0051" name="ga2b30e11f9b8cad3955a9c726b37e0051"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_device_reset</b> (struct PtpRuntime *r)</td></tr>
@@ -181,12 +181,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_device_close</b> (
 <tr class="separator:gac0bc9a3bcaaae45ae1efc7153d695390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab81114438be31afbb4aee572115237f2" id="r_gab81114438be31afbb4aee572115237f2"><td class="memItemLeft" align="right" valign="top"><a id="gab81114438be31afbb4aee572115237f2" name="gab81114438be31afbb4aee572115237f2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_cmd_write</b> (struct PtpRuntime *r, void *data, unsigned int size)</td></tr>
+<tr class="memdesc:gab81114438be31afbb4aee572115237f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data over the raw command endpoint for USB backend. <br /></td></tr>
 <tr class="separator:gab81114438be31afbb4aee572115237f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac5f9828b9bc606c3ebff9e7abee9c1e0" id="r_gac5f9828b9bc606c3ebff9e7abee9c1e0"><td class="memItemLeft" align="right" valign="top"><a id="gac5f9828b9bc606c3ebff9e7abee9c1e0" name="gac5f9828b9bc606c3ebff9e7abee9c1e0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_cmd_read</b> (struct PtpRuntime *r, void *data, unsigned int size)</td></tr>
+<tr class="memdesc:gac5f9828b9bc606c3ebff9e7abee9c1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive raw data over the command endpoint for USB backend. <br /></td></tr>
 <tr class="separator:gac5f9828b9bc606c3ebff9e7abee9c1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d809f403667acfe4fcb67cd614fab35" id="r_ga4d809f403667acfe4fcb67cd614fab35"><td class="memItemLeft" align="right" valign="top"><a id="ga4d809f403667acfe4fcb67cd614fab35" name="ga4d809f403667acfe4fcb67cd614fab35"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_connect_events</b> (struct PtpRuntime *r, const char *addr, int port)</td></tr>
+<tr class="memdesc:ga4d809f403667acfe4fcb67cd614fab35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect PTP/IP event socket. Port depends on implementation. <br /></td></tr>
 <tr class="separator:ga4d809f403667acfe4fcb67cd614fab35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafb0f10ddfadf18f3410b3e00a5cb3eb7" id="r_gafb0f10ddfadf18f3410b3e00a5cb3eb7"><td class="memItemLeft" align="right" valign="top"><a id="gafb0f10ddfadf18f3410b3e00a5cb3eb7" name="gafb0f10ddfadf18f3410b3e00a5cb3eb7"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_event_send</b> (struct PtpRuntime *r, void *data, unsigned int size)</td></tr>
@@ -196,13 +199,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_event_read</b> (
 <tr class="separator:ga388204986d2b2269a311237a83f53e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada9054f356e1232a75287a0ac9ae143e" id="r_gada9054f356e1232a75287a0ac9ae143e"><td class="memItemLeft" align="right" valign="top"><a id="gada9054f356e1232a75287a0ac9ae143e" name="gada9054f356e1232a75287a0ac9ae143e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_device_close</b> (struct PtpRuntime *r)</td></tr>
+<tr class="memdesc:gada9054f356e1232a75287a0ac9ae143e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect from a PTP/IP device. <br /></td></tr>
 <tr class="separator:gada9054f356e1232a75287a0ac9ae143e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga883fc46b212f25ae93614fa2a5867a8f" id="r_ga883fc46b212f25ae93614fa2a5867a8f"><td class="memItemLeft" align="right" valign="top"><a id="ga883fc46b212f25ae93614fa2a5867a8f" name="ga883fc46b212f25ae93614fa2a5867a8f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_free_device_list_entry</b> (void *)</td></tr>
+<tr class="memdesc:ga883fc46b212f25ae93614fa2a5867a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend must implement this to free the device_handle_ptr field in each device entry. <br /></td></tr>
 <tr class="separator:ga883fc46b212f25ae93614fa2a5867a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2c267928a1d92371f3f68ad74f3cec57" id="r_ga2c267928a1d92371f3f68ad74f3cec57"><td class="memItemLeft" align="right" valign="top"><a id="ga2c267928a1d92371f3f68ad74f3cec57" name="ga2c267928a1d92371f3f68ad74f3cec57"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_get_status</b> (struct PtpRuntime *r)</td></tr>
-<tr class="memdesc:ga2c267928a1d92371f3f68ad74f3cec57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get status of connected device. <br /></td></tr>
+<tr class="memdesc:ga2c267928a1d92371f3f68ad74f3cec57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get status of currently connected device This is a quick and cheap way to check if the connection is still established, which can be used if there isn't a vendor event polling mechanism. <br /></td></tr>
 <tr class="separator:ga2c267928a1d92371f3f68ad74f3cec57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -225,6 +230,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_get_status</b> 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gadae92a05d0a5cd35436746f036a5e62d" name="gadae92a05d0a5cd35436746f036a5e62d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadae92a05d0a5cd35436746f036a5e62d">&#9670;&#160;</a></span>ptp_comm_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ptp_comm_init </td>
+          <td>(</td>
+          <td class="paramtype">struct PtpRuntime *</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes backend context. </p>
+<dl class="section note"><dt>Note</dt><dd>On Windows this may run CoInitialize on the current thread </dd></dl>
+
+</div>
+</div>
 <a id="ga3d2ffef827171fd251881a6aefc9ae43" name="ga3d2ffef827171fd251881a6aefc9ae43"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga3d2ffef827171fd251881a6aefc9ae43">&#9670;&#160;</a></span>ptp_device_open()</h2>
 
