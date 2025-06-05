@@ -55,8 +55,7 @@ var searchData=
   ['ptpobjpropdesc_52',['PtpObjPropDesc',['../structPtpObjPropDesc.html',1,'']]],
   ['ptppropdesc_53',['PtpPropDesc',['../structPtpPropDesc.html',1,'']]],
   ['ptprangeform_54',['PtpRangeForm',['../structPtpRangeForm.html',1,'']]],
-  ['ptpstorageids_55',['PtpStorageIds',['../structPtpStorageIds.html',1,'']]],
-  ['ptpstorageinfo_56',['PtpStorageInfo',['../structPtpStorageInfo.html',1,'']]],
-  ['ptpusb_5fdevice_5flist_57',['ptpusb_device_list',['../group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748',1,'cl_backend.h']]],
-  ['ptpusb_5fget_5fstatus_58',['ptpusb_get_status',['../group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57',1,'cl_backend.h']]]
+  ['ptpstorageinfo_55',['PtpStorageInfo',['../structPtpStorageInfo.html',1,'']]],
+  ['ptpusb_5fdevice_5flist_56',['ptpusb_device_list',['../group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748',1,'cl_backend.h']]],
+  ['ptpusb_5fget_5fstatus_57',['ptpusb_get_status',['../group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57',1,'cl_backend.h']]]
 ];

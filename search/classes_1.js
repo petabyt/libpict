@@ -22,6 +22,5 @@ var searchData=
   ['ptpobjpropdesc_19',['PtpObjPropDesc',['../structPtpObjPropDesc.html',1,'']]],
   ['ptppropdesc_20',['PtpPropDesc',['../structPtpPropDesc.html',1,'']]],
   ['ptprangeform_21',['PtpRangeForm',['../structPtpRangeForm.html',1,'']]],
-  ['ptpstorageids_22',['PtpStorageIds',['../structPtpStorageIds.html',1,'']]],
-  ['ptpstorageinfo_23',['PtpStorageInfo',['../structPtpStorageInfo.html',1,'']]]
+  ['ptpstorageinfo_22',['PtpStorageInfo',['../structPtpStorageInfo.html',1,'']]]
 ];

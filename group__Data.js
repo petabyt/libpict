@@ -1,6 +1,5 @@
 var group__Data =
 [
-    [ "PtpStorageIds", "structPtpStorageIds.html", null ],
     [ "PtpDeviceInfo", "structPtpDeviceInfo.html", null ],
     [ "PtpStorageInfo", "structPtpStorageInfo.html", null ],
     [ "PtpObjectInfo", "structPtpObjectInfo.html", null ],
