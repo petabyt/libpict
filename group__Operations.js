@@ -1,6 +1,7 @@
 var group__Operations =
 [
     [ "ptp_download_object", "group__Operations.html#ga39a3a5f00b93263321de0080a9bfb639", null ],
+    [ "ptp_eos_get_event", "group__Operations.html#ga3be3e7ccc072baba02de2b7d16807b3e", null ],
     [ "ptp_eos_get_liveview", "group__Operations.html#gae6f3342f1fc2eb22f237bc3391864906", null ],
     [ "ptp_get_all_known", "group__Operations.html#ga5d911d76540aafe51bab744a6603dd3e", null ],
     [ "ptp_get_object", "group__Operations.html#gab2a74dc474f1a9f03242a1ac689875ca", null ],
