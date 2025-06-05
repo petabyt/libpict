@@ -164,10 +164,14 @@ int ptp_parse_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi);
 int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, unsigned int max);
 int ptp_object_info_json(const struct PtpObjectInfo *so, char *buffer, unsigned int max);
 int ptp_parse_storage_info(struct PtpRuntime *r, struct PtpStorageInfo *si);
-int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p);
-void *ptp_open_eos_events(struct PtpRuntime *r);
-void *ptp_get_eos_event(struct PtpRuntime *r, void *e, struct PtpCanonEvent *ce);
-
+__attribute__((deprecated)) int ptp_eos_events(struct PtpRuntime *r, struct PtpGenericEvent **p);
+/// @brif Open a stream reader to read the data currently in r->data from ptp_eos_get_event
+/// @note Not thread safe
+int ptp_eos_events_open(struct PtpRuntime *r, struct PtpEventReader *reader);
+/// @returns nonzero for end of stream
+/// @note Not thread safe
+int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, struct PtpGenericEvent *event)
+/// @brief Reads event list currently in r->data and converts to JSON
 int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max);
 
 // Standard property value converters (conv.c)

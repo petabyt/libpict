@@ -118,6 +118,7 @@ int ptp_eos_set_prop_value(struct PtpRuntime *r, int code, uint32_t value);
 int ptp_eos_set_event_mode(struct PtpRuntime *r, int mode);
 int ptp_eos_remote_release_off(struct PtpRuntime *r, int mode);
 int ptp_eos_remote_release_on(struct PtpRuntime *r, int mode);
+/// @brief Runs PTP_OC_EOS_GetEvent
 int ptp_eos_get_event(struct PtpRuntime *r);
 int ptp_eos_hdd_capacity_push(struct PtpRuntime *r);
 int ptp_eos_hdd_capacity_pop(struct PtpRuntime *r);
