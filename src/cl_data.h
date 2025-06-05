@@ -170,7 +170,7 @@ __attribute__((deprecated)) int ptp_eos_events(struct PtpRuntime *r, struct PtpG
 int ptp_eos_events_open(struct PtpRuntime *r, struct PtpEventReader *reader);
 /// @returns nonzero for end of stream
 /// @note Not thread safe
-int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, struct PtpGenericEvent *event)
+int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, struct PtpGenericEvent *event);
 /// @brief Reads event list currently in r->data and converts to JSON
 int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max);
 

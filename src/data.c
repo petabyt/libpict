@@ -627,7 +627,7 @@ int ptp_storage_info_json(const struct PtpStorageInfo *so, char *buffer, unsigne
 }
 
 int ptp_eos_prop_next(uint8_t *d, struct PtpGenericEvent *p) {
-	uint32_t code, value_u32, tmp;
+	uint32_t code, value_u32;
 	int value;
 
 	int of = 0;
