@@ -181,21 +181,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_parse_storage_info
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_events_json</b> (struct PtpRuntime *r, char *buffer, unsigned int max)</td></tr>
 <tr class="memdesc:gaf464eba46ed3dd3118bfb4dd3853acf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads event list currently in r-&gt;data and converts to JSON. <br /></td></tr>
 <tr class="separator:gaf464eba46ed3dd3118bfb4dd3853acf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad6ac0be7b0fb80473cf91604f33b7f98" id="r_gad6ac0be7b0fb80473cf91604f33b7f98"><td class="memItemLeft" align="right" valign="top"><a id="gad6ac0be7b0fb80473cf91604f33b7f98" name="gad6ac0be7b0fb80473cf91604f33b7f98"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_shutter</b> (int data, int dir)</td></tr>
-<tr class="separator:gad6ac0be7b0fb80473cf91604f33b7f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab1d95d55b47ea3bf462a402f500659c7" id="r_gab1d95d55b47ea3bf462a402f500659c7"><td class="memItemLeft" align="right" valign="top"><a id="gab1d95d55b47ea3bf462a402f500659c7" name="gab1d95d55b47ea3bf462a402f500659c7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_iso</b> (int data, int dir)</td></tr>
-<tr class="separator:gab1d95d55b47ea3bf462a402f500659c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f4046727d4dd1ea44063426d42fe8fb" id="r_ga9f4046727d4dd1ea44063426d42fe8fb"><td class="memItemLeft" align="right" valign="top"><a id="ga9f4046727d4dd1ea44063426d42fe8fb" name="ga9f4046727d4dd1ea44063426d42fe8fb"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_aperture</b> (int data, int dir)</td></tr>
-<tr class="separator:ga9f4046727d4dd1ea44063426d42fe8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga83582d9a601555f1b187a73c9651b8d4" id="r_ga83582d9a601555f1b187a73c9651b8d4"><td class="memItemLeft" align="right" valign="top"><a id="ga83582d9a601555f1b187a73c9651b8d4" name="ga83582d9a601555f1b187a73c9651b8d4"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_white_balance</b> (int data, int dir)</td></tr>
-<tr class="separator:ga83582d9a601555f1b187a73c9651b8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga447f35daf721ed9a3ec41157d4c8412f" id="r_ga447f35daf721ed9a3ec41157d4c8412f"><td class="memItemLeft" align="right" valign="top"><a id="ga447f35daf721ed9a3ec41157d4c8412f" name="ga447f35daf721ed9a3ec41157d4c8412f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_imgformat_value</b> (uint32_t data[5])</td></tr>
-<tr class="separator:ga447f35daf721ed9a3ec41157d4c8412f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47980bcc42c3d955f7e134531fba3b35" id="r_ga47980bcc42c3d955f7e134531fba3b35"><td class="memItemLeft" align="right" valign="top"><a id="ga47980bcc42c3d955f7e134531fba3b35" name="ga47980bcc42c3d955f7e134531fba3b35"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_shutter</b> (int data, int *out, int dir)</td></tr>
+<tr class="separator:ga47980bcc42c3d955f7e134531fba3b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ea4d7abf882528ba5ee08665c4cdc61" id="r_ga4ea4d7abf882528ba5ee08665c4cdc61"><td class="memItemLeft" align="right" valign="top"><a id="ga4ea4d7abf882528ba5ee08665c4cdc61" name="ga4ea4d7abf882528ba5ee08665c4cdc61"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_iso</b> (int data, int *out, int dir)</td></tr>
+<tr class="separator:ga4ea4d7abf882528ba5ee08665c4cdc61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29a676701da0f7f775f935c453be107a" id="r_ga29a676701da0f7f775f935c453be107a"><td class="memItemLeft" align="right" valign="top"><a id="ga29a676701da0f7f775f935c453be107a" name="ga29a676701da0f7f775f935c453be107a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_aperture</b> (int data, int *out, int dir)</td></tr>
+<tr class="separator:ga29a676701da0f7f775f935c453be107a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5da6728a86d515b157f17e409dddc7ac" id="r_ga5da6728a86d515b157f17e409dddc7ac"><td class="memItemLeft" align="right" valign="top"><a id="ga5da6728a86d515b157f17e409dddc7ac" name="ga5da6728a86d515b157f17e409dddc7ac"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_white_balance</b> (int data, int *out, int dir)</td></tr>
+<tr class="separator:ga5da6728a86d515b157f17e409dddc7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga972d3f472ecd1ac91db6b6035901e330" id="r_ga972d3f472ecd1ac91db6b6035901e330"><td class="memItemLeft" align="right" valign="top"><a id="ga972d3f472ecd1ac91db6b6035901e330" name="ga972d3f472ecd1ac91db6b6035901e330"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_eos_get_imgformat_value</b> (uint32_t data[5], int *out)</td></tr>
+<tr class="separator:ga972d3f472ecd1ac91db6b6035901e330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga444e62663c8f5cf6384f8d83b35681bd" id="r_ga444e62663c8f5cf6384f8d83b35681bd"><td class="memItemLeft" align="right" valign="top"><a id="ga444e62663c8f5cf6384f8d83b35681bd" name="ga444e62663c8f5cf6384f8d83b35681bd"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_pack_chdk_upload_file</b> (struct PtpRuntime *r, char *in, char *out, unsigned int *length)</td></tr>
 <tr class="separator:ga444e62663c8f5cf6384f8d83b35681bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
