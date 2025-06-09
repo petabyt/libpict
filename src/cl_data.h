@@ -167,11 +167,11 @@ int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, str
 int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max);
 
 // Standard property value converters (conv.c)
-int ptp_eos_get_shutter(int data, int dir);
-int ptp_eos_get_iso(int data, int dir);
-int ptp_eos_get_aperture(int data, int dir);
-int ptp_eos_get_white_balance(int data, int dir);
-int ptp_eos_get_imgformat_value(uint32_t data[5]);
+int ptp_eos_get_shutter(int data, int *out, int dir);
+int ptp_eos_get_iso(int data, int *out, int dir);
+int ptp_eos_get_aperture(int data, int *out, int dir);
+int ptp_eos_get_white_balance(int data, int *out, int dir);
+int ptp_eos_get_imgformat_value(uint32_t data[5], int *out);
 
 void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, unsigned int *length);
 

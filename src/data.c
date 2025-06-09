@@ -639,15 +639,15 @@ int ptp_eos_prop_next(uint8_t *d, struct PtpGenericEvent *p) {
 	const char *str_value = NULL;
 	switch (code) {
 	case PTP_DPC_EOS_Aperture:
-		value = ptp_eos_get_aperture(value, 0);
+		if (ptp_eos_get_aperture(value, &value, 0)) break;
 		name = "aperture";
 		break;
 	case PTP_DPC_EOS_ShutterSpeed:
-		value = ptp_eos_get_shutter(value, 0);
+		if (ptp_eos_get_shutter(value, &value, 0)) break;
 		name = "shutter speed";
 		break;
 	case PTP_DPC_EOS_ISOSpeed:
-		value = ptp_eos_get_iso(value, 0);
+		if (ptp_eos_get_iso(value, &value, 0)) break;
 		name = "iso";
 		break;
 	case PTP_DPC_EOS_BatteryPower:
@@ -663,7 +663,7 @@ int ptp_eos_prop_next(uint8_t *d, struct PtpGenericEvent *p) {
 			of += ptp_read_u32(d + of, &data[3]);
 			of += ptp_read_u32(d + of, &data[4]);
 			if (value == 1) {
-				value = ptp_eos_get_imgformat_value(data);
+				if (ptp_eos_get_imgformat_value(data, &value)) break;
 			} else {
 				value = IMG_FORMAT_RAW_JPEG;
 			}
@@ -689,8 +689,8 @@ int ptp_eos_prop_next(uint8_t *d, struct PtpGenericEvent *p) {
 		}
 		break;
 	case PTP_DPC_EOS_WhiteBalance:
+		if (ptp_eos_get_white_balance(value, &value, 0)) break;
 		name = "white balance";
-		value = ptp_eos_get_white_balance(value, 0);
 		break;
 	case PTP_DPC_EOS_FocusInfoEx:
 		name = "focused";

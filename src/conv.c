@@ -68,20 +68,21 @@ struct CanonShutterSpeed {
 	{10000 / 8000,0xa0},
 };
 
-int ptp_eos_get_shutter(int data, int dir) {
+int ptp_eos_get_shutter(int data, int *out, int dir) {
 	for (int i = 0; i < (int)(sizeof(canon_shutter) / sizeof(struct CanonShutterSpeed)); i++) {
 		if (dir) {
 			if (canon_shutter[i].value == data) {
-				return canon_shutter[i].data;
+				(*out) = canon_shutter[i].data;
+				return 0;
 			}
 		} else {
 			if (canon_shutter[i].data == data) {
-				return canon_shutter[i].value;
+				(*out) = canon_shutter[i].value;
+				return 0;
 			}
 		}
 	}
-
-	ptp_panic("%s\n", __func__);
+	return -1;
 }
 
 struct CanonISO {
@@ -108,20 +109,21 @@ struct CanonISO {
 	{12800, 0x78+8},
 };
 
-int ptp_eos_get_iso(int data, int dir) {
+int ptp_eos_get_iso(int data, int *out, int dir) {
 	for (int i = 0; i < (int)(sizeof(canon_iso) / sizeof(struct CanonISO)); i++) {
 		if (dir) {
 			if (canon_iso[i].value == data) {
-				return canon_iso[i].data;
+				(*out) = canon_iso[i].data;
+				return 0;
 			}
 		} else {
 			if (canon_iso[i].data == data) {
-				return canon_iso[i].value;
+				(*out) = canon_iso[i].value;
+				return 0;
 			}
 		}
 	}
-
-	ptp_panic("%s\n", __func__);
+	return -1;
 }
 
 #if 0
@@ -147,20 +149,21 @@ struct CanonWhiteBalance {
 	{PTP_WB_Florescent, 4}, // White florescent
 };
 
-int ptp_eos_get_white_balance(int data, int dir) {
+int ptp_eos_get_white_balance(int data, int *out, int dir) {
 	for (int i = 0; i < (int)(sizeof(canon_white_balance) / sizeof(canon_white_balance[0])); i++) {
 		if (dir) {
 			if (canon_white_balance[i].value == data) {
-				return canon_white_balance[i].data;
+				(*out) = canon_white_balance[i].data;
+				return 0;
 			}
 		} else {
 			if (canon_white_balance[i].data == data) {
-				return canon_white_balance[i].value;
+				(*out) = canon_white_balance[i].value;
+				return 0;
 			}
 		}
 	}
-
-	ptp_panic("%s\n", __func__);
+	return -1;
 }
 
 struct CanonAperture {
@@ -198,20 +201,21 @@ struct CanonAperture {
 	{3200, 0x58},
 };
 
-int ptp_eos_get_aperture(int data, int dir) {
+int ptp_eos_get_aperture(int data, int *out, int dir) {
 	for (int i = 0; i < (int)(sizeof(canon_aperture) / sizeof(struct CanonAperture)); i++) {
 		if (dir) {
 			if (canon_aperture[i].value == data) {
-				return canon_aperture[i].data;
+				(*out) = canon_aperture[i].data;
+				return 0;
 			}
 		} else {
 			if (canon_aperture[i].data == data) {
-				return canon_aperture[i].value;
+				(*out) = canon_aperture[i].value;
+				return 0;
 			}
 		}
 	}
-
-	return data;
+	return -1;
 }
 
 // Lots of confusing types (resolutions, raw+jpeg, superfine, etc)
@@ -226,12 +230,12 @@ struct CanonImageFormats {
 	{IMG_FORMAT_RAW_JPEG, {2, 16, 6, 0, 4, 16, 1, 0, 3}}, // RAW + HIGH JPG
 };
 
-int ptp_eos_get_imgformat_value(uint32_t data[5]) {
+int ptp_eos_get_imgformat_value(uint32_t data[5], int *out) {
 	for (int i = 0; i < (int)(sizeof(canon_imgformats) / sizeof(struct CanonImageFormats)); i++) {
 		if (!memcmp(canon_imgformats[i].data, data, sizeof(int) * 5)) {
-			return canon_imgformats[i].value;
+			(*out) = canon_imgformats[i].value;
+			return 0;
 		}
 	}
-
-	return 0;
+	return -1;
 }

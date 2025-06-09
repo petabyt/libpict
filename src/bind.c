@@ -584,7 +584,7 @@ struct RouteMap {
 };
 
 int bind_run_req(struct PtpRuntime *r, struct BindReq *bind) {
-	for (int i = 0; i < (int)(sizeof(routes) / sizeof(struct RouteMap)); i++) {
+	for (int i = 0; i < (int)(sizeof(routes) / sizeof(routes[0])); i++) {
 		if (!strcmp(routes[i].name, bind->name)) {
 			return routes[i].call(bind, r);
 		}
