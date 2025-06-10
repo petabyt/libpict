@@ -1,3 +1,4 @@
+# cmake -G Ninja -B build -DPTP_INCLUDE_EXAMPLES=ON -DPTP_INCLUDE_VCAM_TEST=ON
 cmake_minimum_required(VERSION 3.15)
 
 project(pict)
@@ -82,7 +83,7 @@ endif()
 
 add_library(libpict STATIC ${PICT_CORE} ${PLATFORM_LIB_FILES})
 target_compile_options(libpict
-    PRIVATE -Wall -Wshadow -Wcast-qual -Wpedantic -Werror=incompatible-pointer-types -Werror=deprecated-declarations -Wstrict-aliasing=3 -Werror=narrowing -DVERBOSE
+    PRIVATE -Wall -Wshadow -Wcast-qual -Wpedantic -Werror=incompatible-pointer-types -Werror=incompatible-pointer-types -Werror=deprecated-declarations -Wstrict-aliasing=3 -Werror=narrowing -DVERBOSE
 )
 target_include_directories(libpict PUBLIC ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(libpict PUBLIC ${PICT_LIBS})
@@ -105,7 +106,11 @@ endif()
 macro(add_example exe_name source)
     add_executable(${exe_name} ${source})
     target_include_directories(${exe_name} PUBLIC ${PROJECT_SOURCE_DIR}/src)
-    target_link_libraries(${exe_name} libpict)
+    if(WIN32)
+        target_link_libraries(${exe_name} libpict -lpthread -lurlmon -luuid -lws2_32)
+    else()
+        target_link_libraries(${exe_name} libpict)
+    endif()
 endmacro()
 
 if(PTP_INCLUDE_EXAMPLES)
@@ -120,11 +125,6 @@ if(PTP_INCLUDE_EXAMPLES)
     add_example(storage examples/storage.c)
     add_example(usb examples/usb.c)
     add_example(wifi examples/wifi.c)
-endif()
-
-if(WIN32 AND PTP_INCLUDE_WINDOWS_TEST)
-    add_executable(wintest examples/wintest.c)
-    target_link_libraries(wintest libpict -lpthread -lurlmon -luuid -lws2_32)
 endif()
 
 if(PTP_INCLUDE_VCAM_TEST)

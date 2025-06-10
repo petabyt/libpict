@@ -301,7 +301,7 @@ int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void
 
 int ptp_device_type(struct PtpRuntime *r) {
 	struct PtpDeviceInfo *di = r->di;
-	if (di == NULL) return PTP_DEV_EMPTY; // panic?
+	if (di == NULL) return PTP_DEV_EMPTY; // TODO: Run GetDeviceInfo manually?
 	if (!strcmp(di->manufacturer, "Canon Inc.") || !strcmp(di->manufacturer, "Canon.Inc")) {
 		if (ptp_check_opcode(r, PTP_OC_EOS_GetStorageIDs)) {
 			return PTP_DEV_EOS;
