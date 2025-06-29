@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['string_0',['string',['../structBindReq.html#a5aed745d61597c0dbf59f17e4e68ddbf',1,'BindReq']]]
+  ['io_5fkill_5fswitch_0',['io_kill_switch',['../structPtpRuntime.html#a295b65c4bba2f26117c04c041c5b48ab',1,'PtpRuntime']]]
 ];

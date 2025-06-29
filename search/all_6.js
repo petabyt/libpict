@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['lantern_20ptp_20ext_0',['Magic Lantern PTP Ext',['../md_docs_2ml.html',1,'']]],
-  ['libpict_1',['libpict',['../index.html',1,'']]],
-  ['license_2',['License',['../index.html#autotoc_md3',1,'']]]
+  ['features_0',['Features',['../index.html#autotoc_md1',1,'']]],
+  ['first_20parameter_1',['First Parameter',['../md_docs_2ml.html#autotoc_md5',1,'']]]
 ];
