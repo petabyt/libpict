@@ -197,7 +197,7 @@ int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd) {
 		return PTP_IO_ERR;
 	}
 
-	ptp_verbose_log("Sending %04x with %d params\n", cmd->code, cmd->param_length);
+	ptp_verbose_log("Sending %04x with %d params (%d, %d)\n", cmd->code, cmd->param_length, cmd->params[0], cmd->params[1]);
 
 	r->data_phase_length = 0;
 
