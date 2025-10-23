@@ -271,7 +271,9 @@ int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void
 
 	// Resize buffer if needed
 	if (length + 50 > r->data_length) {
-		ptp_buffer_resize(r, 100 + length);
+		int rc = ptp_buffer_resize(r, length);
+		ptp_mutex_unlock(r);
+		if (rc) return rc;
 	}
 
 	// If our command is ignored (we get 0 bytes as a response), try sending the
