@@ -1,5 +1,6 @@
-# cmake -G Ninja -B build -DPTP_INCLUDE_EXAMPLES=ON -DPTP_INCLUDE_VCAM_TEST=ON
+# cmake -G Ninja -B build -DPTP_INCLUDE_EXAMPLES=ON -DPTP_INCLUDE_VCAM_TEST=ON -DPTP_INCLUDE_CLI=ON
 cmake_minimum_required(VERSION 3.15)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(pict)
 
@@ -9,11 +10,11 @@ option(PTP_DEFAULT_LOGGING "Include default log/panic/error implementation" ON)
 option(PTP_INCLUDE_CLI "Include CLI program" OFF)
 option(PTP_USE_LIBUSB "Use LibUSB backend on UNIX platforms" ON)
 option(PTP_INCLUDE_EXAMPLES "Include examples" OFF)
-option(PTP_INCLUDE_VCAM_TEST "Include vcam test" OFF)
+option(PTP_INCLUDE_VCAM_TEST "Use vcam backend instead of libusb" OFF)
 option(PTP_INCLUDE_BIND "Include optional bind.c" ON)
 option(PTP_NO_USB "Compile src/no_usb.c in place of libusb/libwpd" OFF)
 option(PTP_NO_TCP "Compile no_ip.c in place of TCP code" OFF)
-option(PTP_INCLUDE_WINDOWS_TEST "Pull in libwpd and test windows compilation" OFF)
+#option(PTP_INCLUDE_WINDOWS_TEST "Pull in libwpd and test windows compilation" OFF)
 
 set(PICT_CORE
     src/operations.c
@@ -50,7 +51,22 @@ if(PTP_NO_USB)
     set(PLATFORM_LIB_FILES src/no_usb.c)
 endif()
 
-if(UNIX AND PTP_USE_LIBUSB AND NOT PTP_NO_USB)
+if(PTP_INCLUDE_VCAM_TEST)
+    if(EXISTS "${CMAKE_SOURCE_DIR}/../vcam")
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../vcam ${CMAKE_CURRENT_BINARY_DIR}/vcam)
+    else()
+        include(FetchContent)
+        FetchContent_Declare(vcam GIT_REPOSITORY https://github.com/petabyt/vcam GIT_TAG master GIT_SHALLOW 1)
+        FetchContent_MakeAvailable(vcam)
+    endif()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(LIBUSB libusb-1.0)
+    add_library(include_libusb INTERFACE)
+    target_include_directories(include_libusb INTERFACE ${LIBUSB_INCLUDE_DIRS})
+
+    list(APPEND PICT_LIBS usb-vcam include_libusb)
+    list(APPEND PICT_CORE src/libusb.c)
+elseif(UNIX AND PTP_USE_LIBUSB AND NOT PTP_NO_USB)
     if(TARGET usb-1.0)
         list(APPEND PICT_LIBS usb-1.0)
     else()
@@ -90,15 +106,25 @@ target_include_directories(libpict PUBLIC ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(libpict PUBLIC ${PICT_LIBS})
 set_target_properties(libpict PROPERTIES OUTPUT_NAME pict) # libpict.a
 
+if(PTP_INCLUDE_VCAM_TEST)
+    add_executable(test test/test.c test/data.c)
+    target_link_libraries(test libpict usb-vcam)
+endif()
+
 if(PTP_INCLUDE_CLI)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LIBPCAP REQUIRED IMPORTED_TARGET GLOBAL libpcap)
+    pkg_check_modules(LUA53 REQUIRED IMPORTED_TARGET GLOBAL lua5.3)
     add_executable(ptp
         src/cli.c
         src/dec.c
+
+        src/lua/lua.c
+        src/lua/lua-cjson/lua_cjson.c
+        src/lua/lua-cjson/strbuf.c
     )
-    target_include_directories(ptp PUBLIC ${PROJECT_SOURCE_DIR}/src)
-    target_link_libraries(ptp libpict PkgConfig::LIBPCAP)
+    target_include_directories(ptp PUBLIC ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/src/lua)
+    target_link_libraries(ptp libpict PkgConfig::LIBPCAP PkgConfig::LUA53 m)
     install(
         TARGETS ptp
     )
@@ -126,17 +152,4 @@ if(PTP_INCLUDE_EXAMPLES)
     add_example(storage examples/storage.c)
     add_example(usb examples/usb.c)
     add_example(wifi examples/wifi.c)
-endif()
-
-if(PTP_INCLUDE_VCAM_TEST)
-    if(EXISTS "${CMAKE_SOURCE_DIR}/../vcam")
-        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../vcam ${CMAKE_CURRENT_BINARY_DIR}/vcam)
-    else()
-        include(FetchContent)
-        FetchContent_Declare(vcam GIT_REPOSITORY https://github.com/petabyt/vcam GIT_TAG master GIT_SHALLOW 1)
-        FetchContent_MakeAvailable(vcam)
-    endif()
-
-    add_executable(test test/test.c test/data.c)
-    target_link_libraries(test libpict usb-vcam)
 endif()

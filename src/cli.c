@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libpict.h>
+#include <libpict_lua.h>
 
 int ptp_decode_output(const char *mode, const char *input, const char *output);
 
@@ -134,19 +135,36 @@ static int test(void) {
 	return 0;
 }
 
+static int run_lua(const char *filename) {
+	lua_State *L = luaL_newstate();
+	luaopen_base(L);
+	luaL_requiref(L, "json", luaopen_cjson, 1);
+	luaL_requiref(L, "ptp", luaopen_ptp, 1);
+	luaL_requiref(L, "string", luaopen_string, 1);
+	if (luaL_dofile(L, filename)) {
+		printf("%s\n", lua_tostring(L, -1));
+	}
+	lua_close(L);
+	return 0;
+}
+
 int main(int argc, char **argv) {
 	extern int ptp_verbose;
-	ptp_verbose = 1;
+	ptp_verbose = 0;
 	struct Options o;
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], "--help")) {
 			return usage();
+		} else if (!strcmp(argv[i], "--verbose")) {
+			ptp_verbose = 1;
 		} else if (!strcmp(argv[i], "--run")) {
 			return parse_run(&o, argc, argv, i + 1);
 		} else if (!strcmp(argv[i], "--test")) {
 			int rc = test();
 			printf("Return code: %d\n", rc);
 			return rc;
+		} else if (!strcmp(argv[i], "--lua")) {
+			return run_lua(argv[i + 1]);
 		} else if (!strcmp(argv[i], "--dec")) {
 			char *type = "wifi";
 			if ((argc - i) > 3) type = argv[i + 3];

@@ -3,14 +3,14 @@
 
 /* Some snippets, if you dare to run them:
 Show green on display:
-ptp_eos_evproc_run(&r, "UndisplayPhysicalScreen");
-ptp_eos_evproc_run(&r, "CreateColor %d %d %d", 0, 70, 0);
+ptp_eos_evproc_run(r, "UndisplayPhysicalScreen");
+ptp_eos_evproc_run(r, "CreateColor %d %d %d", 0, 70, 0);
 
 Dump gangfile, all 0xFF:
-ptp_eos_evproc_run(&r, "gang 'B:/ASD.BIN'");
+ptp_eos_evproc_run(r, "gang 'B:/ASD.BIN'");
 
 Write to RAM (or ROM, if you're not careful):
-ptp_eos_evproc_run(&r, "writeaddr %d %d", 0x3780, 0x12345678);
+ptp_eos_evproc_run(r, "writeaddr %d %d", 0x3780, 0x12345678);
 */
 
 int main(void) {

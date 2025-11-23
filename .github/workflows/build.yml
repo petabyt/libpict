@@ -18,7 +18,7 @@ jobs:
         git submodule update --init --recursive
 
     - name: Install dependencies
-      run: sudo apt install libusb-1.0-0-dev libexif-dev cmake libpcap-dev
+      run: sudo apt install libusb-1.0-0-dev libexif-dev cmake libpcap-dev liblua5.3-dev
 
     - name: Build everything
       run: cmake -DPTP_INCLUDE_CLI=ON -DPTP_INCLUDE_EXAMPLES=ON -DPTP_INCLUDE_BIND=ON -B build -G Ninja && cmake --build build

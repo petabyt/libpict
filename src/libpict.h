@@ -231,11 +231,11 @@ PUB unsigned int ptp_get_payload_length(struct PtpRuntime *r);
 /// @brief Allocate new PtpRuntime based on bitfield options - see PtpConnType
 PUB struct PtpRuntime *ptp_new(int options);
 
-/// @brief Reset all session-specific fields of PtpRuntime - both libusb and libwpd backends call
-/// this before establishing connection, so calling this is not required
+/// @brief Resets all session-specific fields of PtpRuntime
+/// This must be called if you plan to use the same PtpRuntime between connections
 PUB void ptp_reset(struct PtpRuntime *r);
 
-/// @brief Init PtpRuntime locally - uses default recommended settings (USB)
+/// @brief Init PtpRuntime struct
 PUB void ptp_init(struct PtpRuntime *r);
 
 /// @brief Frees PtpRuntime data buffer - doesn't free the actual structure, or device info (yet)

@@ -8,14 +8,7 @@
 #include <lauxlib.h>
 #include <libpict.h>
 
-struct PtpLuaContext {
-	struct PtpRuntime *r;
-};
-
-struct PtpRuntime *luaptp_get_runtime(lua_State *L) {
-	struct PtpLuaContext *p = luaL_checkudata(L, 1, "PtpMetaTable");
-	return p->r;
-}
+struct PtpRuntime *luaptp_get_runtime(lua_State *L);
 
 // lua-cjson
 void lua_json_decode(lua_State *l, const char *json_text, int json_len);
@@ -34,28 +27,10 @@ static int mylua_set_property(lua_State *L) {
 	return 1;
 }
 
-static int mylua_open_session(lua_State *L) {
-	struct PtpRuntime *r = luaptp_get_runtime(L);
-	lua_pushinteger(L, ptp_open_session(r));
-	return 1;
-}
-
-static int mylua_close_session(lua_State *L) {
-	struct PtpRuntime *r = luaptp_get_runtime(L);
-	lua_pushinteger(L, ptp_close_session(r));
-	return 1;
-}
-
-static int mylua_disconnect(lua_State *L) {
-	struct PtpRuntime *r = luaptp_get_runtime(L);
-	lua_pushinteger(L, ptp_device_close(r));
-	return 1;
-}
-
 static int mylua_device_info(lua_State *L) {
 	struct PtpRuntime *r = luaptp_get_runtime(L);
 
-	struct PtpDeviceInfo di;
+	struct PtpDeviceInfo	 di;
 	int rc = ptp_get_device_info(r, &di);
 	if (rc) {
 		lua_pushinteger(L, rc);
@@ -159,31 +134,6 @@ static int mylua_send_operation(lua_State *L) {
 	return 1;
 }
 
-static void add_func(lua_State *L, const char *name, int (*func)(lua_State *L)) {
-	lua_pushcfunction(L, func);
-	lua_setfield(L, -2, name);
-}
-
-void ptp_init_lua_object(lua_State *L, struct PtpRuntime *r) {
-	if (luaL_newmetatable(L, "PtpMetaTable")) {
-		lua_newtable(L);
-		add_func(L, "openSession", mylua_open_session);
-		add_func(L, "closeSession", mylua_close_session);
-		add_func(L, "disconnect", mylua_disconnect);
-		add_func(L, "getDeviceInfo", mylua_device_info);
-		add_func(L, "takePicture", mylua_take_picture);
-		add_func(L, "setProperty", mylua_set_property);
-		add_func(L, "sendOperation", mylua_send_operation);
-		lua_setfield(L, -2, "__index");
-		lua_pop(L, 1);
-	}
-
-	struct PtpLuaContext *p = lua_newuserdata(L, sizeof(struct PtpLuaContext));
-	p->r = r;
-	luaL_getmetatable(L, "PtpMetaTable");
-	lua_setmetatable(L, -2);
-}
-
 static int mylua_test(lua_State *L) {
 	struct PtpRuntime *r = luaptp_get_runtime(L);
 
@@ -196,28 +146,25 @@ static int mylua_test(lua_State *L) {
 }
 
 static int mylua_connect(lua_State *L) {
-	struct PtpRuntime *r = ptp_new(PTP_USB);
+	struct PtpRuntime *r = luaptp_get_runtime(L);
 
-	int rc = ptp_device_init(r);
-	if (rc) {
-		ptp_close(r);
-		lua_pushinteger(L, rc);
-		return 1;
-	}
-
-	ptp_init_lua_object(L, r);
+	lua_pushinteger(L, 0);
 
 	return 1;
 }
 
+
 static const luaL_Reg ptplib[] = {
 	{"test",			mylua_test},
+	{"getDeviceInfo",	mylua_device_info},
+	{"takePicture",		mylua_take_picture},
+	{"setProperty",     mylua_set_property},
+	{"sendOperation",	mylua_send_operation},
 	{"connect",			mylua_connect},
 	{NULL, NULL}
 };
 
-
-static void new_const(lua_State *L, const char *name, int val) {
+static void new_const(lua_State *L, char *name, int val) {
 	lua_pushstring(L, name);
 	lua_pushnumber(L, val);
 	lua_settable(L, -3);
