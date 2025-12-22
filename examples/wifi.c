@@ -68,13 +68,7 @@ int main(void) {
 		ptp_eos_set_remote_mode(r, 1);
 		ptp_eos_set_event_mode(r, 1);
 
-		int rc = ptp_eos_get_event(r);
-		if (rc) return rc;
-		length = ptp_eos_events(r, &s);
-		
-		for (int i = 0; i < length; i++) {
-			//printf("%X = %X\n", s[i].code, s[i].value);
-		}
+		// ...
 	}
 
 	rc = ptp_set_generic_property(r, "shutter speed", 2500000);

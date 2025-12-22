@@ -25,7 +25,7 @@ Get device info:
 int main() {
 	struct PtpRuntime *r = ptp_new(PTP_USB);
 
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		printf("Device connection error\n");
 		return 0;
 	}

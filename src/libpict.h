@@ -12,7 +12,7 @@
 // Max timeout for command read/writes
 #define PTP_TIMEOUT 1000
 
-// How much ms to wait for r->wait_for_response
+// Units of time in ms to sleep for r->wait_for_response
 #define PTP_WAIT_MS 1000
 
 // Conforms to POSIX 2001, some compilers may not have it
@@ -336,36 +336,21 @@ int ptpusb_new_data_packet(struct PtpRuntime *r, const struct PtpCommand *cmd, c
 unsigned int ptpip_data_start_packet(struct PtpRuntime *r, unsigned int data_length);
 unsigned int ptpip_data_end_packet(struct PtpRuntime *r, const void *data, unsigned int data_length);
 
-// Used only by ptp_open_session
-__attribute__((deprecated))
-void ptp_update_transaction(struct PtpRuntime *r, int t);
-
 // Set avail info for prop
 void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_size, unsigned int cnt, void *data);
-
-__attribute__((deprecated))
-void *ptp_dup_payload(struct PtpRuntime *r);
 
 /// @brief Write r->data to a file called DUMP
 /// @note Debugging only
 int ptp_dump(struct PtpRuntime *r);
+
+/// @brief Quick function to run script through Lua bindings (if it's compiled in)
+int ptp_run_lua(const char *filename);
 
 #include "cl_data.h"
 #include "cl_backend.h"
 #include "cl_ops.h"
 #include "cl_enum.h"
 #include "cl_bind.h"
-
-// Backwards compatibility (mostly renamed functions)
-#ifdef PTP_OLD_FUNC_COMPAT
-	#define ptp_get_last_transaction(...) ptp_get_last_transaction_id(__VA_ARGS__)
-	#define ptp_generic_new(...) ptp_new(__VA_ARGS__)
-	#define ptp_generic_close(...) ptp_close(__VA_ARGS__)
-	#define ptp_generic_reset(...) ptp_reset(__VA_ARGS__)
-	#define ptp_generic_init(...) ptp_init(__VA_ARGS__)
-	#define ptp_generic_send(...) ptp_send(__VA_ARGS__)
-	#define ptp_generic_send_data(...) ptp_send_data(__VA_ARGS__)
-#endif
 
 #undef PUB // avoid conflict
 

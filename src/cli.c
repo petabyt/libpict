@@ -6,6 +6,8 @@
 #include <libpict_lua.h>
 
 int ptp_decode_output(const char *mode, const char *input, const char *output);
+int ptp_run_lua(const char *filename);
+int ptp_run_quickjs(const char *filename);
 
 struct Options {
 	int do_open_sessions;	
@@ -23,6 +25,8 @@ static int usage(void) {
 		"    Invoke the binding API\n"
 		"  --dont-open-session\n"
 		"    (A session is opened/closed by default)\n"
+		"  --lua <script>\n"
+		"    Run a Lua script using the Lua bindings\n"
 		"Examples:\n"
 		"  --run ptp_hello_world 1 2 3 \"Hello, World\"\n"
 	);
@@ -41,7 +45,7 @@ static int out_printf(struct BindReq *bind, char *fmt, ...) {
 static int run_binding(struct Options *o, struct BindReq *br) {
 	struct PtpRuntime *r = ptp_new(PTP_USB);
 
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		printf("Device connection error\n");
 		return 1;
 	}
@@ -100,7 +104,7 @@ static int parse_run(struct Options *o, int argc, char **argv, int i) {
 static int test(void) {
 	struct PtpRuntime *r = ptp_new(PTP_USB);
 
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		printf("Device connection error\n");
 		return 1;
 	}
@@ -135,19 +139,6 @@ static int test(void) {
 	return 0;
 }
 
-static int run_lua(const char *filename) {
-	lua_State *L = luaL_newstate();
-	luaopen_base(L);
-	luaL_requiref(L, "json", luaopen_cjson, 1);
-	luaL_requiref(L, "ptp", luaopen_ptp, 1);
-	luaL_requiref(L, "string", luaopen_string, 1);
-	if (luaL_dofile(L, filename)) {
-		printf("%s\n", lua_tostring(L, -1));
-	}
-	lua_close(L);
-	return 0;
-}
-
 int main(int argc, char **argv) {
 	extern int ptp_verbose;
 	ptp_verbose = 0;
@@ -164,7 +155,9 @@ int main(int argc, char **argv) {
 			printf("Return code: %d\n", rc);
 			return rc;
 		} else if (!strcmp(argv[i], "--lua")) {
-			return run_lua(argv[i + 1]);
+			return ptp_run_lua(argv[i + 1]);
+		} else if (!strcmp(argv[i], "--js")) {
+			return ptp_run_quickjs(argv[i + 1]);
 		} else if (!strcmp(argv[i], "--dec")) {
 			char *type = "wifi";
 			if ((argc - i) > 3) type = argv[i + 3];

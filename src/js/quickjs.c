@@ -26,7 +26,7 @@ static JSValue throw_rc_err(JSContext *ctx, int rc) {
 
 static JSValue connect(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst argv[]) {
 	struct PtpRuntime *r = JS_GetOpaque(this_val, class_id);
-	int rc = ptp_device_init(r);
+	int rc = ptp_device_connect(r);
 	return JS_NewInt32(ctx, rc);
 }
 

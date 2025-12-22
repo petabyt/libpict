@@ -7,7 +7,7 @@
 int main(void) {
 	struct PtpRuntime *r = ptp_new(PTP_USB);
 
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		puts("Device connection error");
 		return 0;
 	}

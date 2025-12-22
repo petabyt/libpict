@@ -9,7 +9,7 @@ int main(void) {
 
 	struct PtpDeviceInfo di;
 
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		puts("Device connection error");
 		return 0;
 	}

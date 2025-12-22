@@ -7,8 +7,6 @@
 /// @addtogroup Backend
 /// @{
 
-#define PTP_TIMEOUT 1000
-
 /// @brief Linked-list entry for a single USB device
 struct PtpDeviceEntry {
 	struct PtpDeviceEntry *prev;
@@ -28,13 +26,6 @@ struct PtpDeviceEntry {
 	struct PtpDeviceEntry *next;
 };
 
-/// @brief Initializes backend context
-/// @note On Windows this may run CoInitialize on the current thread
-int ptp_comm_init(struct PtpRuntime *r);
-
-/// @brief Deinits backend and frees all memory
-void ptp_comm_deinit(struct PtpRuntime *r);
-
 /// @brief Get a linked list of USB or PTP Devices
 /// @returns linked list of devices or NULL if no devices are connected (or OS error)
 struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r);
@@ -47,7 +38,7 @@ void ptpusb_free_device_list(struct PtpDeviceEntry *e);
 int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry);
 
 /// @brief Connects to the first PTP device it finds
-int ptp_device_init(struct PtpRuntime *r);
+int ptp_device_connect(struct PtpRuntime *r);
 
 /// @brief Send data over the raw command endpoint for USB backend
 int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length);
@@ -90,6 +81,20 @@ void ptpusb_free_device_list_entry(void *);
 /// This is a quick and cheap way to check if the connection is still established, which
 /// can be used if there isn't a vendor event polling mechanism
 int ptpusb_get_status(struct PtpRuntime *r);
+
+/// @brief Initializes backend context
+/// @note On Windows this may run CoInitialize on the current thread
+int ptp_comm_init(struct PtpRuntime *r);
+
+/// @brief Deinits backend and frees all memory
+void ptp_comm_deinit(struct PtpRuntime *r);
+
+// old api
+__attribute__((deprecated))
+__attribute__((unused))
+static int ptp_device_init(struct PtpRuntime *r) {
+	return ptp_device_connect(r);
+}
 
 /// @}
 

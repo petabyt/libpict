@@ -10,7 +10,7 @@
 int test_data(void);
 
 int test_setup_usb(struct PtpRuntime *r) {
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		puts("Device connection error");
 		return 1;
 	}

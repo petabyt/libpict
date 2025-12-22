@@ -203,7 +203,7 @@ static int mylua_test(lua_State *L) {
 static int mylua_connect(lua_State *L) {
 	struct PtpRuntime *r = ptp_new(PTP_USB);
 
-	int rc = ptp_device_init(r);
+	int rc = ptp_device_connect(r);
 	if (rc) {
 		ptp_close(r);
 		lua_pushnil(L);

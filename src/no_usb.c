@@ -2,7 +2,7 @@
 #include <libpict.h>
 #include <ptp.h>
 
-int ptp_device_init(struct PtpRuntime *r) {
+int ptp_device_connect(struct PtpRuntime *r) {
     return -1;
 }
 

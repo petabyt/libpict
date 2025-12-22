@@ -28,7 +28,7 @@ void ptp_comm_deinit(struct PtpRuntime *r) {
 		wpd_close(r->comm_backend);
 }
 
-int ptp_device_init(struct PtpRuntime *r) {
+int ptp_device_connect(struct PtpRuntime *r) {
 	if (!r->io_kill_switch) {
 		ptp_verbose_log("Connection is active\n");
 		return PTP_IO_ERR;

@@ -256,7 +256,7 @@ void ptpusb_free_device_list_entry(void *ptr) {
 	// TODO: free libusb_device
 }
 
-int ptp_device_init(struct PtpRuntime *r) {
+int ptp_device_connect(struct PtpRuntime *r) {
 	ptp_comm_init(r);
 	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
 

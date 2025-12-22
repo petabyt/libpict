@@ -14,7 +14,7 @@ int main(void) {
 		printf("Device: %s\tVendor: \t%X\n", curr->name, curr->vendor_id);
 	}
 
-	if (ptp_device_init(r)) {
+	if (ptp_device_connect(r)) {
 		printf("Device connection error\n");
 		return 1;
 	}

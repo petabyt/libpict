@@ -39,7 +39,7 @@ int bind_connect(struct BindReq *bind, struct PtpRuntime *r) {
 	r->transaction = 0;
 	r->session = 0;
 
-	int x = ptp_device_init(r);
+	int x = ptp_device_connect(r);
 	return bind->out(bind, "{\"error\": %d}", x);
 }
 
