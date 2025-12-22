@@ -131,7 +131,7 @@ Sample</h1>
 <div class="line">int main() {</div>
 <div class="line">    struct PtpRuntime *r = ptp_new(PTP_USB);</div>
 <div class="line"> </div>
-<div class="line">    if (ptp_device_init(r)) {</div>
+<div class="line">    if (ptp_device_connect(r)) {</div>
 <div class="line">        printf(&quot;Device connection error\n&quot;);</div>
 <div class="line">        return 0;</div>
 <div class="line">    }</div>

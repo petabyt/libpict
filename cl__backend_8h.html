@@ -105,7 +105,6 @@ $(function(){initNavTree('cl__backend_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">cl_backend.h File Reference</div></div>
 </div><!--header-->
@@ -119,20 +118,8 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked-list entry for a single USB device.  <a href="structPtpDeviceEntry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gab83ed4aa016360044bc0c6aa5d058437" id="r_gab83ed4aa016360044bc0c6aa5d058437"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Backend.html#gab83ed4aa016360044bc0c6aa5d058437">PTP_TIMEOUT</a>&#160;&#160;&#160;1000</td></tr>
-<tr class="separator:gab83ed4aa016360044bc0c6aa5d058437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gadae92a05d0a5cd35436746f036a5e62d" id="r_gadae92a05d0a5cd35436746f036a5e62d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Backend.html#gadae92a05d0a5cd35436746f036a5e62d">ptp_comm_init</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
-<tr class="memdesc:gadae92a05d0a5cd35436746f036a5e62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes backend context.  <br /></td></tr>
-<tr class="separator:gadae92a05d0a5cd35436746f036a5e62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5057725a9fb659eb9de22ae127c4d3d6" id="r_ga5057725a9fb659eb9de22ae127c4d3d6"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_comm_deinit</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
-<tr class="memdesc:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinits backend and frees all memory. <br /></td></tr>
-<tr class="separator:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga596013ea8ed4fcd564cb86ee4f1c7748" id="r_ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748">ptpusb_device_list</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
 <tr class="memdesc:ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a linked list of USB or PTP Devices.  <br /></td></tr>
 <tr class="separator:ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,10 +130,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_free_device_li
 <tr class="memitem:ga3d2ffef827171fd251881a6aefc9ae43" id="r_ga3d2ffef827171fd251881a6aefc9ae43"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Backend.html#ga3d2ffef827171fd251881a6aefc9ae43">ptp_device_open</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *entry)</td></tr>
 <tr class="memdesc:ga3d2ffef827171fd251881a6aefc9ae43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open and connect to a device from the <a class="el" href="structPtpDeviceEntry.html" title="Linked-list entry for a single USB device.">PtpDeviceEntry</a> structure.  <br /></td></tr>
 <tr class="separator:ga3d2ffef827171fd251881a6aefc9ae43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68c97eb394db2c962ec2a9c9006deeec" id="r_ga68c97eb394db2c962ec2a9c9006deeec"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_device_init</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
-<tr class="memdesc:ga68c97eb394db2c962ec2a9c9006deeec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects to the first PTP device it finds. <br /></td></tr>
-<tr class="separator:ga68c97eb394db2c962ec2a9c9006deeec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f9e8b48aea3b966c7ca3bd7cd789802" id="r_ga4f9e8b48aea3b966c7ca3bd7cd789802"><td class="memItemLeft" align="right" valign="top">
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_device_connect</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
+<tr class="memdesc:ga4f9e8b48aea3b966c7ca3bd7cd789802"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects to the first PTP device it finds. <br /></td></tr>
+<tr class="separator:ga4f9e8b48aea3b966c7ca3bd7cd789802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac72f4c26d526549e07068cb6860456ff" id="r_gac72f4c26d526549e07068cb6860456ff"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_cmd_write</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, void *to, unsigned int length)</td></tr>
 <tr class="memdesc:gac72f4c26d526549e07068cb6860456ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data over the raw command endpoint for USB backend. <br /></td></tr>
@@ -208,6 +195,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_free_device_li
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpusb_get_status</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
 <tr class="memdesc:ga2c267928a1d92371f3f68ad74f3cec57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get status of currently connected device This is a quick and cheap way to check if the connection is still established, which can be used if there isn't a vendor event polling mechanism. <br /></td></tr>
 <tr class="separator:ga2c267928a1d92371f3f68ad74f3cec57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadae92a05d0a5cd35436746f036a5e62d" id="r_gadae92a05d0a5cd35436746f036a5e62d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Backend.html#gadae92a05d0a5cd35436746f036a5e62d">ptp_comm_init</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
+<tr class="memdesc:gadae92a05d0a5cd35436746f036a5e62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes backend context.  <br /></td></tr>
+<tr class="separator:gadae92a05d0a5cd35436746f036a5e62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5057725a9fb659eb9de22ae127c4d3d6" id="r_ga5057725a9fb659eb9de22ae127c4d3d6"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_comm_deinit</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
+<tr class="memdesc:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinits backend and frees all memory. <br /></td></tr>
+<tr class="separator:ga5057725a9fb659eb9de22ae127c4d3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6a0f42e3e6bfcbb203ed9f99b60a8392" id="r_ga6a0f42e3e6bfcbb203ed9f99b60a8392"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Backend.html#ga6a0f42e3e6bfcbb203ed9f99b60a8392">__attribute__</a> ((deprecated)) __attribute__((unused)) static int ptp_device_init(struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
+<tr class="separator:ga6a0f42e3e6bfcbb203ed9f99b60a8392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

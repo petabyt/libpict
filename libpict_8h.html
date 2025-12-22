@@ -107,8 +107,7 @@ $(function(){initNavTree('libpict_8h.html',''); initResizable(true); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">libpict.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -338,20 +337,16 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_data_st
 <tr class="memitem:a0b3cf16c99d5ffe24d4f97235c444bdc" id="r_a0b3cf16c99d5ffe24d4f97235c444bdc"><td class="memItemLeft" align="right" valign="top"><a id="a0b3cf16c99d5ffe24d4f97235c444bdc" name="a0b3cf16c99d5ffe24d4f97235c444bdc"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>ptpip_data_end_packet</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, const void *data, unsigned int data_length)</td></tr>
 <tr class="separator:a0b3cf16c99d5ffe24d4f97235c444bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3370295864583ca5f53fd51fa7aaca50" id="r_a3370295864583ca5f53fd51fa7aaca50"><td class="memItemLeft" align="right" valign="top"><a id="a3370295864583ca5f53fd51fa7aaca50" name="a3370295864583ca5f53fd51fa7aaca50"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((deprecated)) void ptp_update_transaction(struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r</td></tr>
-<tr class="separator:a3370295864583ca5f53fd51fa7aaca50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df28d070ee7c0a3759763194fa2446b" id="r_a1df28d070ee7c0a3759763194fa2446b"><td class="memItemLeft" align="right" valign="top"><a id="a1df28d070ee7c0a3759763194fa2446b" name="a1df28d070ee7c0a3759763194fa2446b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_set_prop_avail_info</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, int code, unsigned int memb_size, unsigned int cnt, void *data)</td></tr>
 <tr class="separator:a1df28d070ee7c0a3759763194fa2446b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2d987487466928731e65a97cfc4930" id="r_a3b2d987487466928731e65a97cfc4930"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b2d987487466928731e65a97cfc4930">ptp_dump</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
 <tr class="memdesc:a3b2d987487466928731e65a97cfc4930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write r-&gt;data to a file called DUMP.  <br /></td></tr>
 <tr class="separator:a3b2d987487466928731e65a97cfc4930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ac310d9181e916ba43604099aee272c71" id="r_ac310d9181e916ba43604099aee272c71"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac310d9181e916ba43604099aee272c71">t</a></td></tr>
-<tr class="separator:ac310d9181e916ba43604099aee272c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70db0e63919cb9990b331a2370b3f2dd" id="r_a70db0e63919cb9990b331a2370b3f2dd"><td class="memItemLeft" align="right" valign="top"><a id="a70db0e63919cb9990b331a2370b3f2dd" name="a70db0e63919cb9990b331a2370b3f2dd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ptp_run_lua</b> (const char *filename)</td></tr>
+<tr class="memdesc:a70db0e63919cb9990b331a2370b3f2dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quick function to run script through Lua bindings (if it's compiled in) <br /></td></tr>
+<tr class="separator:a70db0e63919cb9990b331a2370b3f2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ab6d4ab1357cf46920d40337c9892c3a0" name="ab6d4ab1357cf46920d40337c9892c3a0"></a>
@@ -767,23 +762,6 @@ Variables</h2></td></tr>
 
 <p>Returns the return code (RC) currently in the data buffer. </p>
 <dl class="section note"><dt>Note</dt><dd>Not thread safe. </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ac310d9181e916ba43604099aee272c71" name="ac310d9181e916ba43604099aee272c71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac310d9181e916ba43604099aee272c71">&#9670;&#160;</a></span>t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00341">341</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>

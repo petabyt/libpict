@@ -6,7 +6,7 @@ var group__Backend =
     [ "ptp_comm_deinit", "group__Backend.html#ga5057725a9fb659eb9de22ae127c4d3d6", null ],
     [ "ptp_comm_init", "group__Backend.html#gadae92a05d0a5cd35436746f036a5e62d", null ],
     [ "ptp_device_close", "group__Backend.html#ga86c1bf4db87d280aceb033920aaca69b", null ],
-    [ "ptp_device_init", "group__Backend.html#ga68c97eb394db2c962ec2a9c9006deeec", null ],
+    [ "ptp_device_connect", "group__Backend.html#ga4f9e8b48aea3b966c7ca3bd7cd789802", null ],
     [ "ptp_device_open", "group__Backend.html#ga3d2ffef827171fd251881a6aefc9ae43", null ],
     [ "ptp_device_reset", "group__Backend.html#ga2b30e11f9b8cad3955a9c726b37e0051", null ],
     [ "ptp_read_int", "group__Backend.html#ga6bb458c307aee12bcf5607b40c61f87d", null ],
