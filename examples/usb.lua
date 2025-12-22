@@ -7,17 +7,21 @@ end
 
 function main()
 	print("Hello, World")
-	r = ptp.connect()
-	if iserr(r) then
+	r, rc = ptp.connect()
+	if rc ~= 0 then
 		print("Failed to connect: ", r)
 		return
 	end
 
-	if iserr(r:openSession()) then return end
+	rc = r:openSession()
+	if rc ~= 0 then return end
 
-	info = r:getDeviceInfo()
-	if iserr(info) then return end
+	info, rc = r:getDeviceInfo()
+	if rc ~= 0 then return end
 	print(string.format("Connected to '%s'", info["model"]))
+
+	asd, rc = r:sendOperation(0x1001, {})
+	if rc ~= 0 then return end
 
 	r:disconnect()
 end

@@ -7,6 +7,7 @@
 #include <lualib.h>
 #include <lauxlib.h>
 #include <libpict.h>
+#include <libpict_lua.h>
 
 struct PtpLuaContext {
 	struct PtpRuntime *r;
@@ -58,6 +59,7 @@ static int mylua_device_info(lua_State *L) {
 	struct PtpDeviceInfo di;
 	int rc = ptp_get_device_info(r, &di);
 	if (rc) {
+		lua_pushnil(L);
 		lua_pushinteger(L, rc);
 		return 1;
 	}
@@ -66,8 +68,9 @@ static int mylua_device_info(lua_State *L) {
 	ptp_device_info_json(&di, buffer, sizeof(buffer));
 
 	lua_json_decode(L, buffer, strlen(buffer));
+	lua_pushinteger(L, 0);
 
-	return 1;
+	return 2;
 }
 
 static int mylua_take_picture(lua_State *L) {
@@ -90,10 +93,10 @@ static int mylua_take_picture(lua_State *L) {
 static int mylua_send_operation(lua_State *L) {
 	struct PtpRuntime *r = luaptp_get_runtime(L);
 
-	int opcode = lua_tointeger(L, 1);
+	int opcode = lua_tointeger(L, 2);
 	int len = lua_gettop(L);
 
-	if (!lua_istable(L, 2)) {
+	if (!lua_istable(L, 3)) {
 		return luaL_error(L, "arg2 expected array");
 	}
 
@@ -102,10 +105,10 @@ static int mylua_send_operation(lua_State *L) {
 
 	// Read parameters
 	int param_length = 0;
-	if (len >= 2) {
-		param_length = luaL_len(L, 2);
+	if (len >= 3) {
+		param_length = luaL_len(L, 3);
 		for (int i = 1; i <= param_length; ++i) {
-			lua_rawgeti(L, 2, i);
+			lua_rawgeti(L, 3, i);
 			cmd.params[i - 1] = luaL_checkinteger(L, -1);
 			lua_pop(L, 1);
 		}
@@ -115,11 +118,11 @@ static int mylua_send_operation(lua_State *L) {
 	// Read payload if provided
 	int data_length = 0;
 	uint8_t *data_array = NULL;
-	if (len >= 3) {
-		data_length = luaL_len(L, 3);
+	if (len >= 4) {
+		data_length = luaL_len(L, 4);
 		data_array = malloc(data_length * sizeof(int));
 		for (int i = 1; i <= data_length; ++i) {
-			lua_rawgeti(L, 3, i);
+			lua_rawgeti(L, 4, i);
 			data_array[i - 1] = (uint8_t)luaL_checkinteger(L, -1);
 			lua_pop(L, 1);
 		}
@@ -156,7 +159,9 @@ static int mylua_send_operation(lua_State *L) {
     lua_pushinteger(L, ptp_get_last_transaction_id(r));
     lua_settable(L, -3);
 
-	return 1;
+    lua_pushinteger(L, rc);
+
+	return 2;
 }
 
 static void add_func(lua_State *L, const char *name, int (*func)(lua_State *L)) {
@@ -201,13 +206,15 @@ static int mylua_connect(lua_State *L) {
 	int rc = ptp_device_init(r);
 	if (rc) {
 		ptp_close(r);
+		lua_pushnil(L);
 		lua_pushinteger(L, rc);
 		return 1;
 	}
 
 	ptp_init_lua_object(L, r);
+	lua_pushinteger(L, 0);
 
-	return 1;
+	return 2;
 }
 
 static const luaL_Reg ptplib[] = {
@@ -237,4 +244,17 @@ LUALIB_API int luaopen_ptp(lua_State *L) {
 	new_const(L, "CHECK_CODE", -8);
 
 	return 1;
+}
+
+int ptp_run_lua(const char *filename) {
+	lua_State *L = luaL_newstate();
+	luaopen_base(L);
+	luaL_requiref(L, "json", luaopen_cjson, 1);
+	luaL_requiref(L, "ptp", luaopen_ptp, 1);
+	luaL_requiref(L, "string", luaopen_string, 1);
+	if (luaL_dofile(L, filename)) {
+		printf("%s\n", lua_tostring(L, -1));
+	}
+	lua_close(L);
+	return 0;
 }
