@@ -1,8 +1,10 @@
 var structPtpRuntime =
 [
+    [ "__attribute__", "structPtpRuntime.html#acc7e358e57091b5483d741e0b0ea5297", null ],
     [ "avail", "structPtpRuntime.html#a8601b1154a9464a29fa5893b81f87251", null ],
     [ "comm_backend", "structPtpRuntime.html#a536ce5f5409e194a56c006fe8bb3d454", null ],
     [ "comm_dump", "structPtpRuntime.html#a2a14ddc3b7c635a735ca8e9ca9cab988", null ],
+    [ "comm_priv", "structPtpRuntime.html#a4cbcd4b8e3ab03ea6ef43330345782b8", null ],
     [ "connection_type", "structPtpRuntime.html#aed36a8eae0146cdb13a2fb5e7ca201a0", null ],
     [ "data", "structPtpRuntime.html#a7f23f0512393ff28362cd8cbf7d7d71e", null ],
     [ "data_filled_length", "structPtpRuntime.html#a3e4eee8fead6248f0c98ab35c63d0a1b", null ],
@@ -16,6 +18,5 @@ var structPtpRuntime =
     [ "response_wait_default", "structPtpRuntime.html#a37501cfcd57c6d29d2201bccfa822d0e", null ],
     [ "session", "structPtpRuntime.html#aae65285b4aad1dfe6e5329924f269adf", null ],
     [ "transaction", "structPtpRuntime.html#a9e655ea665c46fd29ff029924d63e7fa", null ],
-    [ "userdata", "structPtpRuntime.html#a237458ab782308367b392a36045d1486", null ],
     [ "wait_for_response", "structPtpRuntime.html#adbd0410bdf4fe67efe17ddf0937195c4", null ]
 ];
