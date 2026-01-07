@@ -15,6 +15,7 @@ var structPtpRuntime =
     [ "max_packet_size", "structPtpRuntime.html#a4094cd1360c84ee28f678c18d4e5ccae", null ],
     [ "mutex", "structPtpRuntime.html#ab0ce33227dec019e95821f0ef5c41de9", null ],
     [ "operation_kill_switch", "structPtpRuntime.html#ae599865d549d7e529312109f6af3f1ae", null ],
+    [ "priv", "structPtpRuntime.html#a246b5a630fe64f8ae38ac163aba51079", null ],
     [ "response_wait_default", "structPtpRuntime.html#a37501cfcd57c6d29d2201bccfa822d0e", null ],
     [ "session", "structPtpRuntime.html#aae65285b4aad1dfe6e5329924f269adf", null ],
     [ "transaction", "structPtpRuntime.html#a9e655ea665c46fd29ff029924d63e7fa", null ],
