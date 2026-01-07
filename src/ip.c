@@ -31,7 +31,7 @@ int ptpip_set_extra_socket_settings(struct PtpRuntime *r, int sockfd) {return 0;
 // Dump all communication to a file
 //#define DUMP_COMM
 
-struct PtpIpBackend {
+struct PtpCommPriv {
 	int fd;
 	int evfd;
 	int vidfd; // Some cameras have a mjpeg stream
@@ -158,15 +158,13 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 	return -1;
 }
 
-static struct PtpIpBackend *init_comm(struct PtpRuntime *r) {
-	if (r->comm_backend == NULL) {
-		r->comm_backend = calloc(1, sizeof(struct PtpIpBackend));
+static struct PtpCommPriv *init_comm(struct PtpRuntime *r) {
+	if (r->comm_priv == NULL) {
+		r->comm_priv = calloc(1, sizeof(struct PtpCommPriv));
 
 #ifdef DUMP_COMM
 #warning "Dumping all comms"
-		char filepath[256];
-		app_get_file_path(filepath, "dump3.jpeg");
-		((struct PtpIpBackend *)r->comm_backend)->dump = fopen(filepath, "wb");
+		((struct PtpIpBackend *)r->comm_backend)->dump = fopen("dump.bin", "wb");
 		if (((struct PtpIpBackend *)r->comm_backend)->dump == NULL) abort();
 #endif
 	}
@@ -174,7 +172,7 @@ static struct PtpIpBackend *init_comm(struct PtpRuntime *r) {
 	// Max packet size for TCP
 	r->max_packet_size = 0xffff;
 
-	return (struct PtpIpBackend *)r->comm_backend;
+	return r->comm_priv;
 }
 
 int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tmout) {
@@ -182,7 +180,7 @@ int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tm
 
 	int fd = create_socket(r, addr, port, 2 + extra_tmout);
 
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 
 	if (fd > 0) {
 		b->fd = fd;
@@ -197,7 +195,7 @@ int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tm
 
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
 	int fd = create_socket(r, addr, port, 3);
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 	if (fd > 0) {
 		b->evfd = fd;
 		return 0;
@@ -209,7 +207,7 @@ int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
 
 int ptpip_connect_video(struct PtpRuntime *r, const char *addr, int port) {
 	int fd = create_socket(r, addr, port, 3);
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 	if (fd > 0) {
 		b->vidfd = fd;
 		return 0;
@@ -220,7 +218,7 @@ int ptpip_connect_video(struct PtpRuntime *r, const char *addr, int port) {
 }
 
 int ptpip_device_close(struct PtpRuntime *r) {
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 	if (b->fd) close(b->fd);
 	b->fd = 0;
 	if (b->evfd) close(b->evfd);
@@ -235,7 +233,7 @@ int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 		ptp_verbose_log("WARN: kill switch on\n");
 		return -1;
 	}
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 
 #ifdef DUMP_COMM
 	fwrite(data, 1, size, b->dump);
@@ -251,7 +249,7 @@ int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 
 int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
-	struct PtpIpBackend *b = init_comm(r); // slow
+	struct PtpCommPriv *b = init_comm(r); // slow
 	int result = (int)read(b->fd, data, size);
 
 #ifdef DUMP_COMM
@@ -274,7 +272,7 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 
 int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 	int result = (int)write(b->evfd, data, size);
 	if (result < 0) {
 		return -1;
@@ -285,7 +283,7 @@ int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size) {
 
 int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
-	struct PtpIpBackend *b = init_comm(r);
+	struct PtpCommPriv *b = init_comm(r);
 	int result = (int)read(b->evfd, data, size);
 	if (result < 0) {
 		return -1;

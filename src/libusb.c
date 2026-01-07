@@ -10,7 +10,7 @@
 #include <libpict.h>
 
 // Private struct
-struct LibUSBBackend {
+struct PtpCommPriv {
 	uint32_t endpoint_in;
 	uint32_t endpoint_out;
 	uint32_t endpoint_int;
@@ -31,15 +31,12 @@ int ptp_comm_init(struct PtpRuntime *r) {
 
 	r->max_packet_size = 512;
 
-	if (r->comm_backend == NULL) {
-		r->comm_backend = malloc(sizeof(struct LibUSBBackend));
-		memset(r->comm_backend, 0, sizeof(struct LibUSBBackend));
-
-		struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-		if (backend == NULL) ptp_panic("");
+	if (r->comm_priv == NULL) {
+		r->comm_priv = calloc(1, sizeof(struct PtpCommPriv));
+		if (r->comm_priv == NULL) ptp_panic("calloc");
 
 		ptp_verbose_log("Initializing libusb...\n");
-		libusb_init(&(backend->ctx));
+		libusb_init(&r->comm_priv->ctx);
 
 		//libusb_set_option(backend->ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
 	}
@@ -48,9 +45,8 @@ int ptp_comm_init(struct PtpRuntime *r) {
 }
 
 void ptp_comm_deinit(struct PtpRuntime *r) {
-	if (r->comm_backend != NULL) {
-		struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-		libusb_exit(backend->ctx);
+	if (r->comm_priv != NULL) {
+		libusb_exit(r->comm_priv->ctx);
 	}
 }
 
@@ -63,10 +59,8 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 
 	ptp_mutex_lock(r);
 
-	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-
 	libusb_device **list;
-	ssize_t count = libusb_get_device_list(backend->ctx, &list);
+	ssize_t count = libusb_get_device_list(r->comm_priv->ctx, &list);
 
 	struct libusb_device_descriptor desc;
 	struct libusb_config_descriptor *config;
@@ -208,7 +202,7 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 
 int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 	ptp_mutex_lock(r);
-	if (r->comm_backend == NULL) {
+	if (r->comm_priv == NULL) {
 		ptp_verbose_log("comm_backend is NULL\n");
 		ptp_mutex_unlock(r);
 		return PTP_OPEN_FAIL;
@@ -219,28 +213,26 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 		return PTP_OPEN_FAIL;
 	}
 
-	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
+	r->comm_priv->endpoint_in = entry->endpoint_in;
+	r->comm_priv->endpoint_out = entry->endpoint_out;
+	r->comm_priv->endpoint_int = entry->endpoint_int;
 
-	backend->endpoint_in = entry->endpoint_in;
-	backend->endpoint_out = entry->endpoint_out;
-	backend->endpoint_int = entry->endpoint_int;
-
-	int rc = libusb_open(entry->device_handle_ptr, &(backend->handle));
+	int rc = libusb_open(entry->device_handle_ptr, &(r->comm_priv->handle));
 	if (rc) {
 		perror("usb_open() failure");
 		ptp_mutex_unlock(r);
 		return PTP_OPEN_FAIL;
 	}
 
-	if (libusb_set_auto_detach_kernel_driver(backend->handle, 0)) {
+	if (libusb_set_auto_detach_kernel_driver(r->comm_priv->handle, 0)) {
 		perror("libusb_set_auto_detach_kernel_driver");
 		ptp_mutex_unlock(r);
 		return PTP_OPEN_FAIL;
 	}
 
-	if (libusb_claim_interface(backend->handle, 0)) {
+	if (libusb_claim_interface(r->comm_priv->handle, 0)) {
 		perror("usb_claim_interface() failure");
-		libusb_close(backend->handle);
+		libusb_close(r->comm_priv->handle);
 		ptp_mutex_unlock(r);
 		return PTP_OPEN_FAIL;
 	}
@@ -258,7 +250,6 @@ void ptpusb_free_device_list_entry(void *ptr) {
 
 int ptp_device_connect(struct PtpRuntime *r) {
 	ptp_comm_init(r);
-	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
 
 	struct PtpDeviceEntry *list = ptpusb_device_list(r);
 
@@ -266,24 +257,24 @@ int ptp_device_connect(struct PtpRuntime *r) {
 		return PTP_NO_DEVICE;
 	}
 
-	backend->endpoint_in = list->endpoint_in;
-	backend->endpoint_out = list->endpoint_out;
-	backend->endpoint_int = list->endpoint_int;
+	r->comm_priv->endpoint_in = list->endpoint_in;
+	r->comm_priv->endpoint_out = list->endpoint_out;
+	r->comm_priv->endpoint_int = list->endpoint_int;
 
-	int rc = libusb_open(list->device_handle_ptr, &(backend->handle));
+	int rc = libusb_open(list->device_handle_ptr, &(r->comm_priv->handle));
 	if (rc) {
 		perror("usb_open() failure");
 		return PTP_OPEN_FAIL;
 	}
 
-	if (libusb_set_auto_detach_kernel_driver(backend->handle, 0)) {
+	if (libusb_set_auto_detach_kernel_driver(r->comm_priv->handle, 0)) {
 		perror("libusb_set_auto_detach_kernel_driver");
 		return PTP_OPEN_FAIL;
 	}
 
-	if (libusb_claim_interface(backend->handle, 0)) {
+	if (libusb_claim_interface(r->comm_priv->handle, 0)) {
 		perror("usb_claim_interface() failure");
-		libusb_close(backend->handle);
+		libusb_close(r->comm_priv->handle);
 		return PTP_OPEN_FAIL;
 	}
 
@@ -296,12 +287,11 @@ int ptp_device_connect(struct PtpRuntime *r) {
 int ptp_device_close(struct PtpRuntime *r) {
 	r->io_kill_switch = 1;
 	r->operation_kill_switch = 1;
-	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-	if (libusb_release_interface(backend->handle, 0)) {
+	if (libusb_release_interface(r->comm_priv->handle, 0)) {
 		return 1;
 	}
 
-	libusb_close(backend->handle);
+	libusb_close(r->comm_priv->handle);
 
 	return 0;
 }
@@ -311,16 +301,14 @@ int ptp_device_reset(struct PtpRuntime *r) {
 }
 
 int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length) {
-	const struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-
-	if (backend == NULL || r->io_kill_switch) {
+	if (r->comm_priv == NULL || r->io_kill_switch) {
 		return -11;
 	}
 
 	int transferred;
 	int rc = libusb_bulk_transfer(
-		backend->handle,
-		backend->endpoint_out,
+		r->comm_priv->handle,
+		r->comm_priv->endpoint_out,
 		(unsigned char *)to, (int)length, &transferred, PTP_TIMEOUT);
 	if (rc) {
 		perror("libusb_bulk_transfer write");
@@ -331,13 +319,11 @@ int ptp_cmd_write(struct PtpRuntime *r, void *to, unsigned int length) {
 }
 
 int ptp_cmd_read(struct PtpRuntime *r, void *to, unsigned int length) {
-	const struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-
-	if (backend == NULL || r->io_kill_switch) return -1;
+	if (r->comm_priv == NULL || r->io_kill_switch) return -1;
 	int transferred = 0;
 	int rc = libusb_bulk_transfer(
-		backend->handle,
-		backend->endpoint_in,
+		r->comm_priv->handle,
+		r->comm_priv->endpoint_in,
 		(unsigned char *)to, (int)length, &transferred, PTP_TIMEOUT);
 	if (rc) {
 		perror("libusb_bulk_transfer read");
@@ -348,12 +334,11 @@ int ptp_cmd_read(struct PtpRuntime *r, void *to, unsigned int length) {
 }
 
 int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length) {
-	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-	if (backend == NULL || r->io_kill_switch) return -1;
+	if (r->comm_priv == NULL || r->io_kill_switch) return -1;
 	int transferred = 0;
 	int rc = libusb_bulk_transfer(
-		backend->handle,
-		backend->endpoint_int,
+		r->comm_priv->handle,
+		r->comm_priv->endpoint_int,
 		(unsigned char *)to, (int)length, &transferred, 1000);
 	if (rc == LIBUSB_ERROR_NO_DEVICE) {
 		return PTP_IO_ERR;
@@ -366,10 +351,9 @@ int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length) {
 }
 
 int ptpusb_get_status(struct PtpRuntime *r) {
-	struct LibUSBBackend *backend = (struct LibUSBBackend *)r->comm_backend;
-	if (backend == NULL || r->io_kill_switch) return -1;
+	if (r->comm_priv == NULL || r->io_kill_switch) return -1;
 	char buffer[2];
-	int rc = libusb_control_transfer(backend->handle, 0x80, 0, 0, 0, (unsigned char *)buffer, 2, 1000);
+	int rc = libusb_control_transfer(r->comm_priv->handle, 0x80, 0, 0, 0, (unsigned char *)buffer, 2, 1000);
 	if (rc) return -1;
 	return 0;
 }

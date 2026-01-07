@@ -148,11 +148,15 @@ struct PtpRuntime {
 	/// that will be sent after a command packet. Will be set to zero when ptp_send_packet is called.
 	unsigned int data_phase_length;
 
-	/// @brief For session comm/io structures (holds backend instance pointers)
+	/// @brief Private instance of comm/io structure
+	struct PtpCommPriv *comm_priv;
+
+	/// @brief void* pointer for comm/io instance
+	/// @todo: deprecate
 	void *comm_backend;
 
 	/// @brief Free pointer to hold per ptp session information
-	void *userdata;
+	__attribute__((deprecated)) void *userdata;
 
 	/// @brief Optional (see PTP_DONT_USE_MUTEX)
 	pthread_mutex_t *mutex;
@@ -173,7 +177,7 @@ struct PtpRuntime {
 	FILE *comm_dump;
 
 	// TODO: Fudge uses this, should be moved to userdata struct
-	void *oc;
+	__attribute__((deprecated)) void *oc;
 };
 
 /// @brief Generic event / property change
