@@ -13,12 +13,23 @@ enum GenericOperation {
 	SET_RPOPERTY,
 };
 
+__attribute__((weak))
+int JS_GetLength(JSContext *ctx, JSValueConst obj, int64_t *pres) {
+	JSValue length = JS_GetPropertyStr(ctx, obj, "length");
+	if (JS_IsNumber(length)) {
+		JS_ToInt64(ctx, pres, length);
+		return 0;
+	}
+	JS_FreeValue(ctx, length);
+	return -1;
+}
+
 static JSClassID class_id = 0;
 const static char class_name[] = "LibPict";
 
 static JSValue throw_rc_err(JSContext *ctx, int rc) {
 	switch (rc) {
-	case 0: JS_UNDEFINED;
+	case 0: return JS_UNDEFINED;
 	default: JS_ThrowInternalError(ctx, "%s", ptp_perror(rc)); break;
 	}
 	return JS_EXCEPTION;
@@ -34,6 +45,39 @@ static JSValue disconnect(JSContext *ctx, JSValueConst this_val, int argc, JSVal
 	struct PtpRuntime *r = JS_GetOpaque(this_val, class_id);
 	int rc = ptp_device_close(r);
 	return JS_NewInt32(ctx, rc);
+}
+
+static JSValue do_operation(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst argv[]) {
+	struct PtpRuntime *r = JS_GetOpaque(this_val, class_id);
+
+	struct PtpCommand cmd = {0};
+
+	uint32_t opcode;
+	if (JS_ToUint32(ctx, &opcode, argv[0])) return JS_ThrowTypeError(ctx, "Argument is not an opcode");
+	cmd.code = opcode;
+
+	JSValue params = argv[1];
+	if (!JS_IsArray(ctx, params)) return JS_ThrowTypeError(ctx, "No parameter list provided");
+
+	for (int i = 0; i < 5; i++) {
+		JSValue p = JS_GetPropertyUint32(ctx, argv[1], 0);
+		if (!JS_IsNumber(p)) break;
+		JS_ToUint32(ctx, &cmd.params[i], p);
+		JS_FreeValue(ctx, p);
+		cmd.param_length++;
+	}
+
+	size_t data_len = 0;
+	uint8_t *data = JS_GetArrayBuffer(ctx, &data_len, argv[2]);
+
+	int rc;
+	if (data) {
+		rc = ptp_send_data(r, &cmd, data, data_len);
+	} else {
+		rc = ptp_send(r, &cmd);
+	}
+
+	return throw_rc_err(ctx, rc);
 }
 
 static JSValue generic_operation(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst argv[], int magic) {
@@ -61,6 +105,7 @@ static JSValue generic_operation(JSContext *ctx, JSValueConst this_val, int argc
 
 static const JSCFunctionListEntry ptp_methods[] = {
 	JS_CFUNC_DEF("connect", 1, connect),
+	JS_CFUNC_DEF("doOperation", 3, do_operation),
 	JS_CFUNC_DEF("disconnect", 0, disconnect),
 	JS_CFUNC_MAGIC_DEF("openSession", 0, generic_operation, OPEN_SESSION),
 	JS_CFUNC_MAGIC_DEF("closeSession", 0, generic_operation, CLOSE_SESSION),
@@ -135,7 +180,10 @@ int ptp_run_quickjs(const char *filename) {
 	js_std_init_handlers(rt);
 
     FILE *file = fopen(filename, "rb");
-    if (!file) return -1;
+    if (!file) {
+    	printf("Failed to open '%s'\n", filename);
+    	return -1;
+    }
     
     fseek(file, 0, SEEK_END);
     long file_size = ftell(file);
