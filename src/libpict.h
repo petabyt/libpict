@@ -158,6 +158,9 @@ struct PtpRuntime {
 	/// @brief Free pointer to hold per ptp session information
 	__attribute__((deprecated)) void *userdata;
 
+	/// @brief Struct to hold per ptp session information, can be set freely
+	struct PtpUserPriv *priv;
+
 	/// @brief Optional (see PTP_DONT_USE_MUTEX)
 	pthread_mutex_t *mutex;
 
