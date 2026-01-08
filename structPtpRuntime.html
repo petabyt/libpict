@@ -104,7 +104,6 @@ $(function(){initNavTree('structPtpRuntime.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structPtpRuntime-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">PtpRuntime Struct Reference</div></div>
@@ -116,16 +115,6 @@ $(function(){initNavTree('structPtpRuntime.html',''); initResizable(true); });
 
 <p><code>#include &lt;<a class="el" href="libpict_8h_source.html">libpict.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:acc7e358e57091b5483d741e0b0ea5297" id="r_acc7e358e57091b5483d741e0b0ea5297"><td class="memItemLeft" align="right" valign="top"><a id="acc7e358e57091b5483d741e0b0ea5297" name="acc7e358e57091b5483d741e0b0ea5297"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((deprecated)) void *userdata</td></tr>
-<tr class="memdesc:acc7e358e57091b5483d741e0b0ea5297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free pointer to hold per ptp session information. <br /></td></tr>
-<tr class="separator:acc7e358e57091b5483d741e0b0ea5297"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae602ad40662fb60e7e4a582ff536e452" id="r_ae602ad40662fb60e7e4a582ff536e452"><td class="memItemLeft" align="right" valign="top"><a id="ae602ad40662fb60e7e4a582ff536e452" name="ae602ad40662fb60e7e4a582ff536e452"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((deprecated)) void *oc</td></tr>
-<tr class="separator:ae602ad40662fb60e7e4a582ff536e452"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a295b65c4bba2f26117c04c041c5b48ab" id="r_a295b65c4bba2f26117c04c041c5b48ab"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a295b65c4bba2f26117c04c041c5b48ab">io_kill_switch</a></td></tr>
@@ -166,6 +155,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a536ce5f5409e194a56c006fe8bb3d454" id="r_a536ce5f5409e194a56c006fe8bb3d454"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a536ce5f5409e194a56c006fe8bb3d454">comm_backend</a></td></tr>
 <tr class="memdesc:a536ce5f5409e194a56c006fe8bb3d454"><td class="mdescLeft">&#160;</td><td class="mdescRight">void* pointer for comm/io instance  <br /></td></tr>
 <tr class="separator:a536ce5f5409e194a56c006fe8bb3d454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a237458ab782308367b392a36045d1486" id="r_a237458ab782308367b392a36045d1486"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a237458ab782308367b392a36045d1486">userdata</a></td></tr>
+<tr class="memdesc:a237458ab782308367b392a36045d1486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free pointer to hold per ptp session information.  <br /></td></tr>
+<tr class="separator:a237458ab782308367b392a36045d1486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a246b5a630fe64f8ae38ac163aba51079" id="r_a246b5a630fe64f8ae38ac163aba51079"><td class="memItemLeft" align="right" valign="top">struct PtpUserPriv *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a246b5a630fe64f8ae38ac163aba51079">priv</a></td></tr>
 <tr class="memdesc:a246b5a630fe64f8ae38ac163aba51079"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct to hold per ptp session information, can be set freely.  <br /></td></tr>
 <tr class="separator:a246b5a630fe64f8ae38ac163aba51079"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,6 +176,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2a14ddc3b7c635a735ca8e9ca9cab988" id="r_a2a14ddc3b7c635a735ca8e9ca9cab988"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a14ddc3b7c635a735ca8e9ca9cab988">comm_dump</a></td></tr>
 <tr class="memdesc:a2a14ddc3b7c635a735ca8e9ca9cab988"><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-NULL, all reads/writes will be logged to this file.  <br /></td></tr>
 <tr class="separator:a2a14ddc3b7c635a735ca8e9ca9cab988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b349a4510b80e70d79edda95d1fc198" id="r_a5b349a4510b80e70d79edda95d1fc198"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b349a4510b80e70d79edda95d1fc198">oc</a></td></tr>
+<tr class="separator:a5b349a4510b80e70d79edda95d1fc198"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a single device connection. </p>
@@ -429,6 +423,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a5b349a4510b80e70d79edda95d1fc198" name="a5b349a4510b80e70d79edda95d1fc198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b349a4510b80e70d79edda95d1fc198">&#9670;&#160;</a></span>oc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* PtpRuntime::oc</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00183">183</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+
+</div>
+</div>
 <a id="ae599865d549d7e529312109f6af3f1ae" name="ae599865d549d7e529312109f6af3f1ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae599865d549d7e529312109f6af3f1ae">&#9670;&#160;</a></span>operation_kill_switch</h2>
 
@@ -517,6 +527,24 @@ Public Attributes</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>The transaction ID and session ID is managed by the packet generator functions </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00127">127</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+
+</div>
+</div>
+<a id="a237458ab782308367b392a36045d1486" name="a237458ab782308367b392a36045d1486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a237458ab782308367b392a36045d1486">&#9670;&#160;</a></span>userdata</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* PtpRuntime::userdata</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Free pointer to hold per ptp session information. </p>
+
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00159">159</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
