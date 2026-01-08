@@ -156,7 +156,7 @@ struct PtpRuntime {
 	void *comm_backend;
 
 	/// @brief Free pointer to hold per ptp session information
-	__attribute__((deprecated)) void *userdata;
+	void *userdata;
 
 	/// @brief Struct to hold per ptp session information, can be set freely
 	struct PtpUserPriv *priv;
@@ -180,7 +180,7 @@ struct PtpRuntime {
 	FILE *comm_dump;
 
 	// TODO: Fudge uses this, should be moved to userdata struct
-	__attribute__((deprecated)) void *oc;
+	void *oc;
 };
 
 /// @brief Generic event / property change
