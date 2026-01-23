@@ -95,7 +95,7 @@ elseif(WIN32 AND NOT PTP_NO_USB)
         FetchContent_Declare(libwpd GIT_REPOSITORY https://github.com/petabyt/libwpd.git GIT_TAG master GIT_SHALLOW 1)
         FetchContent_MakeAvailable(libwpd)
     endif()
-    set(PICT_LIBS wpd_static)
+    set(PICT_LIBS wpd_static -lws2_32)
 endif()
 
 add_library(libpict STATIC ${PICT_CORE} ${PLATFORM_LIB_FILES})
