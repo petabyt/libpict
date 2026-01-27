@@ -10,6 +10,8 @@
 #ifdef WIN32
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
+#elif defined(__wasi__)
+	#include <wasi_socket_ext.h>
 #else
 	#include <sys/socket.h>
 	#include <sys/select.h>
