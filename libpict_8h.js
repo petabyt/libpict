@@ -6,14 +6,8 @@ var libpict_8h =
     [ "PtpEventReader", "structPtpEventReader.html", null ],
     [ "PtpCommand", "structPtpCommand.html", null ],
     [ "PtpArray", "structPtpArray.html", null ],
-    [ "PtpConnType", "libpict_8h.html#a4d84e1a866c4b0808d10dd1b7125a639", [
-      [ "PTP_IP", "libpict_8h.html#a4d84e1a866c4b0808d10dd1b7125a639aed5e87ec2995fad054c0bdd95d166ecd", null ],
-      [ "PTP_IP_USB", "libpict_8h.html#a4d84e1a866c4b0808d10dd1b7125a639a0e1d57c47f7c57330c730f865f59cecc", null ],
-      [ "PTP_USB", "libpict_8h.html#a4d84e1a866c4b0808d10dd1b7125a639a19f36621db659227bd35c36eb031b9f9", null ],
-      [ "PTP_BLE", "libpict_8h.html#a4d84e1a866c4b0808d10dd1b7125a639a74c7b576446c0fede67cd8a9486c78c5", null ]
-    ] ],
+    [ "PtpConnType", "libpict_8h.html#a4d84e1a866c4b0808d10dd1b7125a639", null ],
     [ "PtpGeneralError", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2f", [
-      [ "PTP_OK", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2fa0e5ee46b832f5c0e9894aadce1ba3655", null ],
       [ "PTP_NO_DEVICE", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2fa2b7ab22ac83d3cca579a663f28a87eca", null ],
       [ "PTP_NO_PERM", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2facf86b39141e38033a9f26bcde63681f3", null ],
       [ "PTP_OPEN_FAIL", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2fa88bf42a9045fae4232a711ff5f7ea223", null ],
@@ -25,15 +19,7 @@ var libpict_8h =
       [ "PTP_CANCELED", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2faba5665878d11d706436a8fd714aa8f44", null ],
       [ "PTP_COMMAND_IGNORED", "libpict_8h.html#a9fa077df1a63de2388ae3428b9defd2fa83904f9b02a37b8f4e7ad6a8c9f349c9", null ]
     ] ],
-    [ "PtpVendors", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21", [
-      [ "PTP_DEV_EMPTY", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21a3f4079f185ec8c6f8ef2a6442b6e22f6", null ],
-      [ "PTP_DEV_EOS", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21a6281a5ca7b3f47476c4d7cd1ec3b54ce", null ],
-      [ "PTP_DEV_CANON", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21ae79aa95976ad996ee273816949e89619", null ],
-      [ "PTP_DEV_NIKON", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21accbf499cc931d4365b3a4dfcb941da1b", null ],
-      [ "PTP_DEV_SONY", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21a426dbb03b9954353e478b9a7633bbe6b", null ],
-      [ "PTP_DEV_FUJI", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21ad1a99dfb1b864767bc19e55739fa4dee", null ],
-      [ "PTP_DEV_PANASONIC", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21ad521f762a6d227420e731bccc1f91e8a", null ]
-    ] ],
+    [ "PtpVendors", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21", null ],
     [ "__attribute__", "libpict_8h.html#aba4c2634cffc9cdfa05c586f505b5297", null ],
     [ "ptp_buffer_resize", "libpict_8h.html#ab84ae8f97ce135a3702bb73959fc539c", null ],
     [ "ptp_check_opcode", "libpict_8h.html#a05fa160eba529edd8a9ac6d22bbd5fcc", null ],

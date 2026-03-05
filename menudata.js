@@ -22,32 +22,9 @@
 
  @licend  The above is the entire license notice for the JavaScript code in this file
 */
-var NAVTREE =
-[
-  [ "pict", "index.html", [
-    [ "libpict", "index.html", "index" ],
-    [ "API", "topics.html", "topics" ],
-    [ "Magic Lantern PTP Ext", "md_docs_2ml.html", [
-      [ "First Parameter", "md_docs_2ml.html#autotoc_md5", null ],
-      [ "ML_GetExtVersion", "md_docs_2ml.html#autotoc_md6", null ],
-      [ "ML_GetCamInfo", "md_docs_2ml.html#autotoc_md7", null ],
-      [ "ML_SendFileInfo", "md_docs_2ml.html#autotoc_md8", null ],
-      [ "ML_UploadFile", "md_docs_2ml.html#autotoc_md9", null ],
-      [ "ML_GetLiveviewData", "md_docs_2ml.html#autotoc_md10", null ],
-      [ "ML_GetMenuBmpData", "md_docs_2ml.html#autotoc_md11", null ],
-      [ "ML_GetBmpSpecs", "md_docs_2ml.html#autotoc_md12", null ]
-    ] ],
-    [ "Todo List", "todo.html", null ],
-    [ "Licence", "md_docs_2ml.html", null ],
-    [ "File List", "files.html", "files" ]
-  ] ]
-];
-
-var NAVTREEINDEX =
-[
-"cl__backend_8h.html"
-];
-
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
-var LISTOFALLMEMBERS = 'List of all members';
+var menudata={children:[
+{text:"Main Page",url:"index.html"},
+{text:"API",url:"topics.html"},
+{text:"Extras",url:"pages.html"},
+{text:"Licence",url:"md_docs_2ml.html"},
+{text:"File List",url:"files.html"}]}

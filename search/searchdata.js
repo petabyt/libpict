@@ -8,7 +8,7 @@ var indexSectionsWithContent =
   5: "p",
   6: "p",
   7: "bdeiops",
-  8: "elmpt"
+  8: "eflmpst"
 };
 
 var indexSectionNames =
