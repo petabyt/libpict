@@ -354,7 +354,7 @@ int ptpusb_get_status(struct PtpRuntime *r) {
 	if (r->comm_priv == NULL || r->io_kill_switch) return -1;
 	char buffer[2];
 	int rc = libusb_control_transfer(r->comm_priv->handle, 0x80, 0, 0, 0, (unsigned char *)buffer, 2, 1000);
-	if (rc) return -1;
+	if (rc < 0) return -1;
 	return 0;
 }
 
