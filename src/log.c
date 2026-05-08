@@ -6,6 +6,7 @@
 #include <libpict.h>
 
 int ptp_verbose = 1;
+__attribute__((weak))
 void ptp_verbose_log(char *fmt, ...) {
 	if (ptp_verbose) {
 		va_list args;
@@ -15,6 +16,7 @@ void ptp_verbose_log(char *fmt, ...) {
 	}
 }
 
+__attribute__((weak))
 void ptp_error_log(char *fmt, ...) {
 	va_list args;
 	va_start(args, fmt);

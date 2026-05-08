@@ -23,7 +23,7 @@
 
 /// @brief Report progress to the client so it can move a progress bar
 __attribute__((weak))
-void ptp_report_read_progress(unsigned int size) {}
+void ptp_report_read_progress(struct PtpRuntime *r, unsigned int size) {}
 
 /// @brief Optional function to assign additional properties to a socket after it's created
 /// such as binding to a network, etc
@@ -267,7 +267,7 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 		ptp_verbose_log("read(): %d %d\n", result, errno);
 		return -1;
 	} else {
-		ptp_report_read_progress(result);
+		ptp_report_read_progress(r, result);
 		return result;
 	}
 }
