@@ -186,12 +186,12 @@ PUB void&#160;</td><td class="memItemRight"><b>ptp_error_log</b> (char *fmt,...)
 <tr class="memitem:aba4c2634cffc9cdfa05c586f505b5297" id="r_aba4c2634cffc9cdfa05c586f505b5297"><td class="memItemLeft"><a id="aba4c2634cffc9cdfa05c586f505b5297" name="aba4c2634cffc9cdfa05c586f505b5297"></a>
 PUB&#160;</td><td class="memItemRight"><b>__attribute__</b> ((noreturn)) void ptp_panic(char *fmt</td></tr>
 <tr class="memdesc:aba4c2634cffc9cdfa05c586f505b5297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client has no way out, crash the application. <br /></td></tr>
-<tr class="memitem:ae840894efe59af6153d6dcebd3c9d36c" id="r_ae840894efe59af6153d6dcebd3c9d36c"><td class="memItemLeft"><a id="ae840894efe59af6153d6dcebd3c9d36c" name="ae840894efe59af6153d6dcebd3c9d36c"></a>
-PUB void&#160;</td><td class="memItemRight"><b>ptp_report_read_progress</b> (unsigned int size)</td></tr>
-<tr class="memdesc:ae840894efe59af6153d6dcebd3c9d36c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update UI progress on download progress. <br /></td></tr>
 <tr class="memitem:a4be7b7db9e745e655b26523a9429b009" id="r_a4be7b7db9e745e655b26523a9429b009"><td class="memItemLeft"><a id="a4be7b7db9e745e655b26523a9429b009" name="a4be7b7db9e745e655b26523a9429b009"></a>
 const char *&#160;</td><td class="memItemRight"><b>ptp_perror</b> (int rc)</td></tr>
 <tr class="memdesc:a4be7b7db9e745e655b26523a9429b009"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates <a class="el" href="#a9fa077df1a63de2388ae3428b9defd2f" title="Library errors, not PTP return codes.">PtpGeneralError</a> into string message. <br /></td></tr>
+<tr class="memitem:a81787f424eb18b2e78c24e961b533252" id="r_a81787f424eb18b2e78c24e961b533252"><td class="memItemLeft"><a id="a81787f424eb18b2e78c24e961b533252" name="a81787f424eb18b2e78c24e961b533252"></a>
+void&#160;</td><td class="memItemRight"><b>ptp_report_read_progress</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, unsigned int size)</td></tr>
+<tr class="memdesc:a81787f424eb18b2e78c24e961b533252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update UI progress on download progress. <br /></td></tr>
 <tr class="memitem:abc99c07ece06a1f0e994630c6c5bb935" id="r_abc99c07ece06a1f0e994630c6c5bb935"><td class="memItemLeft">PUB int&#160;</td><td class="memItemRight"><a class="el" href="#abc99c07ece06a1f0e994630c6c5bb935">ptp_get_return_code</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
 <tr class="memdesc:abc99c07ece06a1f0e994630c6c5bb935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the return code (RC) currently in the data buffer.  <br /></td></tr>
 <tr class="memitem:a8c3e51ecbc500483e23bc67f7e664976" id="r_a8c3e51ecbc500483e23bc67f7e664976"><td class="memItemLeft">PUB unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#a8c3e51ecbc500483e23bc67f7e664976">ptp_get_param_length</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
@@ -372,7 +372,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00085">85</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00083">83</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -391,7 +391,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
 <p>Tells lib what backend and packet style to use. </p>
 <dl class="section note"><dt>Note</dt><dd>This is a bitmask so that it can be passed to ptp_new with other options. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00095">95</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00093">93</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +432,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00045">45</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00043">43</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -450,7 +450,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
 
 <p>Unique camera types - each type should have similar opcodes and behavior. </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00074">74</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00072">72</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>

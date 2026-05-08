@@ -41,7 +41,7 @@ var libpict_8h =
     [ "ptp_mutex_unlock_thread", "libpict_8h.html#ae6f46ce011eb239897a9756d11c60d57", null ],
     [ "ptp_new", "libpict_8h.html#a16ebc69184e82c377375ff8fc663339a", null ],
     [ "ptp_perror", "libpict_8h.html#a4be7b7db9e745e655b26523a9429b009", null ],
-    [ "ptp_report_read_progress", "libpict_8h.html#ae840894efe59af6153d6dcebd3c9d36c", null ],
+    [ "ptp_report_read_progress", "libpict_8h.html#a81787f424eb18b2e78c24e961b533252", null ],
     [ "ptp_reset", "libpict_8h.html#a2b58d078aae65e43bca41d037ccdf2d5", null ],
     [ "ptp_run_lua", "libpict_8h.html#a70db0e63919cb9990b331a2370b3f2dd", null ],
     [ "ptp_send", "libpict_8h.html#a025478ecd387e2c1be6dfb7cc41488ea", null ],
