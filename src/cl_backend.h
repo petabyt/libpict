@@ -89,6 +89,9 @@ int ptp_comm_init(struct PtpRuntime *r);
 /// @brief Deinits backend and frees all memory
 void ptp_comm_deinit(struct PtpRuntime *r);
 
+/// @brief Deinits PTP/IP backend and frees all memory
+void ptpip_comm_deinit(struct PtpRuntime *r);
+
 // old api
 __attribute__((deprecated))
 __attribute__((unused))

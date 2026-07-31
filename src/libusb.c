@@ -45,7 +45,7 @@ int ptp_comm_init(struct PtpRuntime *r) {
 }
 
 void ptp_comm_deinit(struct PtpRuntime *r) {
-	if (r->comm_priv != NULL) {
+	if (r->comm_priv != NULL && r->connection_type == PTP_USB) {
 		libusb_exit(r->comm_priv->ctx);
 	}
 }
