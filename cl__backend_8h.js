@@ -13,6 +13,7 @@ var cl__backend_8h =
     [ "ptp_send_packet", "group__Backend.html#ga197b55453bf0f91fe34ba7a854f94e0b", null ],
     [ "ptpip_cmd_read", "group__Backend.html#gac5f9828b9bc606c3ebff9e7abee9c1e0", null ],
     [ "ptpip_cmd_write", "group__Backend.html#gab81114438be31afbb4aee572115237f2", null ],
+    [ "ptpip_comm_deinit", "group__Backend.html#ga476881a2f12eca31f8500c874b5783c3", null ],
     [ "ptpip_connect", "group__Backend.html#gac0bc9a3bcaaae45ae1efc7153d695390", null ],
     [ "ptpip_connect_events", "group__Backend.html#ga4d809f403667acfe4fcb67cd614fab35", null ],
     [ "ptpip_device_close", "group__Backend.html#gada9054f356e1232a75287a0ac9ae143e", null ],

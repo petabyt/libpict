@@ -57,13 +57,14 @@ var searchData=
   ['ptp_5fverbose_5flog_54',['ptp_verbose_log',['../libpict_8h.html#a929154fa2c68795d7eb2b0411c7d29f3',1,'libpict.h']]],
   ['ptpip_5fcmd_5fread_55',['ptpip_cmd_read',['../group__Backend.html#gac5f9828b9bc606c3ebff9e7abee9c1e0',1,'cl_backend.h']]],
   ['ptpip_5fcmd_5fwrite_56',['ptpip_cmd_write',['../group__Backend.html#gab81114438be31afbb4aee572115237f2',1,'cl_backend.h']]],
-  ['ptpip_5fconnect_57',['ptpip_connect',['../group__Backend.html#gac0bc9a3bcaaae45ae1efc7153d695390',1,'cl_backend.h']]],
-  ['ptpip_5fconnect_5fevents_58',['ptpip_connect_events',['../group__Backend.html#ga4d809f403667acfe4fcb67cd614fab35',1,'cl_backend.h']]],
-  ['ptpip_5fdevice_5fclose_59',['ptpip_device_close',['../group__Backend.html#gada9054f356e1232a75287a0ac9ae143e',1,'cl_backend.h']]],
-  ['ptpip_5finit_5fcommand_5frequest_60',['ptpip_init_command_request',['../group__Operations.html#ga35ecd085b423e6312a5214b1d0573e4c',1,'cl_ops.h']]],
-  ['ptpip_5finit_5fevents_61',['ptpip_init_events',['../group__Operations.html#gaab71c60e32fb92e3c5458431006c57da',1,'cl_ops.h']]],
-  ['ptpusb_5fdevice_5flist_62',['ptpusb_device_list',['../group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748',1,'cl_backend.h']]],
-  ['ptpusb_5ffree_5fdevice_5flist_63',['ptpusb_free_device_list',['../group__Backend.html#gac5e60abecb830370a1981c4137ed2571',1,'cl_backend.h']]],
-  ['ptpusb_5ffree_5fdevice_5flist_5fentry_64',['ptpusb_free_device_list_entry',['../group__Backend.html#ga883fc46b212f25ae93614fa2a5867a8f',1,'cl_backend.h']]],
-  ['ptpusb_5fget_5fstatus_65',['ptpusb_get_status',['../group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57',1,'cl_backend.h']]]
+  ['ptpip_5fcomm_5fdeinit_57',['ptpip_comm_deinit',['../group__Backend.html#ga476881a2f12eca31f8500c874b5783c3',1,'cl_backend.h']]],
+  ['ptpip_5fconnect_58',['ptpip_connect',['../group__Backend.html#gac0bc9a3bcaaae45ae1efc7153d695390',1,'cl_backend.h']]],
+  ['ptpip_5fconnect_5fevents_59',['ptpip_connect_events',['../group__Backend.html#ga4d809f403667acfe4fcb67cd614fab35',1,'cl_backend.h']]],
+  ['ptpip_5fdevice_5fclose_60',['ptpip_device_close',['../group__Backend.html#gada9054f356e1232a75287a0ac9ae143e',1,'cl_backend.h']]],
+  ['ptpip_5finit_5fcommand_5frequest_61',['ptpip_init_command_request',['../group__Operations.html#ga35ecd085b423e6312a5214b1d0573e4c',1,'cl_ops.h']]],
+  ['ptpip_5finit_5fevents_62',['ptpip_init_events',['../group__Operations.html#gaab71c60e32fb92e3c5458431006c57da',1,'cl_ops.h']]],
+  ['ptpusb_5fdevice_5flist_63',['ptpusb_device_list',['../group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748',1,'cl_backend.h']]],
+  ['ptpusb_5ffree_5fdevice_5flist_64',['ptpusb_free_device_list',['../group__Backend.html#gac5e60abecb830370a1981c4137ed2571',1,'cl_backend.h']]],
+  ['ptpusb_5ffree_5fdevice_5flist_5fentry_65',['ptpusb_free_device_list_entry',['../group__Backend.html#ga883fc46b212f25ae93614fa2a5867a8f',1,'cl_backend.h']]],
+  ['ptpusb_5fget_5fstatus_66',['ptpusb_get_status',['../group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57',1,'cl_backend.h']]]
 ];
