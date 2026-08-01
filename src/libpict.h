@@ -153,6 +153,14 @@ struct PtpRuntime {
 	/// @todo: deprecate
 	void *comm_backend;
 
+	/// @Brief Optional function that will be called every time a chunk of data is read
+	/// Meant for updating progress bars. NULL by default.
+	void (*report_read_progress)(struct PtpRuntime *r, unsigned int size);
+
+	/// @brief Called after ptp/ip socket() call, meant for binding to other interfaces when necessary
+	/// NULL by default
+	int (*set_extra_socket_settings)(struct PtpRuntime *r, int sockfd);
+
 	/// @brief Free pointer to hold per ptp session information
 	void *userdata;
 
@@ -176,13 +184,7 @@ struct PtpRuntime {
 
 	/// @brief If non-NULL, all reads/writes will be logged to this file
 	FILE *comm_dump;
-
-	// TODO: Fudge uses this, should be moved to userdata struct
-	void *oc;
 };
-
-/// @brief Update UI progress on download progress
-void ptp_report_read_progress(struct PtpRuntime *r, unsigned int size);
 
 /// @brief Generic event / property change
 struct PtpGenericEvent {

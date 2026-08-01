@@ -21,15 +21,6 @@
 #endif
 #include <libpict.h>
 
-/// @brief Report progress to the client so it can move a progress bar
-__attribute__((weak))
-void ptp_report_read_progress(struct PtpRuntime *r, unsigned int size) {}
-
-/// @brief Optional function to assign additional properties to a socket after it's created
-/// such as binding to a network, etc
-__attribute__((weak))
-int ptpip_set_extra_socket_settings(struct PtpRuntime *r, int sockfd) {return 0;}
-
 // Dump all communication to a file
 //#define DUMP_COMM
 
@@ -69,16 +60,19 @@ static int set_nonblocking_io(int fd, int enable) {
 }
 
 static int create_socket(struct PtpRuntime *r, const char *addr, int port, long timeout_sec) {
+	int rc;
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd <= 0) {
 		ptp_verbose_log("Bad socket fd: %d %d\n", sockfd, errno);
 		return -1;
 	}
 
-	int rc = ptpip_set_extra_socket_settings(r, sockfd);
-	if (rc) {
-		ptp_verbose_log("Error binding to wifi network: %d\n", errno);
-		return rc;
+	if (r->set_extra_socket_settings != NULL) {
+		rc = r->set_extra_socket_settings(r, sockfd);
+		if (rc) {
+			ptp_verbose_log("Error binding to wifi network: %d\n", errno);
+			return rc;
+		}
 	}
 
 	int yes = 1;
@@ -99,7 +93,7 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		return -1;
 	}
 
-	ptp_verbose_log("Connecting to %s:%d", addr, port);
+	ptp_verbose_log("Connecting to %s:%d\n", addr, port);
 
 	struct sockaddr_in sa;
 	memset(&sa, 0, sizeof(sa));
@@ -150,7 +144,7 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		set_nonblocking_io(sockfd, 0);
 		return sockfd;
 	}
-	if (so_error == 111) {
+	if (so_error == ECONNREFUSED) {
 		ptp_verbose_log("Connection refused - probably invalid IP\n");
 	} else {
 		ptp_verbose_log("Failed to connect: %d\n", so_error);
@@ -243,6 +237,7 @@ int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 
 	int result = (int)send(b->fd, data, size, 0);
 	if (result < 0) {
+		ptp_verbose_log("read(): %d\n", errno);
 		return -1;
 	} else {
 		return result;
@@ -251,7 +246,7 @@ int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 
 int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
-	struct PtpCommPriv *b = init_comm(r); // slow
+	struct PtpCommPriv *b = init_comm(r);
 	int result = (int)read(b->fd, data, size);
 
 #ifdef DUMP_COMM
@@ -259,15 +254,15 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 #endif
 
 	if (result < 0) {
-		// To match behavior of USB backends, return 0 bytes when there are no bytes available
-		if (errno == 11) {
-			ptp_verbose_log("resource temp unavailable");
+		ptp_verbose_log("read(): %d\n", errno);
+		// To match behavior of USB backends, return 0 bytes when there is no data available
+		if (errno == EAGAIN) {
+			ptp_verbose_log("EAGAIN\n");
 			return 0;
 		}
-		ptp_verbose_log("read(): %d %d\n", result, errno);
 		return -1;
 	} else {
-		ptp_report_read_progress(r, result);
+		if (r->report_read_progress != NULL) r->report_read_progress(r, result);
 		return result;
 	}
 }
