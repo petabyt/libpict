@@ -152,6 +152,9 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a4cbcd4b8e3ab03ea6ef43330345782b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private instance of comm/io structure.  <br /></td></tr>
 <tr class="memitem:a536ce5f5409e194a56c006fe8bb3d454" id="r_a536ce5f5409e194a56c006fe8bb3d454"><td class="memItemLeft">void *&#160;</td><td class="memItemRight"><a class="el" href="#a536ce5f5409e194a56c006fe8bb3d454">comm_backend</a></td></tr>
 <tr class="memdesc:a536ce5f5409e194a56c006fe8bb3d454"><td class="mdescLeft">&#160;</td><td class="mdescRight">void* pointer for comm/io instance  <br /></td></tr>
+<tr class="memitem:aca0ed2f8cf3b4e47233d559918cd40c9" id="r_aca0ed2f8cf3b4e47233d559918cd40c9"><td class="memItemLeft">void(*&#160;</td><td class="memItemRight"><a class="el" href="#aca0ed2f8cf3b4e47233d559918cd40c9">report_read_progress</a> )(struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, unsigned int size)</td></tr>
+<tr class="memitem:a8ddcaad968df759514db5027bfc42c09" id="r_a8ddcaad968df759514db5027bfc42c09"><td class="memItemLeft">int(*&#160;</td><td class="memItemRight"><a class="el" href="#a8ddcaad968df759514db5027bfc42c09">set_extra_socket_settings</a> )(struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, int sockfd)</td></tr>
+<tr class="memdesc:a8ddcaad968df759514db5027bfc42c09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after ptp/ip socket() call, meant for binding to other interfaces when necessary NULL by default.  <br /></td></tr>
 <tr class="memitem:a237458ab782308367b392a36045d1486" id="r_a237458ab782308367b392a36045d1486"><td class="memItemLeft">void *&#160;</td><td class="memItemRight"><a class="el" href="#a237458ab782308367b392a36045d1486">userdata</a></td></tr>
 <tr class="memdesc:a237458ab782308367b392a36045d1486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free pointer to hold per ptp session information.  <br /></td></tr>
 <tr class="memitem:a246b5a630fe64f8ae38ac163aba51079" id="r_a246b5a630fe64f8ae38ac163aba51079"><td class="memItemLeft">struct PtpUserPriv *&#160;</td><td class="memItemRight"><a class="el" href="#a246b5a630fe64f8ae38ac163aba51079">priv</a></td></tr>
@@ -166,7 +169,6 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a8601b1154a9464a29fa5893b81f87251"><td class="mdescLeft">&#160;</td><td class="mdescRight">For devices that implement it, this will hold a linked list of properties and an array of their supported values. generic_ functions will reject set property calls if an invalid value is written.  <br /></td></tr>
 <tr class="memitem:a2a14ddc3b7c635a735ca8e9ca9cab988" id="r_a2a14ddc3b7c635a735ca8e9ca9cab988"><td class="memItemLeft">FILE *&#160;</td><td class="memItemRight"><a class="el" href="#a2a14ddc3b7c635a735ca8e9ca9cab988">comm_dump</a></td></tr>
 <tr class="memdesc:a2a14ddc3b7c635a735ca8e9ca9cab988"><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-NULL, all reads/writes will be logged to this file.  <br /></td></tr>
-<tr class="memitem:a5b349a4510b80e70d79edda95d1fc198" id="r_a5b349a4510b80e70d79edda95d1fc198"><td class="memItemLeft">void *&#160;</td><td class="memItemRight"><a class="el" href="#a5b349a4510b80e70d79edda95d1fc198">oc</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a single device connection. </p>
@@ -188,7 +190,7 @@ Public Attributes</h2></td></tr>
 <p>For devices that implement it, this will hold a linked list of properties and an array of their supported values. generic_ functions will reject set property calls if an invalid value is written. </p>
 <dl class="section note"><dt>Note</dt><dd>: Optional </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00175">175</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00183">183</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -225,7 +227,7 @@ Public Attributes</h2></td></tr>
 
 <p>If non-NULL, all reads/writes will be logged to this file. </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00178">178</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00186">186</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -408,23 +410,7 @@ Public Attributes</h2></td></tr>
 
 <p>Optional (see PTP_DONT_USE_MUTEX). </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00163">163</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
-
-</div>
-</div>
-<a id="a5b349a4510b80e70d79edda95d1fc198" name="a5b349a4510b80e70d79edda95d1fc198"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b349a4510b80e70d79edda95d1fc198">&#9670;&#160;</a></span>oc</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void* PtpRuntime::oc</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00181">181</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00171">171</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -460,7 +446,24 @@ Public Attributes</h2></td></tr>
 
 <p>Struct to hold per ptp session information, can be set freely. </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00160">160</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00168">168</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+
+</div>
+</div>
+<a id="aca0ed2f8cf3b4e47233d559918cd40c9" name="aca0ed2f8cf3b4e47233d559918cd40c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca0ed2f8cf3b4e47233d559918cd40c9">&#9670;&#160;</a></span>report_read_progress</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* PtpRuntime::report_read_progress) (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, unsigned int size)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>@Brief Optional function that will be called every time a chunk of data is read Meant for updating progress bars. NULL by default. </p>
+
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00158">158</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -478,7 +481,7 @@ Public Attributes</h2></td></tr>
 
 <p>Default value for wait_for_response. </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00170">170</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00178">178</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -497,6 +500,24 @@ Public Attributes</h2></td></tr>
 <p>Current session ID. </p>
 
 <p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00127">127</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+
+</div>
+</div>
+<a id="a8ddcaad968df759514db5027bfc42c09" name="a8ddcaad968df759514db5027bfc42c09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ddcaad968df759514db5027bfc42c09">&#9670;&#160;</a></span>set_extra_socket_settings</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int(* PtpRuntime::set_extra_socket_settings) (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, int sockfd)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Called after ptp/ip socket() call, meant for binding to other interfaces when necessary NULL by default. </p>
+
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00162">162</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -533,7 +554,7 @@ Public Attributes</h2></td></tr>
 
 <p>Free pointer to hold per ptp session information. </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00157">157</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00165">165</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +573,7 @@ Public Attributes</h2></td></tr>
 <p>Optionally wait up to 256 seconds for a response. Some PTP operations require this, such as EOS capture. </p>
 <dl class="section note"><dt>Note</dt><dd>Not thread safe. Will be reset after each operation. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00167">167</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00175">175</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>

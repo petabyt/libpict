@@ -15,8 +15,10 @@ var structPtpRuntime =
     [ "mutex", "structPtpRuntime.html#ab0ce33227dec019e95821f0ef5c41de9", null ],
     [ "operation_kill_switch", "structPtpRuntime.html#ae599865d549d7e529312109f6af3f1ae", null ],
     [ "priv", "structPtpRuntime.html#a246b5a630fe64f8ae38ac163aba51079", null ],
+    [ "report_read_progress", "structPtpRuntime.html#aca0ed2f8cf3b4e47233d559918cd40c9", null ],
     [ "response_wait_default", "structPtpRuntime.html#a37501cfcd57c6d29d2201bccfa822d0e", null ],
     [ "session", "structPtpRuntime.html#aae65285b4aad1dfe6e5329924f269adf", null ],
+    [ "set_extra_socket_settings", "structPtpRuntime.html#a8ddcaad968df759514db5027bfc42c09", null ],
     [ "transaction", "structPtpRuntime.html#a9e655ea665c46fd29ff029924d63e7fa", null ],
     [ "userdata", "structPtpRuntime.html#a237458ab782308367b392a36045d1486", null ],
     [ "wait_for_response", "structPtpRuntime.html#adbd0410bdf4fe67efe17ddf0937195c4", null ]
