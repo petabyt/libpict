@@ -188,6 +188,13 @@ static int ptp_send_try(struct PtpRuntime *r, struct PtpCommand *cmd) {
 	return 0;
 }
 
+static void log_cmd(const struct PtpCommand *cmd) {
+	if (cmd->param_length == 0) ptp_verbose_log("Sending %04x with no params\n", cmd->code, cmd->param_length);
+	else if (cmd->param_length == 0) ptp_verbose_log("Sending %04x with 1 param (%d)\n", cmd->code, cmd->params[0]);
+	else if (cmd->param_length == 0) ptp_verbose_log("Sending %04x with 2 params (%d, %d)\n", cmd->code, cmd->params[0], cmd->params[0]);
+	else ptp_verbose_log("Sending %04x with %d params\n", cmd->code, cmd->param_length);
+}
+
 // Perform a generic command transaction - no data phase
 int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd) {
 	if (r->operation_kill_switch) return PTP_IO_ERR;
@@ -197,7 +204,7 @@ int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd) {
 		return PTP_IO_ERR;
 	}
 
-	//ptp_verbose_log("Sending %04x with %d params (%d, %d)\n", cmd->code, cmd->param_length, cmd->params[0], cmd->params[1]);
+	log_cmd(cmd);
 
 	r->data_phase_length = 0;
 
@@ -265,6 +272,8 @@ int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void
 		ptp_mutex_unlock(r);
 		return PTP_IO_ERR;
 	}
+
+	log_cmd(cmd);
 
 	// Required for PTP/IP
 	r->data_phase_length = length;
