@@ -29,7 +29,7 @@ int ptp_validate_property_value(struct PtpRuntime *r, int prop_code, uint32_t va
 		}
 
 		if (value == cur_val) {
-			ptp_verbose_log("Found valid prop value %X for 0x%X\n", value, prop_code);
+			ptp_verbose_log(r, "Found valid prop value %X for 0x%X\n", value, prop_code);
 			return 0;
 		}
 	}

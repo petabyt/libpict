@@ -31,14 +31,6 @@
 // 1mb default buffer size
 #define PTP_DEFAULT_SIZE 1000000
 
-// Logging+panic mechanism, define it yourself or link in log.c
-/// @brief Verbose log debugging info, could be called dozens of times per second
-PUB void ptp_verbose_log(char *fmt, ...);
-/// @brief Used for critical IO errors, (not runtime errors)
-PUB void ptp_error_log(char *fmt, ...);
-/// @brief Client has no way out, crash the application
-PUB __attribute__ ((noreturn)) void ptp_panic(char *fmt, ...);
-
 /// @brief Library errors, not PTP return codes
 enum PtpGeneralError {
 	PTP_OK = 0,
@@ -185,6 +177,14 @@ struct PtpRuntime {
 	/// @brief If non-NULL, all reads/writes will be logged to this file
 	FILE *comm_dump;
 };
+
+// Logging+panic mechanism, define it yourself or link in log.c
+/// @brief Verbose log debugging info, could be called dozens of times per second
+PUB void ptp_verbose_log(struct PtpRuntime *r, char *fmt, ...);
+/// @brief Used for critical IO errors, (not runtime errors)
+PUB void ptp_error_log(struct PtpRuntime *r, char *fmt, ...);
+/// @brief Client has no way out, crash the application
+PUB __attribute__ ((noreturn)) void ptp_panic(char *fmt, ...);
 
 /// @brief Generic event / property change
 struct PtpGenericEvent {

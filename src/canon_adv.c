@@ -95,7 +95,7 @@ static int hex(char c) {
 }
 
 // Parse a formatted command into struct Tokens
-static struct Tokens *lex_evproc_command(char string[]) {
+static struct Tokens *lex_evproc_command(struct PtpRuntime *r, char string[]) {
 	struct Tokens *toks = malloc(sizeof(struct Tokens));
 	int t = 0;
 	memset(toks, 0, sizeof(struct Tokens));
@@ -165,13 +165,13 @@ static struct Tokens *lex_evproc_command(char string[]) {
 			c++;
 			toks->t[t].string[s] = '\0';
 		} else {
-			ptp_verbose_log("Skipping unknown character '%c'\n", string[c]);
+			ptp_verbose_log(r, "Skipping unknown character '%c'\n", string[c]);
 			c++;
 			continue;
 		}
 
 		if (t >= MAX_TOK) {
-			ptp_verbose_log("Error: Hit max parameter count.\n");
+			ptp_verbose_log(r, "Error: Hit max parameter count.\n");
 			return NULL;
 		} else {
 			t++;
@@ -183,7 +183,7 @@ static struct Tokens *lex_evproc_command(char string[]) {
 	return toks;
 }
 
-void *canon_evproc_pack(int *out_length, char *string) {
+void *canon_evproc_pack(struct PtpRuntime *r, int *out_length, char *string) {
 	int length = 0;
 	// Allocate some memory for the footer, we will use this later
 	char *footer = malloc(500);
@@ -193,12 +193,12 @@ void *canon_evproc_pack(int *out_length, char *string) {
 	// Set long_args to zero
 	footer_length += ptp_write_u32(footer + footer_length, 0);
 
-	struct Tokens *toks = lex_evproc_command(string);
+	struct Tokens *toks = lex_evproc_command(r, string);
 
 	char *data = malloc(500);
 
 	if (toks->length == 0) {
-		ptp_verbose_log("Error, must have at least 1 parameter.\n");
+		ptp_verbose_log(r, "Error, must have at least 1 parameter.\n");
 		return NULL;
 	}
 
@@ -209,7 +209,7 @@ void *canon_evproc_pack(int *out_length, char *string) {
 		data[len] = '\0';
 		length += len + 1;
 	} else {
-		ptp_verbose_log("Error, first parameter must be plain text.\n");
+		ptp_verbose_log(r, "Error, first parameter must be plain text.\n");
 		return NULL;
 	}
 
@@ -268,12 +268,12 @@ void *canon_evproc_pack(int *out_length, char *string) {
 static int eos_evproc(struct PtpRuntime *r, char *request, int payload) {
 	int rc = ptp_eos_activate_command(r);
 	if (rc) {
-		ptp_verbose_log("Error activating command %d\n", rc);
+		ptp_verbose_log(r, "Error activating command %d\n", rc);
 		return rc;
 	}
 
 	int length = 0;
-	void *data = canon_evproc_pack(&length, request);
+	void *data = canon_evproc_pack(r, &length, request);
 	if (data == NULL) {
 		return PTP_RUNTIME_ERR;
 	}

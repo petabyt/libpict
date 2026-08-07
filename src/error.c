@@ -19,7 +19,7 @@ void ptp_report_error(struct PtpRuntime *r, char *reason, int code) {
 
 	// Safely disconnect if intentional
 	if (code == 0) {
-		ptp_verbose_log("Closing session\n");
+		ptp_verbose_log(r, "Closing session\n");
 		ptp_close_session(r);
 	}
 
@@ -30,11 +30,11 @@ void ptp_report_error(struct PtpRuntime *r, char *reason, int code) {
 
 	if (reason == NULL) {
 		if (code == PTP_IO_ERR) {
-			ptp_verbose_log("Disconnected: IO Error\n");
+			ptp_verbose_log(r, "Disconnected: IO Error\n");
 		} else {
-			ptp_verbose_log("Disconnected: Runtime error\n");
+			ptp_verbose_log(r, "Disconnected: Runtime error\n");
 		}
 	} else {
-		ptp_verbose_log("Disconnected: %s\n", reason);
+		ptp_verbose_log(r, "Disconnected: %s\n", reason);
 	}
 }

@@ -30,7 +30,7 @@ void ptp_comm_deinit(struct PtpRuntime *r) {
 
 int ptp_device_connect(struct PtpRuntime *r) {
 	if (!r->io_kill_switch) {
-		ptp_verbose_log("Connection is active\n");
+		ptp_verbose_log(r, "Connection is active\n");
 		return PTP_IO_ERR;
 	}
 
@@ -56,7 +56,7 @@ int ptp_device_connect(struct PtpRuntime *r) {
 		}
 
 		int type = wpd_get_device_type(wpd);
-		ptp_verbose_log("Found device of type: %d\n", type);
+		ptp_verbose_log(r, "Found device of type: %d\n", type);
 		if (type == WPD_DEVICE_TYPE_CAMERA) {
 			r->io_kill_switch = 0;
 			r->operation_kill_switch = 0;
@@ -131,7 +131,7 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 		return 0;
 	}
 
-	ptp_verbose_log("Device is not a camera! (%d)\n", type);
+	ptp_verbose_log(r, "Device is not a camera! (%d)\n", type);
 
 	ptp_mutex_unlock(r);
 	return PTP_OPEN_FAIL;

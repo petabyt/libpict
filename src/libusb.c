@@ -35,7 +35,7 @@ int ptp_comm_init(struct PtpRuntime *r) {
 		r->comm_priv = calloc(1, sizeof(struct PtpCommPriv));
 		if (r->comm_priv == NULL) ptp_panic("calloc");
 
-		ptp_verbose_log("Initializing libusb...\n");
+		ptp_verbose_log(r, "Initializing libusb...\n");
 		libusb_init(&r->comm_priv->ctx);
 
 		//libusb_set_option(backend->ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
@@ -135,7 +135,7 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 
 		valid_devices++;
 
-		ptp_verbose_log("Vendor ID: %X, Product ID: %X\n", desc.idVendor, desc.idProduct);
+		ptp_verbose_log(r, "Vendor ID: %X, Product ID: %X\n", desc.idVendor, desc.idProduct);
 
 		curr_ent->id = d;
 		curr_ent->vendor_id = desc.idVendor;
@@ -146,14 +146,14 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 				if (ep[i].bEndpointAddress & LIBUSB_ENDPOINT_IN) {
 					curr_ent->endpoint_in = ep[i].bEndpointAddress;
 					r->max_packet_size = ep[i].wMaxPacketSize;
-					ptp_verbose_log("Endpoint IN addr: 0x%X\n", ep[i].bEndpointAddress);
+					ptp_verbose_log(r, "Endpoint IN addr: 0x%X\n", ep[i].bEndpointAddress);
 				} else {
 					curr_ent->endpoint_out = ep[i].bEndpointAddress;
-					ptp_verbose_log("Endpoint OUT addr: 0x%X\n", ep[i].bEndpointAddress);
+					ptp_verbose_log(r, "Endpoint OUT addr: 0x%X\n", ep[i].bEndpointAddress);
 				}
 			} else if (ep[i].bmAttributes == LIBUSB_ENDPOINT_TRANSFER_TYPE_INTERRUPT) {
 				curr_ent->endpoint_int = ep[i].bEndpointAddress;
-				ptp_verbose_log("Endpoint INT addr: 0x%X\n", ep[i].bEndpointAddress);	
+				ptp_verbose_log(r, "Endpoint INT addr: 0x%X\n", ep[i].bEndpointAddress);	
 			}
 		}
 
@@ -173,7 +173,7 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 			strcpy(curr_ent->name, "?");
 		} else {
 			strncpy(curr_ent->name, buffer, sizeof(curr_ent->name) - 1);
-			ptp_verbose_log("Device name: %s\n", curr_ent->name);
+			ptp_verbose_log(r, "Device name: %s\n", curr_ent->name);
 		}
 
 		rc = libusb_get_string_descriptor_ascii(handle, desc.iManufacturer, (unsigned char *)buffer, sizeof(buffer));
@@ -181,7 +181,7 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 			strcpy(curr_ent->manufacturer, "?");
 		} else {
 			strncpy(curr_ent->manufacturer, buffer, sizeof(curr_ent->name) - 1);
-			ptp_verbose_log("Manufacturer: %s\n", curr_ent->manufacturer);
+			ptp_verbose_log(r, "Manufacturer: %s\n", curr_ent->manufacturer);
 		}
 
 		libusb_free_config_descriptor(config);
@@ -203,13 +203,13 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 	ptp_mutex_lock(r);
 	if (r->comm_priv == NULL) {
-		ptp_verbose_log("comm_backend is NULL\n");
+		ptp_verbose_log(r, "comm_backend is NULL\n");
 		ptp_mutex_unlock(r);
 		return PTP_OPEN_FAIL;
 	}
 
 	if (!r->io_kill_switch) {
-		ptp_verbose_log("Connection is active\n");
+		ptp_verbose_log(r, "Connection is active\n");
 		return PTP_OPEN_FAIL;
 	}
 
@@ -343,7 +343,7 @@ int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length) {
 	if (rc == LIBUSB_ERROR_NO_DEVICE) {
 		return PTP_IO_ERR;
 	} else if (rc == LIBUSB_ERROR_TIMEOUT) {
-		ptp_verbose_log("Timeout");
+		ptp_verbose_log(r, "Timeout");
 		return 0;
 	}
 

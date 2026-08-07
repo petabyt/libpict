@@ -52,7 +52,7 @@ int ptp_read_string(uint8_t *d, char *string, int max) {
 	}
 
 	if (wchr != 0x0) {
-		ptp_verbose_log("PTP String does not have null terminator!\n");
+		fprintf(stderr, "PTP String does not have null terminator!\n");
 	} else {
 		string[i] = '\0';
 	}
@@ -241,7 +241,7 @@ int ptp_parse_prop_value(struct PtpRuntime *r) {
 	case 4:
 		type = PTP_TC_UINT32; break;
 	default:
-		ptp_verbose_log("%s: unknown data type size %d - returning -1\n", __func__, ptp_get_payload_length(r));
+		ptp_verbose_log(r, "%s: unknown data type size %d - returning -1\n", __func__, ptp_get_payload_length(r));
 		return -1;
 	}
 
@@ -471,7 +471,7 @@ int ptp_pack_object_info(struct PtpRuntime *r, struct PtpObjectInfo *oi, uint8_t
 void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, unsigned int *length) {
 	FILE *f = fopen(in, "rb");
 	if (f == NULL) {
-		ptp_verbose_log("Unable to open %s\n", in);
+		ptp_verbose_log(r, "Unable to open %s\n", in);
 		return NULL;
 	}
 
@@ -793,7 +793,7 @@ int ptp_eos_events_next(struct PtpRuntime *r, struct PtpEventReader *reader, str
 		}
 		} break;
 	default:
-		ptp_verbose_log("Unknown PTP event code %02x, event will be zeroed\n", type);
+		ptp_verbose_log(r, "Unknown PTP event code %02x, event will be zeroed\n", type);
 	}
 
 	reader->data_of += size;

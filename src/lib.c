@@ -117,7 +117,7 @@ int ptp_buffer_resize(struct PtpRuntime *r, size_t size) {
 
 	// realloc with a little extra space to minimize reallocs later on
 	static int extra = 100;
-	ptp_verbose_log("Extending IO buffer to %X\n", size + extra);
+	ptp_verbose_log(r, "Extending IO buffer to %X\n", size + extra);
 	r->data = realloc(r->data, size + extra);
 	r->data_length = size + extra;
 	if (r->data == NULL) {
@@ -153,7 +153,7 @@ void ptp_mutex_unlock_thread(struct PtpRuntime *r) {
 	if (r->mutex == NULL) return;
 	// Wait until we get EPERM (we do not own the mutex anymore)
 	while (pthread_mutex_unlock(r->mutex) == 0) {
-		ptp_verbose_log("WARN: pid %d had mutex locked\n", getpid());
+		ptp_verbose_log(r, "WARN: pid %d had mutex locked\n", getpid());
 	}
 }
 
@@ -161,11 +161,11 @@ static int ptp_check_rc(struct PtpRuntime *r) {
 	int code = ptp_get_return_code(r);
 	// This is returned on Fuji cameras
 	if (code == 0xffff) {
-		ptp_verbose_log("Nonstandard goodbye return code 0xffff");
+		ptp_verbose_log(r, "Nonstandard goodbye return code 0xffff");
 		return PTP_IO_ERR;
 	}
 	if (code != PTP_RC_OK) {
-		ptp_verbose_log("Invalid return code: %X\n", ptp_get_return_code(r));
+		ptp_verbose_log(r, "Invalid return code: %X\n", ptp_get_return_code(r));
 		return PTP_CHECK_CODE;
 	}
 
@@ -175,24 +175,24 @@ static int ptp_check_rc(struct PtpRuntime *r) {
 static int ptp_send_try(struct PtpRuntime *r, struct PtpCommand *cmd) {
 	unsigned int length = ptp_new_cmd_packet(r, cmd);
 	if (ptp_send_packet(r, length) != length) {
-		ptp_verbose_log("Didn't send all packets\n");
+		ptp_verbose_log(r, "Didn't send all packets\n");
 		return PTP_IO_ERR;
 	}
 
 	int rc = ptp_receive_all_packets(r);
 	if (rc < 0) {
-		ptp_verbose_log("Failed to receive packets: %d\n", rc);
+		ptp_verbose_log(r, "Failed to receive packets: %d\n", rc);
 		return rc;
 	}
 
 	return 0;
 }
 
-static void log_cmd(const struct PtpCommand *cmd) {
-	if (cmd->param_length == 0) ptp_verbose_log("Sending %04x with no params\n", cmd->code, cmd->param_length);
-	else if (cmd->param_length == 1) ptp_verbose_log("Sending %04x with 1 param (%d)\n", cmd->code, cmd->params[0]);
-	else if (cmd->param_length == 2) ptp_verbose_log("Sending %04x with 2 params (%d, %d)\n", cmd->code, cmd->params[0], cmd->params[0]);
-	else ptp_verbose_log("Sending %04x with %d params\n", cmd->code, cmd->param_length);
+static void log_cmd(struct PtpRuntime *r, const struct PtpCommand *cmd) {
+	if (cmd->param_length == 0) ptp_verbose_log(r, "Sending %04x with no params\n", cmd->code, cmd->param_length);
+	else if (cmd->param_length == 1) ptp_verbose_log(r, "Sending %04x with 1 param (%d)\n", cmd->code, cmd->params[0]);
+	else if (cmd->param_length == 2) ptp_verbose_log(r, "Sending %04x with 2 params (%d, %d)\n", cmd->code, cmd->params[0], cmd->params[0]);
+	else ptp_verbose_log(r, "Sending %04x with %d params\n", cmd->code, cmd->param_length);
 }
 
 // Perform a generic command transaction - no data phase
@@ -204,16 +204,16 @@ int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd) {
 		return PTP_IO_ERR;
 	}
 
-	log_cmd(cmd);
+	log_cmd(r, cmd);
 
 	r->data_phase_length = 0;
 
 	int rc = ptp_send_try(r, cmd);
 	if (rc == PTP_COMMAND_IGNORED) {
-		ptp_verbose_log("Command ignored, trying again...\n");
+		ptp_verbose_log(r, "Command ignored, trying again...\n");
 		rc = ptp_send_try(r, cmd);
 		if (rc) {
-			ptp_verbose_log("Command ignored again.\n");
+			ptp_verbose_log(r, "Command ignored again.\n");
 			r->operation_kill_switch = 1;
 			ptp_mutex_unlock(r);
 			return PTP_IO_ERR;
@@ -254,7 +254,7 @@ static int ptp_send_data_try(struct PtpRuntime *r, const struct PtpCommand *cmd,
 		// Single data packet
 		plength = ptpusb_new_data_packet(r, cmd, data, length);
 		if (ptp_send_packet(r, plength) != plength) {
-			ptp_verbose_log("Failed to send data packet (%d)\n", plength);
+			ptp_verbose_log(r, "Failed to send data packet (%d)\n", plength);
 			return PTP_IO_ERR;
 		}
 	}
@@ -273,7 +273,7 @@ int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void
 		return PTP_IO_ERR;
 	}
 
-	log_cmd(cmd);
+	log_cmd(r, cmd);
 
 	// Required for PTP/IP
 	r->data_phase_length = length;
@@ -289,10 +289,10 @@ int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void
 	// commands again.
 	int rc = ptp_send_data_try(r, cmd, data, length);
 	if (rc == PTP_COMMAND_IGNORED) {
-		ptp_verbose_log("Command ignored, trying again...\n");
+		ptp_verbose_log(r, "Command ignored, trying again...\n");
 		rc = ptp_send_data_try(r, cmd, data, length);
 		if (rc) {
-			ptp_verbose_log("Command ignored again.\n");
+			ptp_verbose_log(r, "Command ignored again.\n");
 			r->operation_kill_switch = 1;
 			ptp_mutex_unlock(r);
 			return PTP_IO_ERR;

@@ -24,7 +24,7 @@ int ptp_send_packet(struct PtpRuntime *r, unsigned int length) {
 		}
 
 		if (rc < 0) {
-			ptp_verbose_log("%s: %d\n", __func__, rc);
+			ptp_verbose_log(r, "%s: %d\n", __func__, rc);
 			r->data_filled_length = 0;
 			return PTP_IO_ERR;
 		}
@@ -34,7 +34,7 @@ int ptp_send_packet(struct PtpRuntime *r, unsigned int length) {
 		if (sent > length) {
 			ptp_panic("BUG: Sent too many bytes (?)");
 		} else if (sent == length) {
-			ptp_verbose_log("%s: Sent %d/%d bytes\n", __func__, sent, length);
+			ptp_verbose_log(r, "%s: Sent %d/%d bytes\n", __func__, sent, length);
 			r->data_filled_length = sent;
 			return (int)sent;
 		}
@@ -53,7 +53,7 @@ int ptpip_read_packet(struct PtpRuntime *r, int of) {
 		if (rc > 0) break;
 
 		if (r->wait_for_response) {
-			ptp_error_log("Trying again...\n");
+			ptp_error_log(r, "Trying again...\n");
 			PTP_SLEEP(PTP_WAIT_MS);
 		}
 	}
@@ -61,12 +61,12 @@ int ptpip_read_packet(struct PtpRuntime *r, int of) {
 	r->wait_for_response = r->response_wait_default;
 
 	if (rc < 0) {
-		ptp_error_log("Failed to read packet length: %d\n", rc);
+		ptp_error_log(r, "Failed to read packet length: %d\n", rc);
 		return PTP_COMMAND_IGNORED;
 	}
 
 	if (rc < 4) {
-		ptp_error_log("Failed to read at least packet length: %d\n", rc);
+		ptp_error_log(r, "Failed to read at least packet length: %d\n", rc);
 		return PTP_IO_ERR;
 	}
 
@@ -90,7 +90,7 @@ int ptpip_read_packet(struct PtpRuntime *r, int of) {
 		rc = ptpip_cmd_read(r, r->data + of + read, h->length - read);
 
 		if (rc < 0) {
-			ptp_verbose_log("Read error: %d\n", rc);
+			ptp_verbose_log(r, "Read error: %d\n", rc);
 			return PTP_IO_ERR;
 		}
 
@@ -119,7 +119,7 @@ int ptpip_receive_bulk_packets(struct PtpRuntime *r) {
 		r->data_filled_length += rc;
 		h = (struct PtpIpHeader *)(r->data + pk1_of);
 		if (h->type != PTPIP_DATA_PACKET_END) {
-			ptp_error_log("Didn't receive an END DATA packet (%d)\n", h->type);
+			ptp_error_log(r, "Didn't receive an END DATA packet (%d)\n", h->type);
 			return PTP_IO_ERR;
 		}
 
@@ -130,17 +130,17 @@ int ptpip_receive_bulk_packets(struct PtpRuntime *r) {
 		r->data_filled_length += rc;
 		h = (struct PtpIpHeader *)(r->data + pk2_of);
 		if (h->type != PTPIP_COMMAND_RESPONSE) {
-			ptp_error_log("Non response packet after data end packet (%d)\n", h->type);
+			ptp_error_log(r, "Non response packet after data end packet (%d)\n", h->type);
 			return PTP_IO_ERR;
 		}
 	} else if (h->type == PTPIP_COMMAND_RESPONSE) {
-		ptp_verbose_log("Received response packet\n");
+		ptp_verbose_log(r, "Received response packet\n");
 	} else {
-		ptp_error_log("Unexpected packet: %X\n", h->type);
+		ptp_error_log(r, "Unexpected packet: %X\n", h->type);
 		return PTP_IO_ERR;
 	}
 
-	ptp_verbose_log("ptpip_receive_bulk_packets: Return code: 0x%X\n", ptp_get_return_code(r));
+	ptp_verbose_log(r, "ptpip_receive_bulk_packets: Return code: 0x%X\n", ptp_get_return_code(r));
 
 	return 0;
 }
@@ -165,14 +165,14 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 			ptp_panic("illegal connection type");
 		}
 		if (rc < 0 && r->wait_for_response) {
-			ptp_error_log("Response error %d, trying again\n", rc);
+			ptp_error_log(r, "Response error %d, trying again\n", rc);
 			r->wait_for_response--;
 			PTP_SLEEP(PTP_WAIT_MS);
 			read_attempts++;
 			continue;
 		}
 		if (rc == 0 && r->wait_for_response) {
-			ptp_error_log("Got nothing, trying again\n", rc);
+			ptp_error_log(r, "Got nothing, trying again\n", rc);
 			r->wait_for_response--;
 			read_attempts++;
 			continue;
@@ -184,7 +184,7 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 		read += rc;
 
 		if (r->wait_for_response == 0 && read_attempts) {
-			ptp_error_log("Too many attempts, didn't get enough bytes\n");
+			ptp_error_log(r, "Too many attempts, didn't get enough bytes\n");
 			r->data_filled_length = read;
 			return PTP_COMMAND_IGNORED;
 		}
@@ -213,7 +213,7 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 			ptp_read_u32(&c->length, &data_length);
 			ptp_read_u16(&c->type, &type);
 			if (type != PTP_PACKET_TYPE_RESPONSE) {
-				ptp_error_log("Expected response packet but got %d\n", type);
+				ptp_error_log(r, "Expected response packet but got %d\n", type);
 				r->data_filled_length = read;
 				return PTP_IO_ERR;
 			}
@@ -224,7 +224,7 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 				// TODO: This is a valid scenario when receiving >4GB objects in PtpGetObject
 				// In that case, the data packet length will be 0xffffffff and the size of the payload returned
 				// will be the CompressedSize field in PtpObjectInfo for that file.
-				ptp_error_log("Read too much data %d\n", read);
+				ptp_error_log(r, "Read too much data %d\n", read);
 				r->data_filled_length = read;
 				return PTP_IO_ERR;
 			}
