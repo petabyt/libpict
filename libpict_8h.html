@@ -204,18 +204,18 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a929154fa2c68795d7eb2b0411c7d29f3" id="r_a929154fa2c68795d7eb2b0411c7d29f3"><td class="memItemLeft"><a id="a929154fa2c68795d7eb2b0411c7d29f3" name="a929154fa2c68795d7eb2b0411c7d29f3"></a>
-PUB void&#160;</td><td class="memItemRight"><b>ptp_verbose_log</b> (char *fmt,...)</td></tr>
-<tr class="memdesc:a929154fa2c68795d7eb2b0411c7d29f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verbose log debugging info, could be called dozens of times per second. <br /></td></tr>
-<tr class="memitem:ae24f7d863f22cd22eef7497523ff46a4" id="r_ae24f7d863f22cd22eef7497523ff46a4"><td class="memItemLeft"><a id="ae24f7d863f22cd22eef7497523ff46a4" name="ae24f7d863f22cd22eef7497523ff46a4"></a>
-PUB void&#160;</td><td class="memItemRight"><b>ptp_error_log</b> (char *fmt,...)</td></tr>
-<tr class="memdesc:ae24f7d863f22cd22eef7497523ff46a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for critical IO errors, (not runtime errors). <br /></td></tr>
-<tr class="memitem:aba4c2634cffc9cdfa05c586f505b5297" id="r_aba4c2634cffc9cdfa05c586f505b5297"><td class="memItemLeft"><a id="aba4c2634cffc9cdfa05c586f505b5297" name="aba4c2634cffc9cdfa05c586f505b5297"></a>
-PUB&#160;</td><td class="memItemRight"><b>__attribute__</b> ((noreturn)) void ptp_panic(char *fmt</td></tr>
-<tr class="memdesc:aba4c2634cffc9cdfa05c586f505b5297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client has no way out, crash the application. <br /></td></tr>
 <tr class="memitem:a4be7b7db9e745e655b26523a9429b009" id="r_a4be7b7db9e745e655b26523a9429b009"><td class="memItemLeft"><a id="a4be7b7db9e745e655b26523a9429b009" name="a4be7b7db9e745e655b26523a9429b009"></a>
 const char *&#160;</td><td class="memItemRight"><b>ptp_perror</b> (int rc)</td></tr>
 <tr class="memdesc:a4be7b7db9e745e655b26523a9429b009"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates <a class="el" href="#a9fa077df1a63de2388ae3428b9defd2f" title="Library errors, not PTP return codes.">PtpGeneralError</a> into string message. <br /></td></tr>
+<tr class="memitem:a06100919468e5f5138816e43ea60fd3c" id="r_a06100919468e5f5138816e43ea60fd3c"><td class="memItemLeft"><a id="a06100919468e5f5138816e43ea60fd3c" name="a06100919468e5f5138816e43ea60fd3c"></a>
+PUB void&#160;</td><td class="memItemRight"><b>ptp_verbose_log</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, char *fmt,...)</td></tr>
+<tr class="memdesc:a06100919468e5f5138816e43ea60fd3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verbose log debugging info, could be called dozens of times per second. <br /></td></tr>
+<tr class="memitem:af49b1eaf1abc3df8bea3cfdaed4545fb" id="r_af49b1eaf1abc3df8bea3cfdaed4545fb"><td class="memItemLeft"><a id="af49b1eaf1abc3df8bea3cfdaed4545fb" name="af49b1eaf1abc3df8bea3cfdaed4545fb"></a>
+PUB void&#160;</td><td class="memItemRight"><b>ptp_error_log</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, char *fmt,...)</td></tr>
+<tr class="memdesc:af49b1eaf1abc3df8bea3cfdaed4545fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for critical IO errors, (not runtime errors). <br /></td></tr>
+<tr class="memitem:aba4c2634cffc9cdfa05c586f505b5297" id="r_aba4c2634cffc9cdfa05c586f505b5297"><td class="memItemLeft"><a id="aba4c2634cffc9cdfa05c586f505b5297" name="aba4c2634cffc9cdfa05c586f505b5297"></a>
+PUB&#160;</td><td class="memItemRight"><b>__attribute__</b> ((noreturn)) void ptp_panic(char *fmt</td></tr>
+<tr class="memdesc:aba4c2634cffc9cdfa05c586f505b5297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client has no way out, crash the application. <br /></td></tr>
 <tr class="memitem:abc99c07ece06a1f0e994630c6c5bb935" id="r_abc99c07ece06a1f0e994630c6c5bb935"><td class="memItemLeft">PUB int&#160;</td><td class="memItemRight"><a class="el" href="#abc99c07ece06a1f0e994630c6c5bb935">ptp_get_return_code</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
 <tr class="memdesc:abc99c07ece06a1f0e994630c6c5bb935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the return code (RC) currently in the data buffer.  <br /></td></tr>
 <tr class="memitem:a8c3e51ecbc500483e23bc67f7e664976" id="r_a8c3e51ecbc500483e23bc67f7e664976"><td class="memItemLeft">PUB unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#a8c3e51ecbc500483e23bc67f7e664976">ptp_get_param_length</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
@@ -396,7 +396,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00083">83</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00075">75</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +415,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
 <p>Tells lib what backend and packet style to use. </p>
 <dl class="section note"><dt>Note</dt><dd>This is a bitmask so that it can be passed to ptp_new with other options. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00093">93</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00085">85</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -456,7 +456,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00043">43</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00035">35</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -474,7 +474,7 @@ int&#160;</td><td class="memItemRight"><b>ptp_run_lua</b> (const char *filename)
 
 <p>Unique camera types - each type should have similar opcodes and behavior. </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00072">72</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00064">64</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
