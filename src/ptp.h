@@ -7,8 +7,6 @@
 
 #include <stdint.h>
 
-#pragma pack(push, 1)
-
 // PTP Packet container types
 #define PTP_PACKET_TYPE_COMMAND 	0x1
 #define PTP_PACKET_TYPE_DATA		0x2
@@ -16,7 +14,7 @@
 #define PTP_PACKET_TYPE_EVENT		0x4
 
 // Standard USB-only packet
-struct PtpBulkContainer {
+struct __attribute__((packed)) PtpBulkContainer {
 	uint32_t length; // length of packet, in bytes
 	uint16_t type; // See PACKET_TYPE_*
 	uint16_t code; // See PTP_OC_*
@@ -29,7 +27,7 @@ struct PtpBulkContainer {
 	// Payload data follows, if any
 };
 
-struct PtpEventContainer {
+struct __attribute__((packed)) PtpEventContainer {
 	uint32_t length;
 	uint16_t type;
 	uint16_t code;
@@ -38,13 +36,13 @@ struct PtpEventContainer {
 	uint32_t params[3];
 };
 
-struct PtpIpHeader {
+struct __attribute__((packed)) PtpIpHeader {
 	uint32_t length;
 	uint32_t type;
 	uint32_t params[3];
 };
 
-struct PtpIpRequestContainer {
+struct __attribute__((packed)) PtpIpRequestContainer {
 	uint32_t length;
 	uint32_t type;
 	uint32_t data_phase;
@@ -53,7 +51,7 @@ struct PtpIpRequestContainer {
 	uint32_t params[5];	
 };
 
-struct PtpIpResponseContainer {
+struct __attribute__((packed)) PtpIpResponseContainer {
 	uint32_t length;
 	uint32_t type;
 	uint16_t code;
@@ -61,20 +59,20 @@ struct PtpIpResponseContainer {
 	uint32_t params[5];
 };
 
-struct PtpIpStartDataPacket {
+struct __attribute__((packed)) PtpIpStartDataPacket {
 	uint32_t length;
 	uint32_t type;
 	uint32_t transaction;
 	uint64_t payload_length;
 };
 
-struct PtpIpEndDataPacket {
+struct __attribute__((packed)) PtpIpEndDataPacket {
 	uint32_t length;
 	uint32_t type;
 	uint32_t transaction;
 };
 
-struct PtpIpInitPacket {
+struct __attribute__((packed)) PtpIpInitPacket {
 	uint32_t length;
 	uint32_t type;
 	uint32_t guid1;
