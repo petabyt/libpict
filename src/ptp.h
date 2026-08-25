@@ -717,6 +717,4 @@ struct __attribute__((packed)) PtpIpInitPacket {
 #define USB_TYPE_CLASS 0x20
 #endif
 
-#pragma pack(pop)
-
 #endif

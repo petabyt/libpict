@@ -283,3 +283,15 @@ int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size) {
 		return result;
 	}
 }
+
+int ptpip_video_read(struct PtpRuntime *r, void *data, unsigned int size) {
+	if (r->io_kill_switch) return -1;
+	struct PtpCommPriv *b = init_comm(r);
+	int result = (int)read(b->vidfd, data, size);
+	if (result < 0) {
+		if (errno == EAGAIN) return 0;
+		return -1;
+	} else {
+		return result;
+	}
+}

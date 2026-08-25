@@ -71,6 +71,7 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size);
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port);
 int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size);
 int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size);
+int ptpip_video_read(struct PtpRuntime *r, void *data, unsigned int size);
 /// @brief Disconnect from a PTP/IP device
 int ptpip_device_close(struct PtpRuntime *r);
 
