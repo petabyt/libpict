@@ -26,6 +26,12 @@ int ptp_read_int(struct PtpRuntime *r, void *to, unsigned int length) {
     return -1;
 }
 
-int reset_int() {
+int reset_int(void) {
+    return -1;
+}
+
+void ptp_comm_deinit(struct PtpRuntime *r) {}
+
+int ptpusb_get_status(struct PtpRuntime *r) {
     return -1;
 }
