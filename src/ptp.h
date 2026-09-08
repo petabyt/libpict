@@ -659,8 +659,14 @@ struct __attribute__((packed)) PtpIpInitPacket {
 #define PTP_TC_UINT64ARRAY	0x4008
 #define PTP_TC_STRING		0xFFFF
 
+#define PTP_NoForm 0x0
 #define PTP_RangeForm	0x1
 #define PTP_EnumerationForm	0x2
+#define PTP_DateTimeForm	0x3
+#define PTP_FixedLengthArrayForm	0x4
+#define PTP_RegularExpressionForm	0x5
+#define PTP_ByteArrayForm	0x6
+#define PTP_LongStringForm	0xFF
 
 #define PTP_WB_Undefined 0x0
 #define PTP_WB_Manual 0x1

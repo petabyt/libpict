@@ -83,7 +83,7 @@ int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, int max, in
 	uint32_t n;
 	of += ptp_read_u32(bs + of, &n);
 	(*length) = (int)n;
-	boundcheck(bs, be, 4 * (int)n + 4);
+	boundcheck(bs, be, (2 * (int)n) + 4);
 	for (int i = 0; i < (int)n; i++) {
 		if (i >= max) {
 			ptp_panic("ptp_read_uint16_array overflow %i >= %d\n", i, n);
@@ -202,11 +202,8 @@ int ptp_get_prop_size(uint8_t *d, int type) {
 	case PTP_TC_STRING:
 		ptp_read_u8(d, &length8);
 		return 1 + ((int)length8 * 2);
+	default: return -1;
 	}
-
-	ptp_panic("Unknown data type %d", type);
-	abort();
-	return 0;
 }
 
 // Cheap dumb function
@@ -315,27 +312,38 @@ int ptp_parse_prop_desc(struct PtpRuntime *r, struct PtpPropDesc *oi) {
 
 	d += ptp_read_u8(d, &oi->form_type);
 
-	if (oi->form_type == PTP_RangeForm) {
+	switch (oi->form_type) {
+	case PTP_RangeForm:
 		d += ptp_parse_data_u32(d, oi->data_type, &oi->range_form.min);
 		d += ptp_parse_data_u32(d, oi->data_type, &oi->range_form.max);
 		d += ptp_parse_data_u32(d, oi->data_type, &oi->range_form.step);
-	} else if (oi->form_type == PTP_EnumerationForm) {
+		return 0;
+	case PTP_EnumerationForm: {
 		uint16_t num_values = 0;
 		d += ptp_read_u16(d, &num_values);
 		int length = 0;
 		for (uint32_t i = 0; i < num_values; i++) {
-			length += ptp_get_prop_size(d + length, oi->data_type);
+			int rc = ptp_get_prop_size(d + length, oi->data_type);
+			if (rc < 0) return -1;
+			length += rc;
 		}
 		struct PtpEnumerationForm *form = (struct PtpEnumerationForm *)malloc(sizeof(struct PtpEnumerationForm) + length);
 		form->length = num_values;
 		memcpy(form->data, d, length);
 		oi->enum_form = form;
-	} else {
+		} return 0;
+	case PTP_NoForm:
+	case PTP_DateTimeForm:
+	case PTP_FixedLengthArrayForm:
+	case PTP_RegularExpressionForm:
+	case PTP_ByteArrayForm:
+	case PTP_LongStringForm:
+		ptp_panic("Unimplemented form type %d\n", oi->form_type);
+		return -1;
+	default:
 		ptp_panic("Unknown form type %d\n", oi->form_type);
 		return -1;
 	}
-
-	return 0;
 }
 
 int ptp_prop_desc_json(const struct PtpPropDesc *pd, char *buffer, unsigned int max) {
