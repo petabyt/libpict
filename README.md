@@ -44,7 +44,7 @@ int main() {
 ```
 Calling a custom opcode:
 ```
-// Send a command, and recieve packet(s)
+// Send a command, and receive packet(s)
 struct PtpCommand cmd;
 cmd.code = 0x1234;
 cmd.param_length = 3;
