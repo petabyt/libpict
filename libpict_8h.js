@@ -42,7 +42,6 @@ var libpict_8h =
     [ "ptp_new", "libpict_8h.html#a16ebc69184e82c377375ff8fc663339a", null ],
     [ "ptp_perror", "libpict_8h.html#a4be7b7db9e745e655b26523a9429b009", null ],
     [ "ptp_reset", "libpict_8h.html#a2b58d078aae65e43bca41d037ccdf2d5", null ],
-    [ "ptp_run_lua", "libpict_8h.html#a70db0e63919cb9990b331a2370b3f2dd", null ],
     [ "ptp_send", "libpict_8h.html#a025478ecd387e2c1be6dfb7cc41488ea", null ],
     [ "ptp_send_data", "libpict_8h.html#a59dbc488048274abefa7570a76389782", null ],
     [ "ptp_verbose_log", "libpict_8h.html#a06100919468e5f5138816e43ea60fd3c", null ]
