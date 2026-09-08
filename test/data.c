@@ -32,7 +32,7 @@ int test_data(void) {
 
 	{
 		int out_len = 0;
-		void *data = canon_evproc_pack(r, &out_len, "EnableBootDisk");
+		void *data = canon_evproc_pack(NULL, &out_len, "EnableBootDisk");
 		// TODO
 		free(data);
 	}
