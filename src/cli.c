@@ -3,11 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libpict.h>
-#include <libpict_lua.h>
 
 int ptp_decode_output(const char *mode, const char *input, const char *output);
-int ptp_run_lua(const char *filename);
-int ptp_run_quickjs(const char *filename);
 
 struct Options {
 	int do_open_sessions;	
@@ -25,8 +22,6 @@ static int usage(void) {
 		"    Invoke the binding API\n"
 		"  --dont-open-session\n"
 		"    (A session is opened/closed by default)\n"
-		"  --lua <script>\n"
-		"    Run a Lua script using the Lua bindings\n"
 		"Examples:\n"
 		"  --run ptp_hello_world 1 2 3 \"Hello, World\"\n"
 	);
@@ -154,10 +149,6 @@ int main(int argc, char **argv) {
 			int rc = test();
 			printf("Return code: %d\n", rc);
 			return rc;
-		} else if (!strcmp(argv[i], "--lua")) {
-			return ptp_run_lua(argv[i + 1]);
-		} else if (!strcmp(argv[i], "--js")) {
-			return ptp_run_quickjs(argv[i + 1]);
 		} else if (!strcmp(argv[i], "--dec")) {
 			char *type = "wifi";
 			if ((argc - i) > 3) type = argv[i + 3];

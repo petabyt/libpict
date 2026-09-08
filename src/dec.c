@@ -61,24 +61,28 @@ int decode_eos_evproc(FILE *f, int length, uint8_t *data) {
 }
 
 int ptp_dump_packet(struct Context *ctx, unsigned long int file_of, const uint8_t *bytes, unsigned int length) {
-	if (ctx->unfinished_packet) {
-		fprintf(ctx->f, "split packet %d/%d ...\n", length, ctx->unfinished_packet);
-		if (length > ctx->unfinished_packet) {
-			// Detect a packet sneaking in after long transfers
-			ctx->unfinished_packet = 0;
-			bytes += ctx->unfinished_packet;
-			length -= ctx->unfinished_packet;
-		} else {
-			ctx->unfinished_packet -= length;
-			return 0;
-		}
-	}
+	// if (ctx->unfinished_packet) {
+	// 	fprintf(ctx->f, "split packet %d/%d ...\n", length, ctx->unfinished_packet);
+	// 	if (length > ctx->unfinished_packet) {
+	// 		// Detect a packet sneaking in after long transfers
+	// 		ctx->unfinished_packet = 0;
+	// 		bytes += ctx->unfinished_packet;
+	// 		length -= ctx->unfinished_packet;
+	// 	} else {
+	// 		ctx->unfinished_packet -= length;
+	// 		return 0;
+	// 	}
+	// }
 
 	int type = PTP_OC;
 	const struct PtpBulkContainer *c = (const struct PtpBulkContainer *)bytes;
 
 	char *newline = "\n";
 	if (ctx->transaction == -1) newline = "";
+
+	if (c->code < 0x1000) return -1;
+
+	printf("%x\n", c->code);
 
 	if (c->type == PTP_PACKET_TYPE_COMMAND) {
 		if (c->length > sizeof(struct PtpBulkContainer) || c->length < 12) {
@@ -99,6 +103,8 @@ int ptp_dump_packet(struct Context *ctx, unsigned long int file_of, const uint8_
 	} else if (c->type == PTP_PACKET_TYPE_RESPONSE) {
 		fprintf(ctx->f, "%s--- RESPONSE Container ---\n", newline);
 		type = PTP_RC;
+	} else {
+		return -1;
 	}
 
 	char *enm = ptp_get_enum(type, ctx->vendor, c->code);
@@ -191,15 +197,20 @@ void packet_handler(u_char *user_data, const struct pcap_pkthdr *pkthdr, const u
 	} else if (ctx->packet_type == ETHERNET) {
 		const struct usbpcap_header *header = (const struct usbpcap_header *)packet;
 		header_len = (int)header->header_len;
+		// printf("header->header_len: %llx\n", header->irp_id);
+		header_len = 66;
 	} else { abort(); }
+
+	// for (int i = 0; i < pkthdr->len; i++) {
+	// 	printf("%02x ", packet[i]);
+	// }
+	// printf("\n");
 
 	unsigned int data_len = (pkthdr->len - header_len);
 	if (data_len == 0) {
 		// no data packet, probably ACK or something
 		return;
 	}
-
-	//printf("%d\n", data_len);
 
 	ptp_dump_packet(ctx, of, (const uint8_t *)packet + header_len, data_len);
 
@@ -264,8 +275,10 @@ int ptp_decode_output(const char *mode, const char *input, const char *output) {
 
 	ctx.raw_out = fopen("DUMP", "wb");
 
+	int do_pcap = 1;
+
 	// Dumb way of checking if input file is pcap
-	if (((uint32_t *)buffer)[0] == 0xa1b2c3d4) {
+	if (((uint32_t *)buffer)[0] == 0xa1b2c3d4 && do_pcap) {
 		free(buffer);
 		decode_pcap(&ctx, input);
 	} else {

@@ -353,9 +353,6 @@ void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_s
 /// @note Debugging only
 int ptp_dump(struct PtpRuntime *r);
 
-/// @brief Quick function to run script through Lua bindings (if it's compiled in)
-int ptp_run_lua(const char *filename);
-
 #include "cl_data.h"
 #include "cl_backend.h"
 #include "cl_ops.h"

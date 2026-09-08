@@ -114,24 +114,12 @@ endif()
 if(PTP_INCLUDE_CLI)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LIBPCAP REQUIRED IMPORTED_TARGET GLOBAL libpcap)
-    pkg_check_modules(LUA53 REQUIRED IMPORTED_TARGET GLOBAL lua5.3)
-    find_library(QUICKJS_LIB
-        NAMES quickjs
-        PATH_SUFFIXES quickjs
-        REQUIRED
-    )
     add_executable(ptp
         src/cli.c
         src/dec.c
-
-        src/lua/lua.c
-        src/lua/lua-cjson/lua_cjson.c
-        src/lua/lua-cjson/strbuf.c
-
-        src/js/quickjs.c
     )
-    target_include_directories(ptp PUBLIC ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/src/lua)
-    target_link_libraries(ptp libpict PkgConfig::LIBPCAP PkgConfig::LUA53 ${QUICKJS_LIB} m)
+    target_include_directories(ptp PUBLIC ${PROJECT_SOURCE_DIR}/src)
+    target_link_libraries(ptp libpict PkgConfig::LIBPCAP m)
     install(
         TARGETS ptp
     )
