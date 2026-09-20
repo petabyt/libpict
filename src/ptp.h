@@ -172,6 +172,7 @@ struct __attribute__((packed)) PtpIpInitPacket {
 #define PTP_OC_EOS_ExecuteEventProc		0x9052
 #define PTP_OC_EOS_GetEventProcReturnData 0x9053
 #define PTP_OC_EOS_IsEventProcRunning	0x9057
+#define PTP_OC_EOS_IsNeoKabotanProcMode 0x9060
 
 #define EOS_DESTINATION_CAM		0x2
 #define EOS_DESTINATION_PC		0x4

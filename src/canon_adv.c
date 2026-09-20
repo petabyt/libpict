@@ -43,6 +43,12 @@ int ptp_eos_activate_command(struct PtpRuntime *r) {
 		return 0;
 	}
 
+	// I will make baseless assumption that if IsNeoKabotanProcMod is available, then PTP is locked
+	// In that case, 0x9050 has different behavior.
+	if (ptp_check_opcode(r, PTP_OC_EOS_IsNeoKabotanProcMode)) {
+		return PTP_RUNTIME_ERR;
+	}
+
 	for (int i = 0; i < 3; i++) {
 		struct PtpCommand cmd;
 		cmd.code = PTP_OC_EOS_EnableEventProc;
@@ -311,6 +317,7 @@ static int ptp_eos_evproc_run_payload(struct PtpRuntime *r, void **buf, char *fm
 	if (rc) return rc;
 
 	rc = ptp_eos_evproc_return_data(r);
+	if (rc) return rc;
 
 	void *dup = malloc(ptp_get_payload_length(r));
 	memcpy(dup, ptp_get_payload(r), ptp_get_payload_length(r));
@@ -324,6 +331,7 @@ int ptp_eos_fa_get_build_version(struct PtpRuntime *r, char *buffer, unsigned in
 	void *payload = NULL;
 
 	int rc = ptp_eos_evproc_run_payload(r, &payload, "FA_GetProperty %d %d", 0x2000005, 0);
+	if (rc) return rc;
 
 	strncpy(buffer, payload, max);
 
