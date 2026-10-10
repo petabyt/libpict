@@ -175,6 +175,4 @@ int ptp_eos_get_imgformat_value(uint32_t data[5], int *out);
 
 void *ptp_pack_chdk_upload_file(struct PtpRuntime *r, char *in, char *out, unsigned int *length);
 
-void *canon_evproc_pack(struct PtpRuntime *r, int *out_length, char *string);
-
 #endif

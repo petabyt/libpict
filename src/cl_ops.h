@@ -149,13 +149,6 @@ int ptp_ml_get_liveview_v1(struct PtpRuntime *r);
 int ptp_chdk_get_version(struct PtpRuntime *r);
 int ptp_chdk_upload_file(struct PtpRuntime *r, char *input, char *dest);
 
-// Canon advanced extensions - available in canon-adv.c
-int ptp_eos_activate_command(struct PtpRuntime *r);
-int ptp_eos_exec_evproc(struct PtpRuntime *r, void *data, int length, int expect_return);
-int ptp_eos_evproc_run(struct PtpRuntime *r, char *fmt, ...);
-int ptp_eos_evproc_return_data(struct PtpRuntime *r);
-int ptp_eos_fa_get_build_version(struct PtpRuntime *r, char *buffer, unsigned int max);
-
 /// @returns enum PtpGeneralError, 0 for 'camera is busy', or the size of the image in the payload
 int ptp_eos_get_liveview(struct PtpRuntime *r);
 

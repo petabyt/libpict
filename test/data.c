@@ -30,12 +30,5 @@ int test_data(void) {
 		assert(!memcmp(buffer, ref, sizeof(ref)));	
 	}
 
-	{
-		int out_len = 0;
-		void *data = canon_evproc_pack(NULL, &out_len, "EnableBootDisk");
-		// TODO
-		free(data);
-	}
-
 	return 0;
 }

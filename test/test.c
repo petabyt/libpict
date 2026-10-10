@@ -55,9 +55,6 @@ int ptp_vcam_magic(void) {
 		if (rc) return rc;
 	}
 
-	rc = ptp_eos_evproc_run(r, "EnableBootDisk %d 'aasd'", 10);
-	if (rc) return rc;
-
 	ptp_close(r);
 	return 0;
 }
