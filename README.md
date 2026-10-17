@@ -8,13 +8,12 @@ This is a Picture Transfer Protocol (PTP) library written in C.
 ## Features
 - Complete working implemention of PTP as per ISO 15740
 - Working PTP/IP implementation (tested on Windows/Linux/Mac/Android/iOS)
-- LibUSB and [libwpd](https://github.com/petabyt/libwpd) USB backends
+- LibUSB and [WPD](https://github.com/petabyt/libwpd) USB backends
 - APIs to convert most PTP data structures to JSON
-- Implements basic EOS/Canon vendor functionality
-- Lua bindings
-- Thread safe
+- Thread safe by design
 - Uses a single in/out buffer (no memory allocations between operations)
-- Fujifilm support: Available [here as libfudge](https://github.com/petabyt/fudge)
+- Implements basic EOS/Canon vendor functionality
+- Extensive Fujifilm support [implemented in libfuji](https://github.com/petabyt/fudge)
 
 
 ## Sample
