@@ -1,5 +1,6 @@
 // Include this if you wish to never use USB
 #include <libpict.h>
+#include <stdlib.h>
 #include <ptp.h>
 
 int ptp_device_connect(struct PtpRuntime *r) {
@@ -35,3 +36,6 @@ void ptp_comm_deinit(struct PtpRuntime *r) {}
 int ptpusb_get_status(struct PtpRuntime *r) {
     return -1;
 }
+
+// shouldn't be called in normal circumstances
+int ptp_device_connect_from_libusb_handle(struct PtpRuntime *r, void *dev) { abort(); }

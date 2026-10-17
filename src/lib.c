@@ -193,6 +193,7 @@ static void log_cmd(struct PtpRuntime *r, const struct PtpCommand *cmd) {
 	if (cmd->param_length == 0) ptp_verbose_log(r, "Sending %04x with no params\n", cmd->code, cmd->param_length);
 	else if (cmd->param_length == 1) ptp_verbose_log(r, "Sending %04x with 1 param (%d)\n", cmd->code, cmd->params[0]);
 	else if (cmd->param_length == 2) ptp_verbose_log(r, "Sending %04x with 2 params (%d, %d)\n", cmd->code, cmd->params[0], cmd->params[0]);
+	else if (cmd->param_length == 3) ptp_verbose_log(r, "Sending %04x with 2 params (%d, %d, %d)\n", cmd->code, cmd->params[0], cmd->params[1], cmd->params[2]);
 	else ptp_verbose_log(r, "Sending %04x with %d params\n", cmd->code, cmd->param_length);
 }
 

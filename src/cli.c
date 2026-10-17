@@ -149,6 +149,19 @@ int main(int argc, char **argv) {
 			int rc = test();
 			printf("Return code: %d\n", rc);
 			return rc;
+		} else if (!strcmp(argv[i], "--list")) {
+			struct PtpRuntime *r = ptp_new(PTP_USB);
+			struct PtpDeviceEntry *list = ptpusb_device_list(r);
+			if (list == NULL) {
+				printf("No PTP devices connected\n");
+			}
+			for (struct PtpDeviceEntry *curr = list; curr != NULL; curr = curr->next) {
+				printf("Device: %s\tVendor: \t%X\n", curr->name, curr->vendor_id);
+			}
+
+			ptpusb_free_device_list(list);
+			ptp_close(r);
+			return 0;
 		} else if (!strcmp(argv[i], "--dec")) {
 			char *type = "wifi";
 			if ((argc - i) > 3) type = argv[i + 3];
