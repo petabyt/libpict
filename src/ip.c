@@ -59,6 +59,7 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		rc = r->set_extra_socket_settings(r, sockfd);
 		if (rc) {
 			ptp_verbose_log(r, "Error binding to wifi network: %d\n", errno);
+			close(sockfd);
 			return rc;
 		}
 	}
@@ -121,6 +122,7 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		rc = select(sockfd + 1, NULL, &fdset, NULL, &tv);
 		if (rc != 1) {
 			ptp_verbose_log(r, "select() returned 0 fds: %d\n", errno);
+			close(sockfd);
 			return -1;
 		}
 	}
