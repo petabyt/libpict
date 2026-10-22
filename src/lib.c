@@ -72,12 +72,19 @@ void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_s
 	}
 
 	if (n != NULL) {
-		// Only realloc if needed (eventually will stop allocating once we have hit a maximum)
-		if (cnt > n->memb_cnt) {
-			n->data = realloc(n->data, memb_size * cnt);
+		// Grow only when the new list needs more bytes than the stored one. Compare
+		// bytes, not counts: a larger memb_size with the same count needs more room.
+		size_t need = (size_t)memb_size * cnt;
+		if (need > (size_t)n->memb_size * n->memb_cnt) {
+			void *grown = realloc(n->data, need);
+			if (grown == NULL) ptp_panic("realloc failed\n");
+			n->data = grown;
 		}
 
-		memcpy(n->data, data, memb_size * cnt);
+		memcpy(n->data, data, need);
+		// Readers use these to walk data; keep them describing the current list
+		n->memb_size = memb_size;
+		n->memb_cnt = cnt;
 		return;
 	}
 
@@ -86,6 +93,7 @@ void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_s
 		n = r->avail;
 	} else {
 		n = calloc(1, sizeof(struct PtpPropAvail));
+		if (n == NULL) ptp_panic("calloc failed\n");
 		r->avail->next = n;
 		n->prev = r->avail;
 	}
@@ -93,8 +101,10 @@ void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_s
 	n->code = code;
 	n->memb_size = memb_size;
 	n->memb_cnt = cnt;
-	void *dup = malloc(memb_size * cnt);
-	memcpy(dup, data, memb_size * cnt);
+	size_t size = (size_t)memb_size * cnt;
+	void *dup = malloc(size);
+	if (dup == NULL && size != 0) ptp_panic("malloc failed\n");
+	memcpy(dup, data, size);
 	n->data = dup;
 
 	r->avail = n;
@@ -146,8 +156,24 @@ void ptp_mutex_unlock(struct PtpRuntime *r) {
 
 void ptp_close(struct PtpRuntime *r) {
 	ptp_comm_deinit(r);
+	free(r->comm_priv);
+
+	// avail points at the newest node; walk back through prev
+	struct PtpPropAvail *n = r->avail;
+	while (n != NULL) {
+		struct PtpPropAvail *prev = n->prev;
+		free(n->data);
+		free(n);
+		n = prev;
+	}
+
+	if (r->mutex != NULL) {
+		pthread_mutex_destroy(r->mutex);
+		free(r->mutex);
+	}
+
 	free(r->data);
-    free(r);
+	free(r);
 }
 
 void ptp_mutex_unlock_thread(struct PtpRuntime *r) {
