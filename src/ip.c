@@ -59,6 +59,7 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		rc = r->set_extra_socket_settings(r, sockfd);
 		if (rc) {
 			ptp_verbose_log(r, "Error binding to wifi network: %d\n", errno);
+			close(sockfd);
 			return rc;
 		}
 	}
@@ -93,14 +94,6 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		return -1;
 	}
 
-	if (connect(sockfd, (struct sockaddr*)&sa, sizeof(sa)) < 0) {
-		if (errno != EINPROGRESS) {
-			close(sockfd);
-			ptp_verbose_log(r, "Failed to connect to socket\n");
-			return -1;
-		}
-	}
-
 	fd_set fdset;
 	FD_ZERO(&fdset);
 	FD_SET(sockfd, &fdset);
@@ -113,6 +106,14 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		ptp_verbose_log(r, "Failed to set rcvtimeo: %d", errno);
 	}
 
+	if (connect(sockfd, (struct sockaddr*)&sa, sizeof(sa)) < 0) {
+		if (errno != EINPROGRESS) {
+			close(sockfd);
+			ptp_verbose_log(r, "Failed to connect to socket\n");
+			return -1;
+		}
+	}
+
 	// Wait for socket event
 	if (errno == EINPROGRESS) {
 		struct timeval tv;
@@ -121,6 +122,7 @@ static int create_socket(struct PtpRuntime *r, const char *addr, int port, long 
 		rc = select(sockfd + 1, NULL, &fdset, NULL, &tv);
 		if (rc != 1) {
 			ptp_verbose_log(r, "select() returned 0 fds: %d\n", errno);
+			close(sockfd);
 			return -1;
 		}
 	}
@@ -166,9 +168,14 @@ static struct PtpCommPriv *init_comm(struct PtpRuntime *r) {
 }
 
 int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tmout) {
-	ptp_verbose_log(r, "Extra tmout: %d\n", extra_tmout);
+	extra_tmout += 2;
 
-	int fd = create_socket(r, addr, port, 2 + extra_tmout);
+	int fd = create_socket(r, addr, port, extra_tmout);
+	if (fd < 0) {
+		ptp_error_log(r, "Timed out, trying again...");
+		usleep(500 * 1000);
+		fd = create_socket(r, addr, port, extra_tmout);
+	}
 
 	struct PtpCommPriv *b = init_comm(r);
 
@@ -184,8 +191,8 @@ int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tm
 }
 
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
-	// TODO: Open as non-blocking
 	int fd = create_socket(r, addr, port, 3);
+	//set_nonblocking_io(fd, 1); // TODO: Open as non-blocking
 	struct PtpCommPriv *b = init_comm(r);
 	if (fd > 0) {
 		b->evfd = fd;
@@ -255,6 +262,9 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 			ptp_verbose_log(r, "EAGAIN\n");
 			return 0;
 		}
+		return -1;
+	} else if (result == 0) {
+		ptp_verbose_log(r, "Connection closed\n");
 		return -1;
 	} else {
 		if (r->report_read_progress != NULL) r->report_read_progress(r, result);
