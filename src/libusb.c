@@ -209,6 +209,7 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 
 	if (!r->io_kill_switch) {
 		ptp_verbose_log(r, "Connection is active\n");
+		ptp_mutex_unlock(r);
 		return PTP_OPEN_FAIL;
 	}
 

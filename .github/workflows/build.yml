@@ -18,7 +18,7 @@ jobs:
         git submodule update --init --recursive
 
     - name: Install dependencies
-      run: sudo apt install libusb-1.0-0-dev libexif-dev cmake libpcap-dev liblua5.3-dev libquickjs
+      run: sudo apt install libusb-1.0-0-dev libexif-dev cmake libpcap-dev coccinelle
 
     - name: Build everything
       run: cmake -DPTP_INCLUDE_CLI=ON -DPTP_INCLUDE_EXAMPLES=ON -DPTP_INCLUDE_BIND=ON -B build -G Ninja && cmake --build build
@@ -28,6 +28,9 @@ jobs:
         cmake -G Ninja -B build_test -DPTP_INCLUDE_VCAM_TEST=ON -DPTP_INCLUDE_LIBUSB_LIBS=OFF
         cmake --build build_test
         build_test/test
+
+    - name: Cocinelle static analysis
+      run: spatch --sp-file test/mutex.cocci --no-includes src/*.c test/*.c
 
     - name: Install mingw dependencies
       run: sudo apt install gcc-mingw-w64-base g++-mingw-w64-x86-64-win32

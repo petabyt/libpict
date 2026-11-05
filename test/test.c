@@ -213,7 +213,7 @@ static void *thread(void *arg) {
 		ptp_mutex_lock(r);
 		struct PtpDeviceInfo di;
 		int rc = ptp_get_device_info(r, &di);
-		if (rc) goto err;
+		if (rc) { ptp_mutex_unlock(r); goto err; }
 		char buffer[4096];
 		ptp_device_info_json(&di, buffer, sizeof(buffer));
 		ptp_mutex_unlock(r);
