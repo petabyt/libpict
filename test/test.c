@@ -239,15 +239,18 @@ static int test_multithread(void) {
 	int rc = test_setup_usb(r);
 	if (rc) return rc;
 
+	pthread_t th[100];
+
 	for (int i = 0; i < 100; i++) {
-		pthread_t th;
-		if (pthread_create(&th, NULL, thread, (void *)r) != 0) {
+		if (pthread_create(&th[i], NULL, thread, (void *)r) != 0) {
 			perror("pthread_create() error");
 			exit(1);
 		}
 	}
 
-	usleep(100000);
+	for (int i = 0; i < 100; i++) {
+		pthread_join(th[i], NULL);
+	}
 
 	ptp_device_close(r);
 	ptp_close(r);
