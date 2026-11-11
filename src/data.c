@@ -8,7 +8,7 @@
 #include <libpict.h>
 
 // Custom snprint with offset
-static int osnprintf(char *str, int cur, unsigned int size, const char *format, ...) {
+static int osnprintf(char *str, unsigned int cur, unsigned int size, const char *format, ...) {
 	if (size - cur < 0) {
 		ptp_panic("osnprintf overflow %d/%d", cur, size);
 	}
@@ -22,7 +22,7 @@ static int osnprintf(char *str, int cur, unsigned int size, const char *format, 
 	return r;
 }
 
-static void boundcheck(uint8_t *bs, uint8_t *be, int size) {
+static void boundcheck(uint8_t *bs, uint8_t *be, unsigned int size) {
 	if (be == NULL) return;
 	if ((uintptr_t)bs > (uintptr_t)be) ptp_panic("PTP: bs after be\n");
 	if (((uintptr_t)be - (uintptr_t)bs) < (uintptr_t)size) {
@@ -31,7 +31,7 @@ static void boundcheck(uint8_t *bs, uint8_t *be, int size) {
 }
 
 // Read standard UTF16 string
-int ptp_read_string(uint8_t *d, char *string, int max) {
+int ptp_read_string(uint8_t *d, char *string, unsigned int max) {
 	int of = 0;
 	uint8_t length;
 	of += ptp_read_u8(d + of, &length);
@@ -60,25 +60,7 @@ int ptp_read_string(uint8_t *d, char *string, int max) {
 	return of;
 }
 
-int ptp_read_uint16_array(const uint8_t *dat, uint16_t *buf, int max, int *length) {
-	ptp_panic("Unfinished\n");
-	int of = 0;
-
-	uint32_t n;
-	of += ptp_read_u32(dat + of, &n);
-
-	for (uint32_t i = 0; i < n; i++) {
-		if (i >= max) {
-			ptp_panic("ptp_read_uint16_array overflow\n");
-		} else {
-			of += ptp_read_u16(dat + of, &buf[i]);
-		}
-	}
-
-	return of;
-}
-
-int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, int max, int *length) {
+int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned int max, unsigned int *length) {
 	int of = 0;
 	uint32_t n;
 	of += ptp_read_u32(bs + of, &n);
@@ -89,6 +71,22 @@ int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, int max, in
 			ptp_panic("ptp_read_uint16_array overflow %i >= %d\n", i, n);
 		} else {
 			of += ptp_read_u16(bs + of, &buf[i]);
+		}
+	}
+	return of;
+}
+
+int ptp_read_uint32_array_s(uint8_t *bs, uint8_t *be, uint32_t *buf, unsigned int max, unsigned int *length) {
+	int of = 0;
+	uint32_t n;
+	of += ptp_read_u32(bs + of, &n);
+	(*length) = (int)n;
+	boundcheck(bs, be, (4 * (int)n) + 4);
+	for (int i = 0; i < (int)n; i++) {
+		if (i >= max) {
+			ptp_panic("ptp_read_uint16_array overflow %i >= %d\n", i, n);
+		} else {
+			of += ptp_read_u32(bs + of, &buf[i]);
 		}
 	}
 	return of;
@@ -830,7 +828,7 @@ int ptp_eos_events_json(struct PtpRuntime *r, char *buffer, unsigned int max) {
 
 	struct PtpGenericEvent event;
 	int i = 0;
-	unsigned int curr = osnprintf(buffer, 0, max, "[");
+	int curr = osnprintf(buffer, 0, max, "[");
 	while (ptp_eos_events_next(r, &reader, &event) == 0) {
 		char *end = ",\n";
 		if (i >= reader.n_entries - 1) end = "";

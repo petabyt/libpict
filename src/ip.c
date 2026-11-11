@@ -265,7 +265,7 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 		return -1;
 	} else if (result == 0) {
 		ptp_verbose_log(r, "Connection closed\n");
-		return -1;
+		return PTP_CLOSED;
 	} else {
 		if (r->report_read_progress != NULL) r->report_read_progress(r, result);
 		return result;

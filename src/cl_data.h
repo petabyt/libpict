@@ -1,6 +1,6 @@
 /** \file */ 
 // PTP data structures. Byte-wise, most of them are very similar to the spec, but
-// aren't actually compatible (they aren't packed). Don't try and memcpy into them.
+// aren't actually compatible (they aren't packed). Don't try to memcpy into them.
 #ifndef CL_DATA_H
 #define CL_DATA_H
 
@@ -17,19 +17,19 @@ struct PtpDeviceInfo {
 	char extensions[128];
 	uint16_t functional_mode;
 
-	int ops_supported_length;
+	unsigned int ops_supported_length;
 	uint16_t ops_supported[256];
 
-	int events_supported_length;
+	unsigned int events_supported_length;
 	uint16_t events_supported[256];
 
-	int props_supported_length;
+	unsigned int props_supported_length;
 	uint16_t props_supported[512];
 
-	int capture_formats_length;
+	unsigned int capture_formats_length;
 	uint16_t capture_formats[32];
 
-	int playback_formats_length;
+	unsigned int playback_formats_length;
 	uint16_t playback_formats[32];
 
 	char manufacturer[128];

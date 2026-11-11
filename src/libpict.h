@@ -32,7 +32,7 @@
 #define PTP_DEFAULT_SIZE 1000000
 
 /// @brief Library errors, not PTP return codes
-enum PtpGeneralError {
+enum PtpRuntimeError {
 	PTP_OK = 0,
 	/// @brief No device found (USB)
 	PTP_NO_DEVICE = -1,
@@ -50,15 +50,17 @@ enum PtpGeneralError {
 	PTP_UNSUPPORTED = -7,
 	/// @brief response code is not PTP_RC_OK
 	PTP_CHECK_CODE = -8,
-	/// @brief Operation (such as download) was canceled by another thread
-	PTP_CANCELED = -9,
+	/// @brief Operation (such as download) was cancelled by another thread
+	PTP_CANCELLED = -9,
 	/// @brief No response 
 	/// @note Used internally only
 	PTP_COMMAND_IGNORED = -10,
+	/// @brief Connection was closed by remote
+	PTP_CLOSED = -11,
 };
 
 /// @brief Evaluates PtpGeneralError into string message
-const char *ptp_perror(int rc);
+//const char *ptp_perror(int rc);
 
 /// @brief Unique camera types - each type should have similar opcodes and behavior
 enum PtpVendors {
@@ -290,11 +292,11 @@ PUB int ptp_buffer_resize(struct PtpRuntime *r, size_t size);
 PUB int ptp_write_unicode_string(char *dat, const char *string);
 PUB int ptp_read_unicode_string(char *buffer, const char *dat, int max);
 PUB int ptp_read_utf8_string(void *dat, char *string, int max);
-PUB int ptp_read_string(uint8_t *dat, char *string, int max);
+PUB int ptp_read_string(uint8_t *dat, char *string, unsigned int max);
 PUB int ptp_write_string(uint8_t *dat, const char *string);
 PUB int ptp_write_utf8_string(void *dat, const char *string);
-PUB int ptp_read_uint16_array(const uint8_t *dat, uint16_t *buf, int max, int *length);
-PUB int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, int max, int *length);
+PUB int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned int max, unsigned int *length);
+PUB int ptp_read_uint32_array_s(uint8_t *bs, uint8_t *be, uint32_t *buf, unsigned int max, unsigned int *length);
 inline static int ptp_write_u8(void *buf, uint8_t out) {
 	((uint8_t *)buf)[0] = out;
 	return 1;
