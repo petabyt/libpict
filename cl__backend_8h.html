@@ -113,13 +113,20 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('cl__backend_8h
   <div class="headertitle"><div class="title">cl_backend.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;unistd.h&gt;</code><br />
+</div>
 <p><a href="cl__backend_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:PtpDeviceEntry" id="r_PtpDeviceEntry"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked-list entry for a single USB device.  <a href="structPtpDeviceEntry.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ab83ed4aa016360044bc0c6aa5d058437" id="r_ab83ed4aa016360044bc0c6aa5d058437"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab83ed4aa016360044bc0c6aa5d058437">PTP_TIMEOUT</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="memitem:a8134ff71dfe60866eae922ef28cbc826" id="r_a8134ff71dfe60866eae922ef28cbc826"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8134ff71dfe60866eae922ef28cbc826">PTP_WAIT_MS</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="memitem:a28bca0d4621fd367ea79e76dd1570423" id="r_a28bca0d4621fd367ea79e76dd1570423"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a28bca0d4621fd367ea79e76dd1570423">PTP_SLEEP</a>(ms)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -190,6 +197,59 @@ void&#160;</td><td class="memItemRight"><b>ptpip_comm_deinit</b> (struct <a clas
 <tr class="memdesc:ga476881a2f12eca31f8500c874b5783c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinits PTP/IP backend and frees all memory. <br /></td></tr>
 <tr class="memitem:ga6a0f42e3e6bfcbb203ed9f99b60a8392" id="r_ga6a0f42e3e6bfcbb203ed9f99b60a8392"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="group__Backend.html#ga6a0f42e3e6bfcbb203ed9f99b60a8392">__attribute__</a> ((deprecated)) __attribute__((unused)) static int ptp_device_init(struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
 </table>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="a28bca0d4621fd367ea79e76dd1570423" name="a28bca0d4621fd367ea79e76dd1570423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28bca0d4621fd367ea79e76dd1570423">&#9670;&#160;</a></span>PTP_SLEEP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PTP_SLEEP</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>ms</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">usleep((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)(ms) * 1000)</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="cl__backend_8h_source.html#l00015">15</a> of file <a class="el" href="cl__backend_8h_source.html">cl_backend.h</a>.</p>
+
+</div>
+</div>
+<a id="ab83ed4aa016360044bc0c6aa5d058437" name="ab83ed4aa016360044bc0c6aa5d058437"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab83ed4aa016360044bc0c6aa5d058437">&#9670;&#160;</a></span>PTP_TIMEOUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PTP_TIMEOUT&#160;&#160;&#160;1000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cl__backend_8h_source.html#l00006">6</a> of file <a class="el" href="cl__backend_8h_source.html">cl_backend.h</a>.</p>
+
+</div>
+</div>
+<a id="a8134ff71dfe60866eae922ef28cbc826" name="a8134ff71dfe60866eae922ef28cbc826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8134ff71dfe60866eae922ef28cbc826">&#9670;&#160;</a></span>PTP_WAIT_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PTP_WAIT_MS&#160;&#160;&#160;1000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cl__backend_8h_source.html#l00009">9</a> of file <a class="el" href="cl__backend_8h_source.html">cl_backend.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

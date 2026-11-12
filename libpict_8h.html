@@ -117,7 +117,6 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('libpict_8h.htm
 <code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="ptp_8h_source.html">ptp.h</a>&quot;</code><br />
-<code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="cl__data_8h_source.html">cl_data.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cl__backend_8h_source.html">cl_backend.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cl__ops_8h_source.html">cl_ops.h</a>&quot;</code><br />
@@ -143,9 +142,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ab83ed4aa016360044bc0c6aa5d058437" id="r_ab83ed4aa016360044bc0c6aa5d058437"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab83ed4aa016360044bc0c6aa5d058437">PTP_TIMEOUT</a>&#160;&#160;&#160;1000</td></tr>
-<tr class="memitem:a8134ff71dfe60866eae922ef28cbc826" id="r_a8134ff71dfe60866eae922ef28cbc826"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8134ff71dfe60866eae922ef28cbc826">PTP_WAIT_MS</a>&#160;&#160;&#160;1000</td></tr>
-<tr class="memitem:a28bca0d4621fd367ea79e76dd1570423" id="r_a28bca0d4621fd367ea79e76dd1570423"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a28bca0d4621fd367ea79e76dd1570423">PTP_SLEEP</a>(ms)</td></tr>
 <tr class="memitem:abb55eee0c97e933cb1ba30a29b5744ba" id="r_abb55eee0c97e933cb1ba30a29b5744ba"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#abb55eee0c97e933cb1ba30a29b5744ba">PUB</a></td></tr>
 <tr class="memitem:ab6d4ab1357cf46920d40337c9892c3a0" id="r_ab6d4ab1357cf46920d40337c9892c3a0"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab6d4ab1357cf46920d40337c9892c3a0">PTP_DEFAULT_SIZE</a>&#160;&#160;&#160;1000000</td></tr>
 </table><table class="memberdecls">
@@ -300,59 +296,7 @@ void&#160;</td><td class="memItemRight"><b>ptp_set_prop_avail_info</b> (struct <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00032">32</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
-
-</div>
-</div>
-<a id="a28bca0d4621fd367ea79e76dd1570423" name="a28bca0d4621fd367ea79e76dd1570423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28bca0d4621fd367ea79e76dd1570423">&#9670;&#160;</a></span>PTP_SLEEP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PTP_SLEEP</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>ms</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">usleep((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)(ms) * 1000)</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00022">22</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
-
-</div>
-</div>
-<a id="ab83ed4aa016360044bc0c6aa5d058437" name="ab83ed4aa016360044bc0c6aa5d058437"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab83ed4aa016360044bc0c6aa5d058437">&#9670;&#160;</a></span>PTP_TIMEOUT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PTP_TIMEOUT&#160;&#160;&#160;1000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00013">13</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
-
-</div>
-</div>
-<a id="a8134ff71dfe60866eae922ef28cbc826" name="a8134ff71dfe60866eae922ef28cbc826"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8134ff71dfe60866eae922ef28cbc826">&#9670;&#160;</a></span>PTP_WAIT_MS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PTP_WAIT_MS&#160;&#160;&#160;1000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00016">16</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00019">19</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -368,7 +312,7 @@ void&#160;</td><td class="memItemRight"><b>ptp_set_prop_avail_info</b> (struct <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00028">28</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00015">15</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +329,7 @@ void&#160;</td><td class="memItemRight"><b>ptp_set_prop_avail_info</b> (struct <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00077">77</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00064">64</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -404,7 +348,7 @@ void&#160;</td><td class="memItemRight"><b>ptp_set_prop_avail_info</b> (struct <
 <p>Tells lib what backend and packet style to use. </p>
 <dl class="section note"><dt>Note</dt><dd>This is a bitmask so that it can be passed to ptp_new with other options. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00087">87</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00074">74</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -447,7 +391,7 @@ void&#160;</td><td class="memItemRight"><b>ptp_set_prop_avail_info</b> (struct <
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00035">35</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00022">22</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
@@ -466,7 +410,7 @@ void&#160;</td><td class="memItemRight"><b>ptp_set_prop_avail_info</b> (struct <
 <p>Evaluates PtpGeneralError into string message. </p>
 <p>Unique camera types - each type should have similar opcodes and behavior </p>
 
-<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00066">66</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libpict_8h_source.html#l00053">53</a> of file <a class="el" href="libpict_8h_source.html">libpict.h</a>.</p>
 
 </div>
 </div>
