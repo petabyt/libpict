@@ -31,7 +31,22 @@ int reset_int(void) {
     return -1;
 }
 
+int ptp_comm_init(struct PtpRuntime *r) {
+    return -1;
+}
+
 void ptp_comm_deinit(struct PtpRuntime *r) {}
+
+// No USB devices exist in this build
+struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
+    return NULL;
+}
+
+int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
+    return -1;
+}
+
+void ptpusb_free_device_list_entry(void *handle) {}
 
 int ptpusb_get_status(struct PtpRuntime *r) {
     return -1;
