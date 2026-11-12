@@ -9,19 +9,6 @@
 
 #include "ptp.h"
 
-// Max timeout for command read/writes
-#define PTP_TIMEOUT 1000
-
-// Units of time in ms to sleep for r->wait_for_response
-#define PTP_WAIT_MS 1000
-
-// Conforms to POSIX 2001, some compilers may not have it
-#ifndef PTP_SLEEP
-	#include <unistd.h>
-	//int usleep(unsigned int usec);
-	#define PTP_SLEEP(ms) usleep((unsigned int)(ms) * 1000)
-#endif
-
 #ifdef WIN32
 #define PUB __declspec(dllexport)
 #else

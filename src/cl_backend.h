@@ -2,6 +2,19 @@
 #ifndef CL_BACKEND_H
 #define CL_BACKEND_H
 
+// Max timeout for command read/writes
+#define PTP_TIMEOUT 1000
+
+// Units of time in ms to sleep for r->wait_for_response
+#define PTP_WAIT_MS 1000
+
+// Conforms to POSIX 2001, some compilers may not have it
+#ifndef PTP_SLEEP
+	#include <unistd.h>
+	//int usleep(unsigned int usec);
+	#define PTP_SLEEP(ms) usleep((unsigned int)(ms) * 1000)
+#endif
+
 /// @defgroup Backend Backend interface
 /// @brief Layer over OS-dependent I/O interface
 /// @addtogroup Backend

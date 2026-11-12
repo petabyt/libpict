@@ -227,6 +227,12 @@ int ptpip_device_close(struct PtpRuntime *r) {
 	return 0;
 }
 
+void ptpip_comm_deinit(struct PtpRuntime *r) {
+	if (r->comm_priv != NULL && (r->connection_type == PTP_IP_USB || r->connection_type == PTP_IP)) {
+		free(r->comm_priv);
+	}
+}
+
 int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) {
 		ptp_verbose_log(r, "WARN: kill switch on\n");

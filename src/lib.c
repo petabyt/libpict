@@ -223,7 +223,7 @@ int ptp_send(struct PtpRuntime *r, struct PtpCommand *cmd) {
 	} else if (rc) {
 		ptp_mutex_unlock(r);
 		r->operation_kill_switch = 1;
-		return PTP_IO_ERR;
+		return rc;
 	}
 
 	r->transaction++;
@@ -261,9 +261,7 @@ static int ptp_send_data_try(struct PtpRuntime *r, const struct PtpCommand *cmd,
 		}
 	}
 
-	int rc = ptp_receive_all_packets(r);
-	if (rc < 0) return rc;
-	return 0;
+	return ptp_receive_all_packets(r);
 }
 
 // Perform a command request with a data phase to the camera
@@ -277,7 +275,6 @@ int ptp_send_data(struct PtpRuntime *r, const struct PtpCommand *cmd, const void
 
 	log_cmd(r, cmd);
 
-	// Required for PTP/IP
 	r->data_phase_length = length;
 
 	// Resize buffer if needed
