@@ -50,7 +50,7 @@ int ptpip_read_packet(struct PtpRuntime *r, int of) {
 
 		r->wait_for_response--;
 
-		if (rc > 0) break;
+		if (rc == PTP_CLOSED) return rc; else if (rc > 0) break;
 
 		if (r->wait_for_response) {
 			ptp_error_log(r, "Trying again...\n");
@@ -88,10 +88,9 @@ int ptpip_read_packet(struct PtpRuntime *r, int of) {
 
 	while (1) {
 		rc = ptpip_cmd_read(r, r->data + of + read, h->length - read);
-
 		if (rc < 0) {
-			ptp_verbose_log(r, "Read error: %d\n", rc);
-			return PTP_IO_ERR;
+			ptp_verbose_log(r, "ptpip_cmd_read: %d\n", rc);
+			return rc;
 		}
 
 		read += rc;
@@ -164,20 +163,21 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 		} else {
 			ptp_panic("illegal connection type");
 		}
-		if (rc < 0 && r->wait_for_response) {
+		if (rc == PTP_CLOSED) {
+			ptp_error_log(r, "Connection closed");
+			return rc;
+		} else if (rc < 0 && r->wait_for_response) {
 			ptp_error_log(r, "Response error %d, trying again\n", rc);
 			r->wait_for_response--;
 			PTP_SLEEP(PTP_WAIT_MS);
 			read_attempts++;
 			continue;
-		}
-		if (rc == 0 && r->wait_for_response) {
+		} else if (rc == 0 && r->wait_for_response) {
 			ptp_error_log(r, "Got nothing, trying again\n", rc);
 			r->wait_for_response--;
 			read_attempts++;
 			continue;
-		}
-		if (rc < 0) {
+		} else if (rc < 0) {
 			r->data_filled_length = read;
 			return PTP_IO_ERR;
 		}
@@ -187,6 +187,16 @@ int ptpusb_read_all_packets(struct PtpRuntime *r) {
 			ptp_error_log(r, "Too many attempts, didn't get enough bytes\n");
 			r->data_filled_length = read;
 			return PTP_COMMAND_IGNORED;
+		}
+
+		// Fuji termination command
+		if (read == 8) {
+			uint32_t pkt[2];
+			ptp_read_u32(r->data, &pkt[0]);
+			ptp_read_u32(r->data + 4, &pkt[1]);
+			if (pkt[0] == 8 && pkt[1] == 0xffffffff) {
+				return PTP_CLOSED;
+			}
 		}
 
 		// Min packet size is at least read

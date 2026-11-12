@@ -20,7 +20,8 @@
 #include <libpict.h>
 
 // Dump all communication to a file
-//#define DUMP_COMM
+//#define dump_comm(data, result, b) fwrite(data, 1, result, b->dump)
+#define dump_comm(data, result, b)
 
 struct PtpCommPriv {
 	int fd;
@@ -192,7 +193,7 @@ int ptpip_connect(struct PtpRuntime *r, const char *addr, int port, int extra_tm
 
 int ptpip_connect_events(struct PtpRuntime *r, const char *addr, int port) {
 	int fd = create_socket(r, addr, port, 3);
-	//set_nonblocking_io(fd, 1); // TODO: Open as non-blocking
+	set_nonblocking_io(fd, 1);
 	struct PtpCommPriv *b = init_comm(r);
 	if (fd > 0) {
 		b->evfd = fd;
@@ -229,17 +230,15 @@ int ptpip_device_close(struct PtpRuntime *r) {
 int ptpip_cmd_write(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) {
 		ptp_verbose_log(r, "WARN: kill switch on\n");
-		return -1;
+		return PTP_IO_ERR;
 	}
 	struct PtpCommPriv *b = init_comm(r);
-
-#ifdef DUMP_COMM
-	fwrite(data, 1, size, b->dump);
-#endif
+	dump_comm(data, size, b);
 
 	int result = (int)send(b->fd, data, size, 0);
 	if (result < 0) {
 		ptp_verbose_log(r, "read(): %d\n", errno);
+		if (errno == EPIPE) return PTP_CLOSED;
 		return -1;
 	} else {
 		return result;
@@ -250,19 +249,12 @@ int ptpip_cmd_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	if (r->io_kill_switch) return -1;
 	struct PtpCommPriv *b = init_comm(r);
 	int result = (int)read(b->fd, data, size);
-
-#ifdef DUMP_COMM
-	fwrite(data, 1, result, b->dump);
-#endif
+	dump_comm(data, result, b);
 
 	if (result < 0) {
 		ptp_verbose_log(r, "read(): %d\n", errno);
-		// To match behavior of USB backends, return 0 bytes when there is no data available
-		if (errno == EAGAIN) {
-			ptp_verbose_log(r, "EAGAIN\n");
-			return 0;
-		}
-		return -1;
+		if (errno == EAGAIN) return 0;
+		return PTP_IO_ERR;
 	} else if (result == 0) {
 		ptp_verbose_log(r, "Connection closed\n");
 		return PTP_CLOSED;
@@ -277,7 +269,7 @@ int ptpip_event_send(struct PtpRuntime *r, void *data, unsigned int size) {
 	struct PtpCommPriv *b = init_comm(r);
 	int result = (int)write(b->evfd, data, size);
 	if (result < 0) {
-		return -1;
+		return PTP_IO_ERR;
 	} else {
 		return result;
 	}
@@ -288,7 +280,7 @@ int ptpip_event_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	struct PtpCommPriv *b = init_comm(r);
 	int result = (int)read(b->evfd, data, size);
 	if (result < 0) {
-		return -1;
+		return PTP_IO_ERR;
 	} else {
 		return result;
 	}
@@ -300,7 +292,10 @@ int ptpip_video_read(struct PtpRuntime *r, void *data, unsigned int size) {
 	int result = (int)read(b->vidfd, data, size);
 	if (result < 0) {
 		if (errno == EAGAIN) return 0;
-		return -1;
+		return PTP_IO_ERR;
+	} else if (result == 0) {
+		ptp_verbose_log(r, "Connection closed\n");
+		return PTP_CLOSED;
 	} else {
 		return result;
 	}
