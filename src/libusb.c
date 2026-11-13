@@ -146,44 +146,30 @@ static int fill_device_entry(struct PtpRuntime *r, struct PtpDeviceEntry *curr_e
 	return 0;
 }
 
-struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
+struct PtpDeviceList *ptpusb_device_list(struct PtpRuntime *r) {
 	ptp_comm_init(r);
-
-	if (!r->io_kill_switch) {
-		ptp_panic("Connection is active\n");
-	}
+	if (!r->io_kill_switch) ptp_panic("Connection is active\n");
 
 	ptp_mutex_lock(r);
 
 	libusb_device **list;
 	ssize_t count = libusb_get_device_list(r->comm_priv->ctx, &list);
 
+	struct PtpDeviceList *ptplist = calloc(1, sizeof(struct PtpDeviceList) + (sizeof(struct PtpDeviceEntry) * count));
+
 	if (count == 0) {
 		ptp_mutex_unlock(r);
 		return NULL;
 	}
 
-	struct PtpDeviceEntry *curr_ent = NULL;
-	struct PtpDeviceEntry *orig_ent = NULL;
 	int valid_devices = 0;
 	for (int d = 0; d < (int)count; d++) {
-		struct PtpDeviceEntry entry = {0};
-		if (fill_device_entry(r, &entry, list[d]) != 0) continue;
+		struct PtpDeviceEntry *entry = &ptplist->devices[ptplist->n_devices];
+		if (fill_device_entry(r, entry, list[d]) != 0) continue;
 		libusb_ref_device(list[d]);
-		entry.id = d;
-		entry.device_handle_ptr = list[d];
-
-		if (curr_ent == NULL) {
-			curr_ent = calloc(sizeof(struct PtpDeviceEntry), 1);
-			*curr_ent = entry;
-			orig_ent = curr_ent;
-		} else {
-			struct PtpDeviceEntry *next_ent = calloc(sizeof(struct PtpDeviceEntry), 1);
-			*next_ent = entry;
-			curr_ent->next = next_ent;
-			next_ent->prev = curr_ent;
-			curr_ent = next_ent;
-		}
+		ptplist->n_devices++;
+		entry->id = d;
+		entry->device_handle_ptr = list[d];
 
 		valid_devices++;
 	}
@@ -196,7 +182,7 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 		return NULL;
 	}
 
-	return orig_ent;
+	return ptplist;
 }
 
 int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
@@ -244,8 +230,11 @@ int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) {
 	return 0;
 }
 
-void ptpusb_free_device_list_entry(void *ptr) {
-	libusb_unref_device(ptr);
+void ptpusb_free_device_list(struct PtpDeviceList *list) {
+	for (unsigned int i = 0; i < list->n_devices; i++) {
+		libusb_unref_device(list->devices[i].device_handle_ptr);
+	}
+	free(list);
 }
 
 int ptp_device_connect_from_libusb_handle(struct PtpRuntime *r, libusb_device *dev) {
@@ -284,17 +273,16 @@ int ptp_device_connect_from_libusb_handle(struct PtpRuntime *r, libusb_device *d
 int ptp_device_connect(struct PtpRuntime *r) {
 	ptp_comm_init(r);
 
-	struct PtpDeviceEntry *list = ptpusb_device_list(r);
-
-	if (list == NULL) {
+	struct PtpDeviceList *list = ptpusb_device_list(r);
+	if (list == NULL || list->n_devices == 0) {
 		return PTP_NO_DEVICE;
 	}
 
-	r->comm_priv->endpoint_in = list->endpoint_in;
-	r->comm_priv->endpoint_out = list->endpoint_out;
-	r->comm_priv->endpoint_int = list->endpoint_int;
+	r->comm_priv->endpoint_in = list->devices[0].endpoint_in;
+	r->comm_priv->endpoint_out = list->devices[0].endpoint_out;
+	r->comm_priv->endpoint_int = list->devices[0].endpoint_int;
 
-	int rc = libusb_open(list->device_handle_ptr, &(r->comm_priv->handle));
+	int rc = libusb_open(list->devices[0].device_handle_ptr, &(r->comm_priv->handle));
 	if (rc) {
 		perror("usb_open() failure");
 		return PTP_OPEN_FAIL;

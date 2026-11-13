@@ -71,7 +71,7 @@ int ptp_device_connect(struct PtpRuntime *r) {
 	return PTP_NO_DEVICE;
 }
 
-struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
+struct PtpDeviceEntry *ptpusb_device_linked_list(struct PtpRuntime *r) {
 	ptp_comm_init(r);
 	struct WpdStruct *wpd = (struct WpdStruct *)(r->comm_backend);
 

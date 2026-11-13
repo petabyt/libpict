@@ -47,8 +47,8 @@ int ptpusb_get_status(struct PtpRuntime *r) { (void)r; return -1; }
 int ptp_comm_init(struct PtpRuntime *r) { (void)r; return 0; }
 void ptp_comm_deinit(struct PtpRuntime *r) { (void)r; }
 void ptpip_comm_deinit(struct PtpRuntime *r) { (void)r; }
-void ptpusb_free_device_list_entry(void *ptr) { (void)ptr; }
-struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) { (void)r; return NULL; }
+void ptpusb_free_device_list(struct PtpDeviceList *list) { (void)list; }
+struct PtpDeviceList *ptpusb_device_list(struct PtpRuntime *r) { (void)r; return NULL; }
 int ptp_device_open(struct PtpRuntime *r, struct PtpDeviceEntry *entry) { (void)r; (void)entry; return -1; }
 int ptp_device_connect_from_libusb_handle(struct PtpRuntime *r, void *dev) { (void)r; (void)dev; abort(); }
 

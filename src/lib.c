@@ -18,6 +18,7 @@ void ptp_reset(struct PtpRuntime *r) {
 	r->response_wait_default = 1;
 	r->wait_for_response = 1;
 	r->comm_backend = NULL; // leak
+	r->priv = NULL; // leak
 	r->comm_dump = NULL;
 }
 
@@ -32,11 +33,10 @@ void ptp_init(struct PtpRuntime *r) {
 
 	r->avail = calloc(1, sizeof(struct PtpPropAvail));
 
-	#ifndef PTP_DONT_USE_MUTEX
+#ifndef PTP_DONT_USE_MUTEX
 	r->mutex = malloc(sizeof(pthread_mutex_t));
 
-	// We want recursive mutex, so lock can be called multiple times in
-	// a single thread
+	// We want recursive mutex, so lock can be called multiple times in a single thread
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init(&attr);
 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
@@ -44,14 +44,13 @@ void ptp_init(struct PtpRuntime *r) {
 	if (pthread_mutex_init(r->mutex, &attr)) {
 		ptp_panic("Failed to init mutex\n");
 	}
-	#endif
+#endif
 }
 
 struct PtpRuntime *ptp_new(int options) {
 	struct PtpRuntime *r = malloc(sizeof(struct PtpRuntime));
 	ptp_init(r);
 
-	// TODO: Working but can maybe add more options?
 	if (options & PTP_IP) {
 		r->connection_type = PTP_IP;
 	} else if (options & PTP_USB) {
@@ -100,24 +99,10 @@ void ptp_set_prop_avail_info(struct PtpRuntime *r, int code, unsigned int memb_s
 	r->avail = n;
 }
 
-void ptpusb_free_device_list(struct PtpDeviceEntry *e) {
-	struct PtpDeviceEntry *next;
-	while (e != NULL) {
-		next = e->next;
-		ptpusb_free_device_list_entry(e->device_handle_ptr);
-		free(e);
-		e = next;
-	}
-}
-
 int ptp_buffer_resize(struct PtpRuntime *r, size_t size) {
 	if (size <= r->data_length) return 0;
-	//if (size < r->data_length) {
-	//	ptp_panic("You cannot downsize the data buffer (%u -> %u)", r->data_length, size);
-	//}
 
-	// realloc with a little extra space to minimize reallocs later on
-	static int extra = 100;
+	static int extra = 100000;
 	ptp_verbose_log(r, "Extending IO buffer to %X\n", size + extra);
 	r->data = realloc(r->data, size + extra);
 	r->data_length = size + extra;

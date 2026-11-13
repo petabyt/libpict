@@ -176,7 +176,7 @@ int ptp_device_reset(struct PtpRuntime *r) {
 	return 0;
 }
 
-struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
+struct PtpDeviceList *ptpusb_device_list(struct PtpRuntime *r) {
 	ptp_comm_init(r);
 	//struct PtpCommPriv *priv = (struct PtpCommPriv *)r->comm_priv;
 	ptp_mutex_lock(r);
@@ -212,26 +212,19 @@ struct PtpDeviceEntry *ptpusb_device_list(struct PtpRuntime *r) {
 		return NULL;
 	}
 
-	struct PtpDeviceEntry *curr_ent = (struct PtpDeviceEntry *)calloc(1, sizeof(struct PtpDeviceEntry));
-	struct PtpDeviceEntry *new_list = curr_ent;
+	struct PtpDeviceList *ptplist = calloc(1, sizeof(struct PtpDeviceList) + (sizeof(struct PtpDeviceEntry) * mNumDevices));
 	for (unsigned int i = 0; i < mNumDevices; i++) {
-		if (i != 0) {
-			struct PtpDeviceEntry *next_ent = (struct PtpDeviceEntry *)calloc(1, sizeof(struct PtpDeviceEntry));
-			next_ent->prev = curr_ent;
-			next_ent->next = NULL;
-			curr_ent->next = next_ent;
-			curr_ent = next_ent;
-		} else {
-			curr_ent->prev = NULL;
-		}
-
-		struct LibWPDDescriptor d;
+		struct LibWPDDescriptor d = {};
 		int rc = wpd_parse_io_path(deviceIDs[i], &d);
-		if (rc) ptp_panic("wpd_parse_io_path");
-
-		curr_ent->product_id = d.product_id;
-		curr_ent->vendor_id = d.vendor_id;
-		curr_ent->device_handle_ptr = deviceIDs[i];
+		if (rc) {
+			ptp_error_log(r, "wpd_parse_io_path");
+			continue;
+		}
+		struct PtpDeviceEntry *entry = &ptplist->devices[ptplist->n_devices];
+		ptplist->n_devices++;
+		entry->product_id = d.product_id;
+		entry->vendor_id = d.vendor_id;
+		entry->device_handle_ptr = deviceIDs[i];
 	}
 
 	for (unsigned int i = 0; i < mNumDevices; i++) {
@@ -371,8 +364,11 @@ int ptp_device_connect(struct PtpRuntime *r) {
 	return PTP_NO_DEVICE;
 }
 
-void ptpusb_free_device_list_entry(void *handle) {
-	// TODO
+void ptpusb_free_device_list(struct PtpDeviceList *list) {
+	for (unsigned int i = 0; i < list->n_devices; i++) {
+		free(list->devices[i].device_handle_ptr);
+	}
+	free(list);
 }
 
 static int wpd_prep_command(struct PtpRuntime *r, PROPERTYKEY type, struct PtpCommand *cmd) {
@@ -406,7 +402,7 @@ static int wpd_prep_command(struct PtpRuntime *r, PROPERTYKEY type, struct PtpCo
 	}
 
 	for (unsigned int i = 0; i < cmd->param_length; i++) {
-		PROPVARIANT param = { 0 };
+		PROPVARIANT param = { };
 		param.vt = VT_UI4;
 		param.ulVal = cmd->params[i];
 		spMtpParams->Add(&param);
