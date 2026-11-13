@@ -121,14 +121,14 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('group__Backend
 Classes</h2></td></tr>
 <tr class="memitem:PtpDeviceEntry" id="r_PtpDeviceEntry"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked-list entry for a single USB device.  <a href="structPtpDeviceEntry.html#details">More...</a><br /></td></tr>
+<tr class="memitem:PtpDeviceList" id="r_PtpDeviceList"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structPtpDeviceList.html">PtpDeviceList</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga596013ea8ed4fcd564cb86ee4f1c7748" id="r_ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="memItemLeft">struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *&#160;</td><td class="memItemRight"><a class="el" href="#ga596013ea8ed4fcd564cb86ee4f1c7748">ptpusb_device_list</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
-<tr class="memdesc:ga596013ea8ed4fcd564cb86ee4f1c7748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a linked list of USB or PTP Devices.  <br /></td></tr>
-<tr class="memitem:gac5e60abecb830370a1981c4137ed2571" id="r_gac5e60abecb830370a1981c4137ed2571"><td class="memItemLeft"><a id="gac5e60abecb830370a1981c4137ed2571" name="gac5e60abecb830370a1981c4137ed2571"></a>
-void&#160;</td><td class="memItemRight"><b>ptpusb_free_device_list</b> (struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *e)</td></tr>
-<tr class="memdesc:gac5e60abecb830370a1981c4137ed2571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the device entry linked list. <br /></td></tr>
+<tr class="memitem:ga28e755323aeee461dbeee4812b973bdf" id="r_ga28e755323aeee461dbeee4812b973bdf"><td class="memItemLeft"><a id="ga28e755323aeee461dbeee4812b973bdf" name="ga28e755323aeee461dbeee4812b973bdf"></a>
+struct <a class="el" href="structPtpDeviceList.html">PtpDeviceList</a> *&#160;</td><td class="memItemRight"><b>ptpusb_device_list</b> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r)</td></tr>
+<tr class="memitem:ga9bd66e50dc9e071a15670ffbc2bcabf1" id="r_ga9bd66e50dc9e071a15670ffbc2bcabf1"><td class="memItemLeft"><a id="ga9bd66e50dc9e071a15670ffbc2bcabf1" name="ga9bd66e50dc9e071a15670ffbc2bcabf1"></a>
+void&#160;</td><td class="memItemRight"><b>ptpusb_free_device_list</b> (struct <a class="el" href="structPtpDeviceList.html">PtpDeviceList</a> *e)</td></tr>
 <tr class="memitem:ga3d2ffef827171fd251881a6aefc9ae43" id="r_ga3d2ffef827171fd251881a6aefc9ae43"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga3d2ffef827171fd251881a6aefc9ae43">ptp_device_open</a> (struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *r, struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> *entry)</td></tr>
 <tr class="memdesc:ga3d2ffef827171fd251881a6aefc9ae43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open and connect to a device from the <a class="el" href="structPtpDeviceEntry.html" title="Linked-list entry for a single USB device.">PtpDeviceEntry</a> structure.  <br /></td></tr>
 <tr class="memitem:ga4f9e8b48aea3b966c7ca3bd7cd789802" id="r_ga4f9e8b48aea3b966c7ca3bd7cd789802"><td class="memItemLeft"><a id="ga4f9e8b48aea3b966c7ca3bd7cd789802" name="ga4f9e8b48aea3b966c7ca3bd7cd789802"></a>
@@ -209,7 +209,7 @@ void&#160;</td><td class="memItemRight"><b>ptpip_comm_deinit</b> (struct <a clas
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cl__backend_8h_source.html#l00115">115</a> of file <a class="el" href="cl__backend_8h_source.html">cl_backend.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cl__backend_8h_source.html#l00111">111</a> of file <a class="el" href="cl__backend_8h_source.html">cl_backend.h</a>.</p>
 
 </div>
 </div>
@@ -288,26 +288,6 @@ void&#160;</td><td class="memItemRight"><b>ptpip_comm_deinit</b> (struct <a clas
 
 <p>Connect to a TCP port on the default network adapter. </p>
 <dl class="section note"><dt>Note</dt><dd>Sets kill switch to 0 </dd></dl>
-
-</div>
-</div>
-<a id="ga596013ea8ed4fcd564cb86ee4f1c7748" name="ga596013ea8ed4fcd564cb86ee4f1c7748"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga596013ea8ed4fcd564cb86ee4f1c7748">&#9670;&#160;</a></span>ptpusb_device_list()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structPtpDeviceEntry.html">PtpDeviceEntry</a> * ptpusb_device_list </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structPtpRuntime.html">PtpRuntime</a> *</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get a linked list of USB or PTP Devices. </p>
-<dl class="section return"><dt>Returns</dt><dd>linked list of devices or NULL if no devices are connected (or OS error) </dd></dl>
 
 </div>
 </div>

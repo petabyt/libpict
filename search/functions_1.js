@@ -60,8 +60,6 @@ var searchData=
   ['ptpip_5fdevice_5fclose_57',['ptpip_device_close',['../group__Backend.html#gada9054f356e1232a75287a0ac9ae143e',1,'cl_backend.h']]],
   ['ptpip_5finit_5fcommand_5frequest_58',['ptpip_init_command_request',['../group__Operations.html#ga35ecd085b423e6312a5214b1d0573e4c',1,'cl_ops.h']]],
   ['ptpip_5finit_5fevents_59',['ptpip_init_events',['../group__Operations.html#gaab71c60e32fb92e3c5458431006c57da',1,'cl_ops.h']]],
-  ['ptpusb_5fdevice_5flist_60',['ptpusb_device_list',['../group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748',1,'cl_backend.h']]],
-  ['ptpusb_5ffree_5fdevice_5flist_61',['ptpusb_free_device_list',['../group__Backend.html#gac5e60abecb830370a1981c4137ed2571',1,'cl_backend.h']]],
-  ['ptpusb_5ffree_5fdevice_5flist_5fentry_62',['ptpusb_free_device_list_entry',['../group__Backend.html#ga883fc46b212f25ae93614fa2a5867a8f',1,'cl_backend.h']]],
-  ['ptpusb_5fget_5fstatus_63',['ptpusb_get_status',['../group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57',1,'cl_backend.h']]]
+  ['ptpusb_5ffree_5fdevice_5flist_5fentry_60',['ptpusb_free_device_list_entry',['../group__Backend.html#ga883fc46b212f25ae93614fa2a5867a8f',1,'cl_backend.h']]],
+  ['ptpusb_5fget_5fstatus_61',['ptpusb_get_status',['../group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57',1,'cl_backend.h']]]
 ];

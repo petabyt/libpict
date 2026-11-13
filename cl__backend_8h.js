@@ -17,8 +17,6 @@ var cl__backend_8h =
     [ "ptpip_connect", "group__Backend.html#gac0bc9a3bcaaae45ae1efc7153d695390", null ],
     [ "ptpip_connect_events", "group__Backend.html#ga4d809f403667acfe4fcb67cd614fab35", null ],
     [ "ptpip_device_close", "group__Backend.html#gada9054f356e1232a75287a0ac9ae143e", null ],
-    [ "ptpusb_device_list", "group__Backend.html#ga596013ea8ed4fcd564cb86ee4f1c7748", null ],
-    [ "ptpusb_free_device_list", "group__Backend.html#gac5e60abecb830370a1981c4137ed2571", null ],
     [ "ptpusb_free_device_list_entry", "group__Backend.html#ga883fc46b212f25ae93614fa2a5867a8f", null ],
     [ "ptpusb_get_status", "group__Backend.html#ga2c267928a1d92371f3f68ad74f3cec57", null ]
 ];
