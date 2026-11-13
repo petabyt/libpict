@@ -39,7 +39,7 @@ int ptpip_init_command_request(struct PtpRuntime *r, const char *device_name) {
 
 	p->minor_ver = 1;
 
-	ptp_write_unicode_string(p->device_name, device_name);
+	ptp_write_unicode_string((uint8_t *)p->device_name, device_name);
 
 	if (ptpip_cmd_write(r, r->data, p->length) != p->length) return PTP_IO_ERR;
 

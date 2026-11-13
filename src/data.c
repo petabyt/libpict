@@ -22,7 +22,7 @@ static int osnprintf(char *str, unsigned int cur, unsigned int size, const char 
 	return r;
 }
 
-static void boundcheck(uint8_t *bs, uint8_t *be, unsigned int size) {
+static void boundcheck(const uint8_t *bs, const uint8_t *be, unsigned int size) {
 	if (be == NULL) return;
 	if ((uintptr_t)bs > (uintptr_t)be) ptp_panic("PTP: bs after be\n");
 	if (((uintptr_t)be - (uintptr_t)bs) < (uintptr_t)size) {
@@ -31,7 +31,7 @@ static void boundcheck(uint8_t *bs, uint8_t *be, unsigned int size) {
 }
 
 // Read standard UTF16 string
-int ptp_read_string(uint8_t *d, char *string, unsigned int max) {
+int ptp_read_string(const uint8_t *d, char *string, unsigned int max) {
 	int of = 0;
 	uint8_t length;
 	of += ptp_read_u8(d + of, &length);
@@ -60,7 +60,7 @@ int ptp_read_string(uint8_t *d, char *string, unsigned int max) {
 	return of;
 }
 
-int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned int max, unsigned int *length) {
+int ptp_read_uint16_array_s(const uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned int max, unsigned int *length) {
 	int of = 0;
 	uint32_t n;
 	of += ptp_read_u32(bs + of, &n);
@@ -76,7 +76,7 @@ int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned in
 	return of;
 }
 
-int ptp_read_uint32_array_s(uint8_t *bs, uint8_t *be, uint32_t *buf, unsigned int max, unsigned int *length) {
+int ptp_read_uint32_array_s(const uint8_t *bs, uint8_t *be, uint32_t *buf, unsigned int max, unsigned int *length) {
 	int of = 0;
 	uint32_t n;
 	of += ptp_read_u32(bs + of, &n);
@@ -115,7 +115,7 @@ int ptp_write_string(uint8_t *dat, const char *string) {
 }
 
 // Write normal UTF-8 string
-int ptp_write_utf8_string(void *dat, const char *string) {
+int ptp_write_utf8_string(uint8_t *dat, const char *string) {
 	char *o = (char *)dat;
 	int x = 0;
 	while (string[x] != '\0') {
@@ -129,7 +129,7 @@ int ptp_write_utf8_string(void *dat, const char *string) {
 }
 
 // Write wchar string
-int ptp_write_unicode_string(char *dat, const char *string) {
+int ptp_write_unicode_string(uint8_t *dat, const char *string) {
 	int i;
 	for (i = 0; string[i] != '\0'; i++) {
 		dat[i * 2] = string[i];
@@ -140,7 +140,7 @@ int ptp_write_unicode_string(char *dat, const char *string) {
 }
 
 // Read null-terminated UTF16 string
-int ptp_read_unicode_string(char *buffer, const char *dat, int max) {
+int ptp_read_unicode_string(const uint8_t *dat, char *buffer, int max) {
 	int i;
 	for (i = 0; dat[i] != '\0'; i += 2) {
 		buffer[i / 2] = dat[i];
@@ -154,11 +154,10 @@ int ptp_read_unicode_string(char *buffer, const char *dat, int max) {
 	return i / 2;
 }
 
-int ptp_read_utf8_string(void *dat, char *string, int max) {
-	char *d = (char *)dat;
+int ptp_read_utf8_string(const uint8_t *dat, char *string, int max) {
 	int x = 0;
-	while (d[x] != '\0') {
-		string[x] = d[x];
+	while (dat[x] != '\0') {
+		string[x] = dat[x];
 		x++;
 		if (x > max - 1) break;
 	}

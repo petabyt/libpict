@@ -3,6 +3,10 @@
 #ifndef PTP_LIB_H
 #define PTP_LIB_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>
@@ -45,9 +49,6 @@ enum PtpRuntimeError {
 	/// @brief Connection was closed by remote
 	PTP_CLOSED = -11,
 };
-
-/// @brief Evaluates PtpGeneralError into string message
-//const char *ptp_perror(int rc);
 
 /// @brief Unique camera types - each type should have similar opcodes and behavior
 enum PtpVendors {
@@ -169,11 +170,11 @@ struct PtpRuntime {
 
 // Logging+panic mechanism, define it yourself or link in log.c
 /// @brief Verbose log debugging info, could be called dozens of times per second
-PUB void ptp_verbose_log(struct PtpRuntime *r, char *fmt, ...);
+PUB void ptp_verbose_log(struct PtpRuntime *r, const char *fmt, ...);
 /// @brief Used for critical IO errors, (not runtime errors)
-PUB void ptp_error_log(struct PtpRuntime *r, char *fmt, ...);
+PUB void ptp_error_log(struct PtpRuntime *r, const char *fmt, ...);
 /// @brief Client has no way out, crash the application
-PUB __attribute__ ((noreturn)) void ptp_panic(char *fmt, ...);
+PUB __attribute__ ((noreturn)) void ptp_panic(const char *fmt, ...);
 
 /// @brief Generic event / property change
 struct PtpGenericEvent {
@@ -276,14 +277,14 @@ PUB int ptp_check_prop(struct PtpRuntime *r, int code);
 PUB int ptp_buffer_resize(struct PtpRuntime *r, size_t size);
 
 // Data structure functions
-PUB int ptp_write_unicode_string(char *dat, const char *string);
-PUB int ptp_read_unicode_string(char *buffer, const char *dat, int max);
-PUB int ptp_read_utf8_string(void *dat, char *string, int max);
-PUB int ptp_read_string(uint8_t *dat, char *string, unsigned int max);
+PUB int ptp_write_unicode_string(uint8_t *dat, const char *string);
+PUB int ptp_read_unicode_string(const uint8_t *dat, char *string, int max);
+PUB int ptp_read_utf8_string(const uint8_t *dat, char *string, int max);
+PUB int ptp_read_string(const uint8_t *dat, char *string, unsigned int max);
 PUB int ptp_write_string(uint8_t *dat, const char *string);
-PUB int ptp_write_utf8_string(void *dat, const char *string);
-PUB int ptp_read_uint16_array_s(uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned int max, unsigned int *length);
-PUB int ptp_read_uint32_array_s(uint8_t *bs, uint8_t *be, uint32_t *buf, unsigned int max, unsigned int *length);
+PUB int ptp_write_utf8_string(uint8_t *dat, const char *string);
+PUB int ptp_read_uint16_array_s(const uint8_t *bs, uint8_t *be, uint16_t *buf, unsigned int max, unsigned int *length);
+PUB int ptp_read_uint32_array_s(const uint8_t *bs, uint8_t *be, uint32_t *buf, unsigned int max, unsigned int *length);
 inline static int ptp_write_u8(void *buf, uint8_t out) {
 	((uint8_t *)buf)[0] = out;
 	return 1;
@@ -349,5 +350,9 @@ int ptp_dump(struct PtpRuntime *r);
 #include "cl_bind.h"
 
 #undef PUB // avoid conflict
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
