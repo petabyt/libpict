@@ -8,7 +8,7 @@ This is a Picture Transfer Protocol (PTP) library written in C.
 ## Features
 - Complete working implemention of PTP as per ISO 15740
 - Working PTP/IP implementation (tested on Windows/Linux/Mac/Android/iOS)
-- LibUSB and [WPD](https://github.com/petabyt/libwpd) USB backends
+- LibUSB and [WPD](https://learn.microsoft.com/en-us/windows-hardware/drivers/portable/) USB backends
 - APIs to convert most PTP data structures to JSON
 - Thread safe by design
 - Uses a single in/out buffer (no memory allocations between operations)
