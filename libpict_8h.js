@@ -21,14 +21,14 @@ var libpict_8h =
       [ "PTP_CLOSED", "libpict_8h.html#a11c98887910f0e12b1aabce441c50e5cadd092c609c6502d5678547507a108666", null ]
     ] ],
     [ "PtpVendors", "libpict_8h.html#aa57ec9e18aa521972749b8655ca36e21", null ],
-    [ "__attribute__", "libpict_8h.html#aba4c2634cffc9cdfa05c586f505b5297", null ],
+    [ "__attribute__", "libpict_8h.html#a29bee6e172478101151c460e816f51fa", null ],
     [ "ptp_buffer_resize", "libpict_8h.html#ab84ae8f97ce135a3702bb73959fc539c", null ],
     [ "ptp_check_opcode", "libpict_8h.html#a05fa160eba529edd8a9ac6d22bbd5fcc", null ],
     [ "ptp_check_prop", "libpict_8h.html#a7dd626eb23a1d69947553c2d2166c8a3", null ],
     [ "ptp_close", "libpict_8h.html#a4d45b4f344f3094e4ede7c114df077c3", null ],
     [ "ptp_device_type", "libpict_8h.html#aea7de1759aa5bd4984f11ab2cf175308", null ],
     [ "ptp_dump", "libpict_8h.html#a3b2d987487466928731e65a97cfc4930", null ],
-    [ "ptp_error_log", "libpict_8h.html#af49b1eaf1abc3df8bea3cfdaed4545fb", null ],
+    [ "ptp_error_log", "libpict_8h.html#a1ddd59c65d67c64584419a4fc196820a", null ],
     [ "ptp_get_event", "libpict_8h.html#a38596b29d61a48351bbd2a4a4209d2fb", null ],
     [ "ptp_get_last_transaction_id", "libpict_8h.html#a2b1c40137fa07ca3b73dd064571584c1", null ],
     [ "ptp_get_param", "libpict_8h.html#a74f5a485857253fdc89dc8c434c3c7a9", null ],
@@ -44,5 +44,5 @@ var libpict_8h =
     [ "ptp_reset", "libpict_8h.html#a2b58d078aae65e43bca41d037ccdf2d5", null ],
     [ "ptp_send", "libpict_8h.html#a025478ecd387e2c1be6dfb7cc41488ea", null ],
     [ "ptp_send_data", "libpict_8h.html#a59dbc488048274abefa7570a76389782", null ],
-    [ "ptp_verbose_log", "libpict_8h.html#a06100919468e5f5138816e43ea60fd3c", null ]
+    [ "ptp_verbose_log", "libpict_8h.html#a18213cfb981ad2cb483b917d3e634525", null ]
 ];
